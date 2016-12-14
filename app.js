@@ -4,6 +4,12 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var gc = require("graphcommons");
+var accesskey = process.env.GRAPH_COMMONS_API_KEY;
+var graphcommons = new gc(accesskey, function(result) {
+    console.log("Created graph commons = ", result);
+});
+var graph_id = "288bd5c8-f7e1-4bf4-945b-4a65bdfc749a";
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -24,6 +30,29 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', index);
 app.use('/users', users);
+
+app.post("/process_post", function(req, res) {
+    var graphData = {
+        "name": "My express test graph",
+        "description": "Tester",
+        "status": 0
+    };
+    graphcommons.new_graph(graphData, function(result) {
+        console.log(result.properties.id);
+        res.render("index", { graphID: result.properties.id });
+    });
+});
+
+app.post("/process_search", function(req, res) {
+    var search_query = {
+        "query": req.body.nodeValue,
+        "graph": req.body.graph_id
+    };
+    graphcommons.nodes_search(search_query, function(results) {
+        console.log(results);
+        res.render("index", { graphID: req.body.graph_id});
+    });
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

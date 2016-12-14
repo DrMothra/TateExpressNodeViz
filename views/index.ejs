@@ -1,11 +1,26 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %></title>
+    <title><Tate Node Visualiser></title>
     <link rel='stylesheet' href='/stylesheets/style.css' />
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <h1>Tate Node Visualiser</h1>
+
+    <h2>Create Graph</h2>
+    <form action="http://127.0.0.1:3000/process_post" method = "POST">
+      <input type="submit" value="New graph">
+    </form>
+
+    <div>
+        <p>Graph ID: <span><%= graphID %></span></p>
+    </div>
+
+    <h2>Modify Graph</h2>
+    <form action="http://127.0.0.1:3000/process_search" method = "POST">
+        Graph id: <input type="text" name="graph_id"> <br>
+        Node name: <input type="text" name="nodeValue">
+        <input type = "submit" value="Search">
+    </form>
   </body>
 </html>
