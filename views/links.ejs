@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Tate Node Visualiser</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+
+    <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="js/tateExpressViz.js"></script>
+  </head>
+  <body>
+    <h1>Link Modifier</h1>
+
+    <h2>Links</h2>
+    <h3><%= node %></h3>
+    <ul>
+        <% for(var i=0; i<linkData.length; ++i) { %>
+            <li><%= linkData[i].linkType %> <%= linkData[i].linkTo %><button id='<%=i + "yesLink"%>' type="button">Yes</button><button id='<%=i + "noLink"%>' type="button">No</button></li>
+        <% } %>
+    </ul>
+  </body>
+</html>
