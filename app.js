@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var fileUpload = require('express-fileupload');
 var gc = require("graphcommons");
 var accesskey = process.env.GRAPH_COMMONS_API_KEY;
 var graphcommons = new gc(accesskey, function(result) {
@@ -29,23 +30,28 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(fileUpload());
 
 app.use('/', index);
 app.use('/users', users);
 
 var currentGraph;
 var currentGraphID;
+var currentNodeID;
+var currentNodeData;
 
 app.post("/process_post", function(req, res) {
     var graphData = {
-        "name": "My express test graph",
+        "name": "My test graph",
         "description": "Tester",
         "status": 0
     };
     graphcommons.new_graph(graphData, function(result) {
         currentGraphID = result.properties.id;
         console.log(currentGraphID);
-        res.render("index", { graphID: currentGraphID });
+        res.render("index", { graphID: currentGraphID,
+                                uploadStatus: "",
+                                graphStatus: ""});
     });
 });
 
@@ -59,15 +65,15 @@ app.post("/process_search", function(req, res) {
         };
         graphcommons.nodes_search(search_query, function(results) {
             //console.log(results);
-            var nodeID = results.nodes[0].id;
-            var nodeData = currentGraph.get_node(nodeID);
-            currentEdgeData = currentGraph.edges_for(nodeData, "from");
+            currentNodeID = results.nodes[0].id;
+            currentNodeData = currentGraph.get_node(currentNodeID);
+            currentEdgeData = currentGraph.edges_for(currentNodeData, "from");
             //DEBUG
             //console.log("Edge data = ", currentEdgeData);
 
             //res.render("index", { graphID: req.body.graph_id});
             //Get name of to nodes
-            var toNodes = [], linkData;
+            var toNodes = [], linkData, nodeData;
             var i, numNodes=currentEdgeData.length;
             for(i=0; i<numNodes; ++i) {
                 nodeData = currentGraph.get_node(currentEdgeData[i].to);
@@ -86,6 +92,10 @@ app.post("/process_links", function(req, res) {
     //Get index into edge data
     var index = req.body.link;
     var choice = req.body.choice;
+    console.log("Choice = ", choice);
+
+    currentNodeData = currentGraph.get_node(currentNodeID);
+    currentEdgeData = currentGraph.edges_for(currentNodeData, "from");
 
     //DEBUG
     console.log("Edge data = ", currentEdgeData[index]);
@@ -102,17 +112,30 @@ app.post("/process_links", function(req, res) {
         }
     ]};
 
+    //Weight within limits
+    weight = signals.signals[0].weight;
+    console.log("New weight = ", weight);
+    if(weight <=0) {
+        return;
+    }
+    if(weight > 10) {
+        return;
+    }
     graphcommons.update_graph(graph_id, signals, function() {
         console.log("Updated choice");
         res.send( {msg: 'OK'} );
     })
 });
 
-app.post("/upload", function(req, res) {
+app.post("/process_upload", function(req, res) {
     console.log("File uploaded");
-    console.log("File = ", req.file);
     console.log("Files = ", req.files);
-    console.log("Body = ", req.body);
+    var temp = req.files.vizFile.data.toString();
+    vizDataFile = JSON.parse(temp);
+    console.log("New json file created");
+    res.render("index", { graphID: currentGraphID,
+        uploadStatus: " Uploaded",
+        graphStatus: ""});
 });
 
 app.post("/process_generate", function(req, res) {
@@ -123,7 +146,9 @@ app.post("/process_generate", function(req, res) {
     manager.sortArtists();
     manager.createNodes();
 
-    res.send( {msg: 'OK'} );
+    res.render("index", {graphID: currentGraphID,
+        uploadStatus: " Uploaded",
+        graphStatus: " Generating graph"});
 });
 
 // catch 404 and forward to error handler

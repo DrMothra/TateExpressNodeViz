@@ -12,7 +12,7 @@
 
     <h2>Links</h2>
     <h3><%= node %></h3>
-    <ul>
+    <ul id="linkList">
         <% for(var i=0; i<linkData.length; ++i) { %>
             <li><%= linkData[i].linkType %> <%= linkData[i].linkTo %><button id='<%=i + "yesLink"%>' type="button">Yes</button><button id='<%=i + "noLink"%>' type="button">No</button></li>
         <% } %>

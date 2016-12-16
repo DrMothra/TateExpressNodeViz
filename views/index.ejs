@@ -16,8 +16,13 @@
         <p>Graph ID: <span><%= graphID %></span></p>
     </div>
 
+    <form ref='uploadForm' id="uploadForm" action="http://127.0.0.1:3000/process_upload" method = "post" enctype="multipart/form-data">
+        <input type="file" name="vizFile">
+        <input type="submit" value="Upload"><span><%= uploadStatus %></span>
+    </form>
+
     <form action="http://127.0.0.1:3000/process_generate" method = "POST">
-        <input type="submit" value="Create graph">
+        <input type="submit" value="Create graph"><span><%= graphStatus %></span>
     </form>
 
     <h2>Modify Graph</h2>

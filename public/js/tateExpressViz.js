@@ -26,7 +26,11 @@ function updateLinkInfo(linkID, choice) {
 $(document).ready(function() {
 
     //GUI callbacks
-    $('#0yesLink').on("click", function() {
+    $("[id*='yesLink']").on("click", function() {
         updateLinkInfo(this.id, true);
-    })
+    });
+
+    $("[id*='noLink']").on("click", function() {
+        updateLinkInfo(this.id, false);
+    });
 });
