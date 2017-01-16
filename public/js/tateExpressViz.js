@@ -2,6 +2,17 @@
  * Created by DrTone on 15/12/2016.
  */
 
+function generateGraphID() {
+    //Generate new graph
+    $.ajax({
+        type: 'POST',
+        url: '/generateGraph'
+    }).done(function(response) {
+        if(response.msg === 'OK') {
+            console.log("New graph generated");
+        }
+    })
+}
 
 function updateLinkInfo(linkID, choice) {
     //Strip out id
@@ -26,6 +37,10 @@ function updateLinkInfo(linkID, choice) {
 $(document).ready(function() {
 
     //GUI callbacks
+    $("#create").on("click", function() {
+        generateGraphID();
+    });
+
     $("[id*='yesLink']").on("click", function() {
         updateLinkInfo(this.id, true);
     });

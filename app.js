@@ -16,6 +16,7 @@ var vizDataFile = require("./data/tateData.json");
 
 var index = require('./routes/index');
 var users = require('./routes/users');
+var graphs = require('./routes/graphs');
 
 var app = express();
 
@@ -40,7 +41,7 @@ var currentGraphID;
 var currentNodeID;
 var currentNodeData;
 
-app.post("/process_post", function(req, res) {
+app.post("/generateGraph", graphs.generateGraph); {
     var graphData = {
         "name": "My test graph",
         "description": "Tester",

@@ -1,25 +1,32 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Tate Node Visualiser</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+      <title>Tate Node Visualiser</title>
+
+      <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+      <script type="text/javascript" src="js/bootstrap.min.js"></script>
+      <script type="text/javascript" src="js/tateExpressViz.js"></script>
+
+      <link rel="stylesheet" href="css/bootstrap.min.css">
+      <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+      <link rel='stylesheet' href="css/tateExpressStyles.css">
+
   </head>
   <body>
     <h1>Tate Node Visualiser</h1>
 
-    <h2>Create Graph</h2>
-    <form action="http://127.0.0.1:3000/process_post" method = "POST">
-      <input type="submit" value="New graph">
-    </form>
-
-    <div>
-        <p>Graph ID: <span><%= graphID %></span></p>
+    <div id="createGraph">
+        <h2>Create Graph</h2>
+        <button type="button" id="create" class="btn btn-primary">New Graph</button>
+        <p><br>Graph ID: <span id="graphID">Not generated</span></p>
     </div>
 
-    <form ref='uploadForm' id="uploadForm" action="http://127.0.0.1:3000/process_upload" method = "post" enctype="multipart/form-data">
-        <input type="file" name="vizFile">
-        <input type="submit" value="Upload"><span><%= uploadStatus %></span>
-    </form>
+    <div id="fileUpload">
+        <form ref='uploadForm' id="uploadForm" action="http://127.0.0.1:3000/process_upload" method = "post" enctype="multipart/form-data">
+            <input type="file" name="vizFile">
+            <input type="submit" value="Upload"><span><%= uploadStatus %></span>
+        </form>
+    </div>
 
     <form action="http://127.0.0.1:3000/process_generate" method = "POST">
         <input type="submit" value="Create graph"><span><%= graphStatus %></span>
