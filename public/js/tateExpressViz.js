@@ -39,6 +39,22 @@ function updateLinkInfo(linkID, choice) {
     })
 }
 
+function generateGraph() {
+    //Submit data file
+    $('#uploadForm').ajaxSubmit({
+
+        error: function() {
+            console.log("error");
+        },
+
+        success: function() {
+            console.log("All OK");
+        }
+    });
+
+    return false;
+}
+
 $(document).ready(function() {
 
     //GUI callbacks
@@ -52,5 +68,9 @@ $(document).ready(function() {
 
     $("[id*='noLink']").on("click", function() {
         updateLinkInfo(this.id, false);
+    });
+
+    $('#generate').on("click", function() {
+        generateGraph();
     });
 });

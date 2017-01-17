@@ -23,5 +23,13 @@ exports.generateGraph = function(req, res, next) {
         console.log("Graph id = ", result.properties.id);
         res.send( {msg: result.properties.id} );
     });
+};
 
+exports.processUpload = function(req, res, next) {
+    console.log("File uploaded = ", req.files);
+    var temp = req.files.vizFile.data.toString();
+    var vizDataFile = JSON.parse(temp);
+    console.log("New json file created");
+
+    res.end();
 };

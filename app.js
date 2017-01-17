@@ -33,6 +33,8 @@ app.use('/users', users);
 
 app.post("/generateGraph", graphs.generateGraph);
 
+app.post("/processUpload", graphs.processUpload);
+
 app.post("/process_search", function(req, res) {
     graphcommons.graphs(req.body.graph_id, function(graph) {
         currentGraph = graph;
@@ -103,17 +105,6 @@ app.post("/process_links", function(req, res) {
         console.log("Updated choice");
         res.send( {msg: 'OK'} );
     })
-});
-
-app.post("/process_upload", function(req, res) {
-    console.log("File uploaded");
-    console.log("Files = ", req.files);
-    var temp = req.files.vizFile.data.toString();
-    vizDataFile = JSON.parse(temp);
-    console.log("New json file created");
-    res.render("index", { graphID: currentGraphID,
-        uploadStatus: " Uploaded",
-        graphStatus: ""});
 });
 
 app.post("/process_generate", function(req, res) {

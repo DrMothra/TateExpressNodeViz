@@ -4,6 +4,7 @@
       <title>Tate Node Visualiser</title>
 
       <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+      <script src="http://malsup.github.com/jquery.form.js"></script>
       <script type="text/javascript" src="js/bootstrap.min.js"></script>
       <script type="text/javascript" src="js/tateExpressViz.js"></script>
 
@@ -21,22 +22,22 @@
         <p><br>Graph ID: <span id="graphID">Not generated</span></p>
     </div>
 
-    <div id="fileUpload">
-        <form ref='uploadForm' id="uploadForm" action="http://127.0.0.1:3000/process_upload" method = "post" enctype="multipart/form-data">
+    <div id="generateGraph">
+        <h2>Generate Graph</h2>
+        <form ref='uploadForm' id="uploadForm" method="post" action="http://127.0.0.1:3000/processUpload" enctype="multipart/form-data">
             <input type="file" name="vizFile">
-            <input type="submit" value="Upload"><span><%= uploadStatus %></span>
         </form>
+        <br>
+        <button type="button" class="btn btn-primary" id="generate">Generate graph</button>
     </div>
 
-    <form action="http://127.0.0.1:3000/process_generate" method = "POST">
-        <input type="submit" value="Create graph"><span><%= graphStatus %></span>
-    </form>
-
-    <h2>Modify Graph</h2>
-    <form action="http://127.0.0.1:3000/process_search" method = "POST">
-        Graph id: <input type="text" name="graph_id"> <br>
-        Node name: <input type="text" name="nodeValue">
-        <input type = "submit" value="Search">
-    </form>
+    <div id="modifyGraph">
+        <h2>Modify Graph</h2>
+        <form action="http://127.0.0.1:3000/process_search" method = "POST">
+            Graph id: <input type="text" name="graph_id"> <br>
+            Node name: <input type="text" name="nodeValue">
+            <input type = "submit" value="Search">
+        </form>
+    </div>
   </body>
 </html>

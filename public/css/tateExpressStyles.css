@@ -168,6 +168,6 @@
 h1 {
     margin-left: 1%;
 }
-#createGraph {
+#createGraph, #generateGraph, #modifyGraph {
     margin: 0 1%;
 }
