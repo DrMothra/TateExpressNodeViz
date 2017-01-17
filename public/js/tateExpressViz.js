@@ -4,13 +4,18 @@
 
 function generateGraphID() {
     //Generate new graph
+    var id = {
+        id: 6,
+        status: "OK"
+    };
+
     $.ajax({
         type: 'POST',
-        url: '/generateGraph'
+        data: id,
+        url: '/generateGraph',
+        dataType: 'JSON'
     }).done(function(response) {
-        if(response.msg === 'OK') {
-            console.log("New graph generated");
-        }
+        console.log("Response = ", response);
     })
 }
 

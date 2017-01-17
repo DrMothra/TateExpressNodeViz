@@ -5,11 +5,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var fileUpload = require('express-fileupload');
-var gc = require("graphcommons");
-var accesskey = process.env.GRAPH_COMMONS_API_KEY;
-var graphcommons = new gc(accesskey, function(result) {
-    console.log("Created graph commons = ", result);
-});
 var graph_id = "288bd5c8-f7e1-4bf4-945b-4a65bdfc749a";
 var currentEdgeData;
 var vizDataFile = require("./data/tateData.json");
@@ -36,25 +31,7 @@ app.use(fileUpload());
 app.use('/', index);
 app.use('/users', users);
 
-var currentGraph;
-var currentGraphID;
-var currentNodeID;
-var currentNodeData;
-
-app.post("/generateGraph", graphs.generateGraph); {
-    var graphData = {
-        "name": "My test graph",
-        "description": "Tester",
-        "status": 0
-    };
-    graphcommons.new_graph(graphData, function(result) {
-        currentGraphID = result.properties.id;
-        console.log(currentGraphID);
-        res.render("index", { graphID: currentGraphID,
-                                uploadStatus: "",
-                                graphStatus: ""});
-    });
-});
+app.post("/generateGraph", graphs.generateGraph);
 
 app.post("/process_search", function(req, res) {
     graphcommons.graphs(req.body.graph_id, function(graph) {
