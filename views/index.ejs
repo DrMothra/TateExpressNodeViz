@@ -33,10 +33,16 @@
 
     <div id="modifyGraph">
         <h2>Modify Graph</h2>
-        <form action="http://127.0.0.1:3000/process_search" method = "POST">
-            Graph id: <input type="text" name="graph_id"> <br>
-            Node name: <input type="text" name="nodeValue">
-            <input type = "submit" value="Search">
+        <form class="form-inline" action="http://127.0.0.1:3000/process_search" method = "POST">
+            <div class="form-group">
+                <label for="graphIdentity">Graph ID: </label>
+                <input type="text" class="form-control" id="graphIdentity">
+            </div>
+            <div class="form-group">
+                <label for="nodeValue">Node name: </label>
+                <input type="text" class="form-control" id="nodeValue">
+            </div>
+            <button type ="submit" class="btn btn-primary">Search</button>
         </form>
     </div>
   </body>
