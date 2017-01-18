@@ -1,21 +1,30 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Tate Node Visualiser</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+      <title>Tate Node Visualiser</title>
 
-    <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
-    <script type="text/javascript" src="js/tateExpressViz.js"></script>
+      <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+      <script type="text/javascript" src="js/bootstrap.min.js"></script>
+      <script type="text/javascript" src="js/tateExpressViz.js"></script>
+
+      <link rel="stylesheet" href="css/bootstrap.min.css">
+      <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+      <link rel='stylesheet' href="css/tateExpressStyles.css">
+
   </head>
   <body>
     <h1>Link Modifier</h1>
 
-    <h2>Links</h2>
-    <h3><%= node %></h3>
-    <ul id="linkList">
-        <% for(var i=0; i<linkData.length; ++i) { %>
+    <div id="links" class="title">
+        <h2>Links</h2>
+        <h3><%= node %></h3>
+
+        <ul id="linkList">
+            <% for(var i=0; i<linkData.length; ++i) { %>
             <li><%= linkData[i].linkType %> <%= linkData[i].linkTo %><button id='<%=i + "yesLink"%>' type="button">Yes</button><button id='<%=i + "noLink"%>' type="button">No</button></li>
-        <% } %>
-    </ul>
+            <% } %>
+        </ul>
+    </div>
+
   </body>
 </html>

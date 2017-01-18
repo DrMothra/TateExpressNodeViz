@@ -2,7 +2,7 @@
  * Created by DrTone on 15/12/2016.
  */
 
-function generateGraphID() {
+function createNewGraph() {
     //Generate new graph
     var id = {
         id: 6,
@@ -12,10 +12,12 @@ function generateGraphID() {
     $.ajax({
         type: 'POST',
         data: id,
-        url: '/generateGraph',
+        url: '/createGraph',
         dataType: 'JSON'
     }).done(function(response) {
-        console.log("Response = ", response);
+        //DEBUG
+        console.log("Created new graph ID");
+        $('#graphID').html(response.msg);
     })
 }
 
@@ -30,7 +32,7 @@ function updateLinkInfo(linkID, choice) {
     $.ajax({
         type: 'POST',
         data: linkData,
-        url: '/process_links',
+        url: '/processLinks',
         dataType: 'JSON'
     }).done(function(response) {
         if(response.msg === 'OK') {
@@ -41,14 +43,16 @@ function updateLinkInfo(linkID, choice) {
 
 function generateGraph() {
     //Submit data file
+    $('#graphStatus').html(" Generating graph...");
     $('#uploadForm').ajaxSubmit({
 
         error: function() {
             console.log("error");
         },
 
-        success: function() {
-            console.log("All OK");
+        success: function(response) {
+            console.log("All OK - ", response);
+            $('#graphStatus').html("  Graph generated");
         }
     });
 
@@ -59,15 +63,15 @@ $(document).ready(function() {
 
     //GUI callbacks
     $("#create").on("click", function() {
-        generateGraphID();
+        createNewGraph();
     });
 
     $("[id*='yesLink']").on("click", function() {
-        updateLinkInfo(this.id, true);
+        updateLinkInfo(this.id, 1);
     });
 
     $("[id*='noLink']").on("click", function() {
-        updateLinkInfo(this.id, false);
+        updateLinkInfo(this.id, 0);
     });
 
     $('#generate').on("click", function() {
