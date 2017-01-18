@@ -19,11 +19,24 @@
         <h2>Links</h2>
         <h3><%= node %></h3>
 
-        <ul id="linkList">
+        <div class="container-fluid">
             <% for(var i=0; i<linkData.length; ++i) { %>
-            <li><%= linkData[i].linkType %> <%= linkData[i].linkTo %><button id='<%=i + "yesLink"%>' type="button">Yes</button><button id='<%=i + "noLink"%>' type="button">No</button></li>
+            <div class="row">
+                <div class="col-md-3">
+                    <ul>
+                        <li><%= linkData[i].linkType %> <%= linkData[i].linkTo %></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-primary" id='<%=i + "yesLink"%>' type="button">Agree</button><button class="btn btn-primary" id='<%=i + "noLink"%>' type="button">Disagree</button>
+                </div>
+                <div class="col-md-6">
+                    &nbsp
+                </div>
+            </div>
             <% } %>
-        </ul>
+        </div>
+
     </div>
 
   </body>
