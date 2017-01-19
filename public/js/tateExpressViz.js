@@ -37,6 +37,11 @@ function updateLinkInfo(linkID, choice) {
     }).done(function(response) {
         if(response.msg === 'OK') {
             console.log("Weight updated");
+            var elem = $('#'+id+'updated');
+            elem.show();
+            setTimeout(function() {
+                elem.hide();
+            }, 3000);
         }
     })
 }

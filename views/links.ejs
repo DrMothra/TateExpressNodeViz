@@ -27,10 +27,13 @@
                         <li><%= linkData[i].linkType %> <%= linkData[i].linkTo %></li>
                     </ul>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-2">
                     <button class="btn btn-primary" id='<%=i + "yesLink"%>' type="button">Agree</button><button class="btn btn-primary" id='<%=i + "noLink"%>' type="button">Disagree</button>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-2">
+                    <span id='<%=i + "updated"%>' class="label label-success noDisplay">Updated</span>
+                </div>
+                <div class="col-md-5">
                     &nbsp
                 </div>
             </div>
