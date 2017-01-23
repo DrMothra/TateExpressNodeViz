@@ -45,17 +45,22 @@ exports.dataManager = function(graphID, vizData, res) {
     };
 
     //Init
-    this.init = function(graphID, vizData, res) {
-        this.graph_id = graphID;
-        //Data
-        this.data = vizData;
-        this.numItems = this.data.length;
-        this.response = res;
+    this.init = function(gc) {
+        this.graphCommons = gc;
         this.nodesToCreate = 0;
         this.nodesCreated = 0;
         this.edgesToCreate = 0;
         this.edgesCreated = 0;
         this.graphComplete = false;
+    };
+
+    this.setFileData = function(file) {
+        this.data = file;
+        this.numItems = this.data.length;
+    };
+
+    this.setGraphID = function(graphID) {
+        this.graph_id = graphID;
     };
 
     this.preSort = function() {
@@ -125,8 +130,8 @@ exports.dataManager = function(graphID, vizData, res) {
         signalNode.signals[0].name = name;
         signalNode.signals[0].description = description;
         var _this = this;
-        graphCommons.update_graph(this.graph_id, signalNode, function() {
-            console.log("Node ", name, " created");
+        this.graphCommons.update_graph(this.graph_id, signalNode, function() {
+            console.log("Node ", ++_this.nodesCreated, name, " created");
             if(--_this.nodesToCreate === 0) {
                 _this.createEdges();
             }
@@ -160,7 +165,7 @@ exports.dataManager = function(graphID, vizData, res) {
         signalEdge.signals[0].to_type = toType;
         signalEdge.signals[0].to_name = toName;
         signalEdge.signals[0].name = edgeName;
-        graphCommons.update_graph(this.graph_id, signalEdge, function() {
+        this.graphCommons.update_graph(this.graph_id, signalEdge, function() {
             console.log("Edge ", _this.edgesCreated, edgeName, " created");
             ++_this.edgesCreated;
             if(_this.edgesCreated === _this.edgesToCreate) {
@@ -172,11 +177,11 @@ exports.dataManager = function(graphID, vizData, res) {
     };
 
     this.createNodesAndEdges = function(completedCallback) {
+        this.onCompleted = completedCallback;
         this.preSort();
         this.sortLinks();
         this.sortArtists();
         this.createNodes();
-        this.onCompleted = completedCallback;
     };
 
     this.getLinkInfo = function(data, linkType) {
