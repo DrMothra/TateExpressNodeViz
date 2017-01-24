@@ -26,6 +26,8 @@ var graphCommons = new gc(accesskey, function(result) {
 });
 
 var currentGraphID;
+//DEBUG
+var processed = false;
 
 //Routes for all graph-related pages
 exports.generateNewGraph = function(req, res, next) {
@@ -44,7 +46,15 @@ exports.generateNewGraph = function(req, res, next) {
     });
 };
 
+var processing = false;
+
 exports.generateGraph = function(req, res, next) {
+    if(processing) {
+        res.send( {msg: "Waiting"});
+        return;
+    }
+    processing = true;
+
     var fileName = req.files.vizFile.name;
     var fileData = req.files.vizFile.data;
     fileData = fileData.toString();

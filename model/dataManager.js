@@ -20,6 +20,7 @@ exports.dataManager = function(graphID, vizData, res) {
     //Types - just artists for now
     var artists = [];
 
+    //Signalling
     var signalNode = {
         "signals": [
             {
@@ -43,6 +44,13 @@ exports.dataManager = function(graphID, vizData, res) {
             }
         ]
     };
+
+    this.nodeQueue = [];
+    this.nodeRequestTime = 200;
+    this.canCreateNode = true;
+    this.edgeQueue = [];
+    this.edgeRequestTime = 200;
+    this.canCreateEdge = true;
 
     //Init
     this.init = function(gc) {
@@ -119,23 +127,43 @@ exports.dataManager = function(graphID, vizData, res) {
         for(i=0; i<this.numItems; ++i) {
             dataItem = this.data[i];
             if(dataItem["Type of node"]) {
-                this.createGraphNode(dataItem["Type of node"], dataItem["Node short name"], dataItem["Description"]);
+                this.queueGraphNodeRequest(dataItem["Type of node"], dataItem["Node short name"], dataItem["Description"]);
             }
         }
     };
 
-    this.createGraphNode = function(type, name, description) {
-        //Create node
-        signalNode.signals[0].type = type;
-        signalNode.signals[0].name = name;
-        signalNode.signals[0].description = description;
+    this.queueGraphNodeRequest = function(type, name, description) {
+        //Create queue of node requests
+        //DEBUG
+        console.log("Queued node request");
+        var signal = JSON.parse(JSON.stringify(signalNode));
+        signal.signals[0].type = type;
+        signal.signals[0].name = name;
+        signal.signals[0].description = description;
+        this.nodeQueue.push(signal);
         var _this = this;
-        this.graphCommons.update_graph(this.graph_id, signalNode, function() {
-            console.log("Node ", ++_this.nodesCreated, name, " created");
-            if(--_this.nodesToCreate === 0) {
-                _this.createEdges();
-            }
-        });
+        this.nodeRequestTimer = setInterval(function() {
+            _this.createGraphNode();
+        }, this.nodeRequestTime);
+    };
+
+    this.createGraphNode = function() {
+        var _this = this;
+        if(this.canCreateNode && this.nodeQueue.length > 0) {
+            this.canCreateNode = false;
+            var signalNode = this.nodeQueue.pop();
+            this.graphCommons.update_graph(this.graph_id, signalNode, function() {
+                console.log("Node ", ++_this.nodesCreated, signalNode.signals[0].name, " created");
+                _this.canCreateNode = true;
+                if(--_this.nodesToCreate === 0) {
+                    clearInterval(_this.nodeRequestTimer);
+                    //DEBUG
+                    console.log("All nodes created");
+                    _this.createEdges();
+                }
+            });
+        }
+
     };
 
     this.createEdges = function() {
@@ -147,7 +175,7 @@ exports.dataManager = function(graphID, vizData, res) {
                 if(linkInfo !== null) {
                     for(k=0, numLinks=linkInfo.length; k<numLinks; ++k) {
                         ++edges;
-                        this.createGraphEdge(dataItem["Type of node"], dataItem["Node short name"], linkInfo[k].type, linkInfo[k].name, linkTypes[j]);
+                        this.queueGraphEdgeRequest(dataItem["Type of node"], dataItem["Node short name"], linkInfo[k].type, linkInfo[k].name, linkTypes[j]);
                     }
                 }
             }
@@ -157,23 +185,40 @@ exports.dataManager = function(graphID, vizData, res) {
         console.log("Need to create ", this.edgesToCreate, " edges");
     };
 
-    this.createGraphEdge = function(fromType, fromName, toType, toName, edgeName) {
+    this.queueGraphEdgeRequest = function(fromType, fromName, toType, toName, edgeName) {
         //Create edge
+        //DEBUG
+        console.log("Queued edge request");
+        var signal = JSON.parse(JSON.stringify(signalEdge));
+        signal.signals[0].from_type = fromType;
+        signal.signals[0].from_name = fromName;
+        signal.signals[0].to_type = toType;
+        signal.signals[0].to_name = toName;
+        signal.signals[0].name = edgeName;
+        this.edgeQueue.push(signal);
         var _this = this;
-        signalEdge.signals[0].from_type = fromType;
-        signalEdge.signals[0].from_name = fromName;
-        signalEdge.signals[0].to_type = toType;
-        signalEdge.signals[0].to_name = toName;
-        signalEdge.signals[0].name = edgeName;
-        this.graphCommons.update_graph(this.graph_id, signalEdge, function() {
-            console.log("Edge ", _this.edgesCreated, edgeName, " created");
-            ++_this.edgesCreated;
-            if(_this.edgesCreated === _this.edgesToCreate) {
-                console.log("All edges created");
-                _this.graphComplete = true;
-                _this.onCompleted();
-            }
-        })
+        this.edgeRequestTimer = setInterval(function () {
+            _this.createEdge();
+        }, this.edgeRequestTime);
+    };
+
+    this.createEdge = function() {
+        var _this = this;
+        if(this.canCreateEdge && this.edgeQueue.length > 0) {
+            this.canCreateEdge = false;
+            var edgeNode = this.edgeQueue.pop();
+            this.graphCommons.update_graph(this.graph_id, edgeNode, function() {
+                console.log("Edge ", _this.edgesCreated, edgeNode.signals[0].name, " created");
+                ++_this.edgesCreated;
+                _this.canCreateEdge = true;
+                if(_this.edgesCreated === _this.edgesToCreate) {
+                    console.log("All edges created");
+                    clearInterval(_this.edgeRequestTimer);
+                    _this.graphComplete = true;
+                    _this.onCompleted();
+                }
+            })
+        }
     };
 
     this.createNodesAndEdges = function(completedCallback) {

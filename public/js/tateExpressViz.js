@@ -46,8 +46,12 @@ function updateLinkInfo(linkID, choice) {
     })
 }
 
+var processing = false;
 function generateGraph() {
     //Submit data file
+    if(processing) return;
+    processing = true;
+
     $('#graphStatus').html(" Generating graph...");
     $('#uploadForm').ajaxSubmit({
 
@@ -58,6 +62,7 @@ function generateGraph() {
         success: function(response) {
             console.log("All OK - ", response);
             $('#graphStatus').html("  Graph generated");
+            processing = false;
         }
     });
 
