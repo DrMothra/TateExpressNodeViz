@@ -49,11 +49,7 @@ exports.generateNewGraph = function(req, res, next) {
 var processing = false;
 
 exports.generateGraph = function(req, res, next) {
-    if(processing) {
-        res.send( {msg: "Waiting"});
-        return;
-    }
-    processing = true;
+    res.write("Processing");
 
     var fileName = req.files.vizFile.name;
     var fileData = req.files.vizFile.data;
