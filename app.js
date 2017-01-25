@@ -5,10 +5,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var fileUpload = require('express-fileupload');
-var graph_id = "288bd5c8-f7e1-4bf4-945b-4a65bdfc749a";
-var currentEdgeData;
-var vizDataFile = require("./data/tateData.json");
-
 var index = require('./routes/index');
 var users = require('./routes/users');
 var graphs = require('./routes/graphs');
