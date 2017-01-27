@@ -16,7 +16,8 @@ function convertToJSON(csvData) {
 
     return outputText;
 }
-var manager = require("../model/dataManager");
+var manager = exports.manager = require("../model/dataManager");
+
 var dataManager = new manager.dataManager();
 
 var gc = require("graphcommons");
@@ -49,7 +50,6 @@ exports.generateNewGraph = function(req, res, next) {
 var processing = false;
 
 exports.generateGraph = function(req, res, next) {
-    res.write("Processing");
 
     var fileName = req.files.vizFile.name;
     var fileData = req.files.vizFile.data;
@@ -80,12 +80,9 @@ exports.generateGraph = function(req, res, next) {
     dataManager.setGraphID(currentGraphID);
     dataManager.createNodesAndEdges(function() {
         console.log("Graph created");
-        res.send( {msg: "OK"} );
     });
 
-    //Return but wait for task completion
-    //res.write("Processing");
-    //res.end();
+    res.send( {msg: "Generating graph..."} );
 };
 
 var currentGraph;

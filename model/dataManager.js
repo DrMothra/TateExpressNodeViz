@@ -3,6 +3,9 @@
  */
 //Manages the data associated with current data file
 
+var events = require("events");
+var emitter = module.exports.emitter = new events.EventEmitter();
+
 exports.dataManager = function(graphID, vizData, res) {
     //Links
     var linkTypes = ["Made by", "Inspired by", "In opposition to", "In response to", "Associated / works with", "Exhibited with", "Exhibited at"];
@@ -154,6 +157,7 @@ exports.dataManager = function(graphID, vizData, res) {
             var signalNode = this.nodeQueue.pop();
             this.graphCommons.update_graph(this.graph_id, signalNode, function() {
                 console.log("Node ", ++_this.nodesCreated, signalNode.signals[0].name, " created");
+                exports.emitter.emit("NodeCreated");
                 _this.canCreateNode = true;
                 if(--_this.nodesToCreate === 0) {
                     clearInterval(_this.nodeRequestTimer);
@@ -280,6 +284,10 @@ exports.dataManager = function(graphID, vizData, res) {
 
         return null;
     };
+
+    this.transmit = function() {
+
+    },
 
     this.graphCompleted = function() {
         return this.graphComplete;

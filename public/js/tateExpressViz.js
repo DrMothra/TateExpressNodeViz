@@ -46,13 +46,8 @@ function updateLinkInfo(linkID, choice) {
     })
 }
 
-var processing = false;
 function generateGraph() {
     //Submit data file
-    if(processing) return;
-    processing = true;
-
-    $('#graphStatus').html(" Generating graph...");
     $('#uploadForm').ajaxSubmit({
 
         error: function() {
@@ -60,8 +55,8 @@ function generateGraph() {
         },
 
         success: function(response) {
-            console.log("All OK - ", response);
-            $('#graphStatus').html("  Graph generated");
+            console.log("Received ", response);
+            $('#graphStatus').html(" " + response.msg);
             processing = false;
         }
     });
@@ -70,6 +65,12 @@ function generateGraph() {
 }
 
 $(document).ready(function() {
+
+    //Socket io
+    var socket = io.connect("http://localhost:3000");
+    socket.on("NewNodeCreated", function(data) {
+        console.log("Received node create on client");
+    });
 
     //GUI callbacks
     $("#create").on("click", function() {
