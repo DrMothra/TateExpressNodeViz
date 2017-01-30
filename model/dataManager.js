@@ -95,6 +95,7 @@ exports.dataManager = function(graphID, vizData, res) {
         }
         //DEBUG
         console.log("Need to create ", this.nodesToCreate, " nodes");
+        exports.emitter.emit("NodesToCreate", this.nodesToCreate);
     };
 
     this.sortLinks = function() {
@@ -157,7 +158,7 @@ exports.dataManager = function(graphID, vizData, res) {
             var signalNode = this.nodeQueue.pop();
             this.graphCommons.update_graph(this.graph_id, signalNode, function() {
                 console.log("Node ", ++_this.nodesCreated, signalNode.signals[0].name, " created");
-                exports.emitter.emit("NodeCreated");
+                exports.emitter.emit("NodeCreated", _this.nodesCreated);
                 _this.canCreateNode = true;
                 if(--_this.nodesToCreate === 0) {
                     clearInterval(_this.nodeRequestTimer);

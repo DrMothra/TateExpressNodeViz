@@ -7,6 +7,7 @@
       <script src="http://malsup.github.com/jquery.form.js"></script>
       <script type="text/javascript" src="js/bootstrap.min.js"></script>
       <script src="/socket.io/socket.io.js"></script>
+      <script type="text/javascript" src="js/socketManager.js?v=0.1"></script>
       <script type="text/javascript" src="js/tateExpressViz.js"></script>
 
       <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -32,19 +33,35 @@
         <button type="button" class="btn btn-primary" id="generate">Generate graph</button><span id="graphStatus"></span>
     </div>
 
-    <div id="modifyGraph" class="title">
-        <h2>Modify Graph</h2>
-        <form class="form-inline" action="http://127.0.0.1:3000/searchGraph" method = "POST">
-            <div class="form-group">
-                <label for="graphIdentity">Graph ID: </label>
-                <input type="text" class="form-control" name="graph_id">
+    <div id="graphProperties" class="title">
+        <h2>Graph Properties</h2>
+        <div id="properties" class="container-fluid">
+            <div class="row">
+                <div class="col-md-3 col-md-offset-1">
+                    <p>Nodes to create : <span id="nodesToCreate"></span></p>
+                </div>
+                <div class="col-md-3">
+                    <p>Created :  </p>
+                </div>
+                <div class="col-md-5">
+                    &nbsp
+                </div>
             </div>
-            <div class="form-group">
-                <label for="nodeValue">Node name: </label>
-                <input type="text" class="form-control" name="nodeValue">
+            <div class="row">
+                <div class="col-md-3 col-md-offset-1">
+                    <p>Edges to create : <span id="edgesToCreate"></span></p>
+                </div>
+                <div class="col-md-3">
+                    <p>Created : <span class="label label-primary">Edges <span id="edgesCreated" class="badge"></span></span> </p>
+                </div>
+                <div class="col-md-5">
+                    &nbsp
+                </div>
             </div>
-            <button type ="submit" class="btn btn-primary">Search</button>
-        </form>
+        </div>
+        <div id="completed" class="noDisplay">
+            <p class="label label-success">Graph completed!</p>
+        </div>
     </div>
   </body>
 </html>

@@ -171,9 +171,6 @@ h1 {
 .title {
     margin: 0 1%;
 }
-.row div {
-    margin-bottom: 0.5%;
-}
-.row button {
-    margin-right: 1%;
+#graphProperties p {
+    font-size: 1.0vw;
 }

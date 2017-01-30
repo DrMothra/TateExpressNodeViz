@@ -2,90 +2,101 @@
  * Created by DrTone on 15/12/2016.
  */
 
-function createNewGraph() {
-    //Generate new graph
-    var id = {
-        id: 6,
-        status: "OK"
-    };
+var graphManager = (function() {
+    var currentGraphID = undefined;
+    var processing = false;
 
-    $.ajax({
-        type: 'POST',
-        data: id,
-        url: '/createGraph',
-        dataType: 'JSON'
-    }).done(function(response) {
-        //DEBUG
-        console.log("Created new graph ID");
+    function sendData(data, callback) {
+        $.ajax({
+            type: data.method,
+            data: data.data,
+            url: data.url,
+            dataType: data.dataType
+        }).done(function(response) {
+            //DEBUG
+            console.log("Data sent");
+            if(callback !== undefined) {
+                callback(response);
+            }
+        })
+    }
+
+    function onGraphCreated(response) {
         $('#graphID').html(response.msg);
-    })
-}
+    }
 
-function updateLinkInfo(linkID, choice) {
-    //Strip out id
-    var id = linkID.charAt(0);
-    var linkData = {
-        link: id,
-        choice: choice
-    };
+    return {
+        init: function() {
 
-    $.ajax({
-        type: 'POST',
-        data: linkData,
-        url: '/processLinks',
-        dataType: 'JSON'
-    }).done(function(response) {
-        if(response.msg === 'OK') {
-            console.log("Weight updated");
-            var elem = $('#'+id+'updated');
-            elem.show();
-            setTimeout(function() {
-                elem.hide();
-            }, 3000);
-        }
-    })
-}
-
-function generateGraph() {
-    //Submit data file
-    $('#uploadForm').ajaxSubmit({
-
-        error: function() {
-            console.log("error");
         },
 
-        success: function(response) {
-            console.log("Received ", response);
-            $('#graphStatus').html(" " + response.msg);
-            processing = false;
-        }
-    });
+        createNewGraph: function() {
+            var id = {
+                id: 6,
+                status: 'OK'
+            };
+            var graphData = {method: "POST",
+                        data: id,
+                        url: '/createGraph',
+                        dataType: 'JSON'};
 
-    return false;
-}
+            sendData(graphData, onGraphCreated);
+        },
+
+        generateGraph: function() {
+            //Submit data file
+            $('#uploadForm').ajaxSubmit({
+
+                error: function() {
+                    console.log("error");
+                },
+
+                success: function(response) {
+                    console.log("Received ", response);
+                    $('#graphStatus').html(" " + response.msg);
+                }
+            });
+        },
+
+        updateLinkInfo: function(linkID, choice) {
+            //Strip out id
+            var id = linkID.charAt(0);
+            var linkData = {
+                link: id,
+                choice: choice
+            };
+            var graphData = {
+                method: "POST",
+                data: linkData,
+                url: '/processLinks',
+                dataType: 'JSON'
+            };
+            sendData(graphData);
+        }
+    }
+})();
 
 $(document).ready(function() {
 
     //Socket io
-    var socket = io.connect("http://localhost:3000");
-    socket.on("NewNodeCreated", function(data) {
-        console.log("Received node create on client");
-    });
+    socketManager.connect("http://localhost", 3000);
+    socketManager.listen("NodesToCreate", "nodesToCreate");
+    socketManager.listen("NewNodeCreated", "nodesCreated");
 
     //GUI callbacks
     $("#create").on("click", function() {
-        createNewGraph();
+        graphManager.createNewGraph();
     });
 
     $("[id*='yesLink']").on("click", function() {
-        updateLinkInfo(this.id, 1);
+        graphManager.updateLinkInfo(this.id, 1);
     });
 
     $("[id*='noLink']").on("click", function() {
-        updateLinkInfo(this.id, 0);
+        graphManager.updateLinkInfo(this.id, 0);
     });
 
     $('#generate').on("click", function() {
-        generateGraph();
+        graphManager.generateGraph();
     });
 });

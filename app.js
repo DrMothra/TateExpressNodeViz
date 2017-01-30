@@ -35,9 +35,14 @@ io.sockets.on('connection', function(s) {
   socket = s;
 });
 
-graphs.manager.emitter.on("NodeCreated", function() {
-  console.log("Received nodes created");
-  socket.emit("NewNodeCreated");
+graphs.manager.emitter.on("NodeCreated", function(data) {
+  console.log("Received nodes created ", data);
+  socket.emit("NewNodeCreated", {msg: data});
+});
+
+graphs.manager.emitter.on("NodesToCreate", function(data) {
+  console.log("Received number nodes", data);
+  socket.emit("NodesToCreate", {msg: data});
 });
 
 // view engine setup
