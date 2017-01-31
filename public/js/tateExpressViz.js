@@ -31,12 +31,19 @@ var graphManager = (function() {
         },
 
         createNewGraph: function() {
-            var id = {
-                id: 6,
-                status: 'OK'
+            //Ensure we have graph name
+            var name = $('#graphName').val();
+            if(!name) {
+                alert("Enter a graph name");
+                return;
+            }
+            var description = $('#graphdescription').val();
+            var graphInfo = {
+                name: name,
+                description: description
             };
             var graphData = {method: "POST",
-                        data: id,
+                        data: graphInfo,
                         url: '/createGraph',
                         dataType: 'JSON'};
 
@@ -80,8 +87,18 @@ $(document).ready(function() {
 
     //Socket io
     socketManager.connect("http://localhost", 3000);
-    socketManager.listen("NodesToCreate", "nodesToCreate");
-    socketManager.listen("NewNodeCreated", "nodesCreated");
+    var messages = [
+        {msg: "NodesToCreate", element: "nodesToCreate"},
+        {msg: "NewNodeCreated", element: "nodesCreated"},
+        {msg: "EdgesToCreate", element: "edgesToCreate"},
+        {msg: "NewEdgeCreated", element: "edgesCreated"},
+        {msg: "GraphComplete", element: "graphStatus"}
+    ];
+    var i, numMessages = messages.length, msg;
+    for(i=0; i<numMessages; ++i) {
+        msg = messages[i];
+        socketManager.listen(msg.msg, msg.element);
+    }
 
     //GUI callbacks
     $("#create").on("click", function() {

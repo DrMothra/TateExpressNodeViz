@@ -33,8 +33,8 @@ var processed = false;
 //Routes for all graph-related pages
 exports.generateNewGraph = function(req, res, next) {
     var graphData = {
-        "name": "My test graph",
-        "description": "Tester",
+        "name": req.body.name,
+        "description": req.body.description,
         "status": 0
     };
     //console.log("graphcommons = ", graph);

@@ -188,6 +188,7 @@ exports.dataManager = function(graphID, vizData, res) {
         this.edgesToCreate = edges;
         //DEBUG
         console.log("Need to create ", this.edgesToCreate, " edges");
+        exports.emitter.emit("EdgesToCreate", this.edgesToCreate);
     };
 
     this.queueGraphEdgeRequest = function(fromType, fromName, toType, toName, edgeName) {
@@ -215,11 +216,13 @@ exports.dataManager = function(graphID, vizData, res) {
             this.graphCommons.update_graph(this.graph_id, edgeNode, function() {
                 console.log("Edge ", _this.edgesCreated, edgeNode.signals[0].name, " created");
                 ++_this.edgesCreated;
+                exports.emitter.emit("EdgeCreated", _this.edgesCreated);
                 _this.canCreateEdge = true;
                 if(_this.edgesCreated === _this.edgesToCreate) {
                     console.log("All edges created");
                     clearInterval(_this.edgeRequestTimer);
                     _this.graphComplete = true;
+                    exports.emitter.emit("GraphCompleted", "GraphCompleted");
                     _this.onCompleted();
                 }
             })

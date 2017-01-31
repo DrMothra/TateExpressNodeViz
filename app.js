@@ -45,6 +45,21 @@ graphs.manager.emitter.on("NodesToCreate", function(data) {
   socket.emit("NodesToCreate", {msg: data});
 });
 
+graphs.manager.emitter.on("EdgeCreated", function(data) {
+    console.log("Received edge created ", data);
+    socket.emit("NewEdgeCreated", {msg: data});
+});
+
+graphs.manager.emitter.on("EdgesToCreate", function(data) {
+    console.log("Received number edges", data);
+    socket.emit("EdgesToCreate", {msg: data});
+});
+
+graphs.manager.emitter.on("GraphCompleted", function(data) {
+    console.log("Received GraphCompleted", data);
+    socket.emit("GraphCompleted", {msg: data});
+});
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
