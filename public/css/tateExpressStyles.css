@@ -171,6 +171,12 @@ h1 {
 .title {
     margin: 0 1%;
 }
-#graphProperties p span{
+#graphProperties p {
+    font-size: 1.1vw;
+}
+#graphProperties span {
     font-size: 1.0vw;
+}
+#modifyGraph {
+    margin: 1%;
 }
