@@ -92,7 +92,7 @@ $(document).ready(function() {
         {msg: "NewNodeCreated", element: "nodesCreated"},
         {msg: "EdgesToCreate", element: "edgesToCreate"},
         {msg: "NewEdgeCreated", element: "edgesCreated"},
-        {msg: "GraphComplete", element: "graphStatus"}
+        {msg: "GraphCompleted", element: "graphStatus"}
     ];
     var i, numMessages = messages.length, msg;
     for(i=0; i<numMessages; ++i) {

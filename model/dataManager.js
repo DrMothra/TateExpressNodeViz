@@ -222,7 +222,7 @@ exports.dataManager = function(graphID, vizData, res) {
                     console.log("All edges created");
                     clearInterval(_this.edgeRequestTimer);
                     _this.graphComplete = true;
-                    exports.emitter.emit("GraphCompleted", "GraphCompleted");
+                    exports.emitter.emit("GraphCompleted", "Graph Completed");
                     _this.onCompleted();
                 }
             })

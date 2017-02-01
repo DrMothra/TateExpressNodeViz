@@ -177,6 +177,11 @@ h1 {
 #graphProperties span {
     font-size: 1.0vw;
 }
-#modifyGraph {
+#updateNode,
+#addNode,
+#addLink {
     margin: 1%;
+}
+#options {
+    margin-top: 2%;
 }

@@ -92,7 +92,10 @@ var currentEdgeData;
 
 exports.searchGraph = function(req, res, next) {
     //Search graph for required node
-    currentGraphID = req.body.graph_id;
+    currentGraphID = req.body.graphID;
+    //DEBUG
+    console.log("Graph id = ", currentGraphID);
+
     graphCommons.graphs(currentGraphID, function(graph) {
         currentGraph = graph;
         //Search for node
@@ -120,7 +123,7 @@ exports.searchGraph = function(req, res, next) {
                 toNodes.push(linkData);
             }
 
-            res.render("links", { node: req.body.nodeValue, linkData: toNodes} );
+            res.render("update", { graphID: null, node_Name: null, node: req.body.nodeValue, linkData: toNodes} );
         });
     });
 };

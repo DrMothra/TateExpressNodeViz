@@ -6,7 +6,9 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var fileUpload = require('express-fileupload');
 var index = require('./routes/index');
-var modify = require('./routes/modify');
+var update = require('./routes/update');
+var addNode = require('./routes/addNode');
+var addLink = require('./routes/addLink');
 var graphs = require('./routes/graphs');
 var http = require('http');
 
@@ -74,7 +76,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
 
 app.use('/', index);
-app.use('/modify', modify);
+app.use('/updateNode', update);
+app.use('/addNode', addNode);
+app.use('/addLink', addLink);
 
 app.post("/createGraph", graphs.generateNewGraph);
 app.post("/generateGraph", graphs.generateGraph);
