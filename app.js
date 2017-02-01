@@ -14,7 +14,7 @@ var http = require('http');
 
 var app = express();
 
-var port = normalizePort(process.env.NODE_SERVER_PORT || '3000');
+var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
 var server = http.Server(app);
@@ -25,7 +25,7 @@ var io = require('socket.io')(server);
  * Listen on provided port, on all network interfaces.
  */
 
-var address = process.env.NODE_SERVER_ADDRESS || '127.0.0.1';
+var address = '0.0.0.0';
 server.listen(port, address);
 //server.listen(port, '127.0.0.1');
 server.on('error', onError);
