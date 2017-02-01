@@ -185,3 +185,7 @@ h1 {
 #options {
     margin-top: 2%;
 }
+#addStatus {
+    font-size: 0.8vw;
+    margin: 1%;
+}

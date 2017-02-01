@@ -171,4 +171,22 @@ exports.processLinks = function(req, res, next) {
     });
 };
 
+exports.addNewNode = function(req, res, next) {
+    currentGraphID = req.body.graphID;
+
+    var signals = { "signals" : [
+        {
+            "action": "node_create",
+            "type": req.body.addNodeType,
+            "name": req.body.addNodeName
+        }
+    ]};
+
+    graphCommons.graphs(currentGraphID, function(graph) {
+        graphCommons.update_graph(currentGraphID, signals, function() {
+            console.log("Added new node");
+            res.send( {msg: 'OK'});
+        })
+    });
+};
 
