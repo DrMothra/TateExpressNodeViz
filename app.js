@@ -26,7 +26,7 @@ var io = require('socket.io')(server);
  */
 
 var address = process.env.NODE_SERVER_ADDRESS || '127.0.0.1';
-server.listen(port);
+server.listen(port, address);
 //server.listen(port, '127.0.0.1');
 server.on('error', onError);
 server.on('listening', onListening);
