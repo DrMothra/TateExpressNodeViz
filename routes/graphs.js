@@ -72,7 +72,7 @@ exports.generateGraph = function(req, res, next) {
     }
 
     //DEBUG
-    //console.log("File data = ", fileData);
+    console.log("File name = ", fileName);
 
     //Have data - create graph
     dataManager.init(graphCommons);
@@ -160,13 +160,15 @@ exports.processLinks = function(req, res, next) {
         console.log("New weight = ", weight);
         if(weight <=0) {
             res.send( {msg: 'OK'} );
+            return;
         }
         if(weight > 10) {
             res.send( {msg: 'OK'} );
+            return;
         }
         graphCommons.update_graph(currentGraphID, signals, function() {
-            console.log("Updated choice");
-            res.send( {msg: 'OK'} );
+            console.log("Updated choice ", index);
+            res.send( {msg: index} );
         })
     });
 };
@@ -190,3 +192,24 @@ exports.addNewNode = function(req, res, next) {
     });
 };
 
+exports.addNewLink = function(req, res, next) {
+    currentGraphID = req.body.graphID;
+
+    var signals = { "signals" : [
+        {
+            "action": "edge_create",
+            "from_name": req.body.fromName,
+            "from_type": req.body.fromType,
+            "name": req.body.linkType,
+            "to_name": req.body.toName,
+            "to_type": req.body.toType
+        }
+    ]};
+
+    graphCommons.graphs(currentGraphID, function(graph) {
+        graphCommons.update_graph(currentGraphID, signals, function() {
+            console.log("Added new link");
+            res.send( {msg: 'OK'} );
+        })
+    })
+};

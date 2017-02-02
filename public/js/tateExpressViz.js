@@ -105,14 +105,6 @@ $(document).ready(function() {
         graphManager.createNewGraph();
     });
 
-    $("[id*='yesLink']").on("click", function() {
-        graphManager.updateLinkInfo(this.id, 1);
-    });
-
-    $("[id*='noLink']").on("click", function() {
-        graphManager.updateLinkInfo(this.id, 0);
-    });
-
     $('#generate').on("click", function() {
         graphManager.generateGraph();
     });

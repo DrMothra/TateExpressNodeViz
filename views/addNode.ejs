@@ -18,7 +18,7 @@
 
     <div id="addNode" class="title">
         <h3>Add Node</h3>
-        <form id="addNodeForm" class="form-horizontal" action="http://127.0.0.1:3000/addNewNode" method="post">
+        <form id="addNodeForm" class="form-horizontal" action="/addNewNode" method="post">
             <div class="form-group">
                 <label for="graphID" class="col-md-1 control-label">Graph ID</label>
                 <div class="col-md-5">
@@ -47,6 +47,12 @@
         <button id="addNewNode" type="button" class="btn btn-primary">Add</button>
     </div>
     <span id="addStatus" class="label label-success"></span>
+
+    <form method="get" action="/">
+        <div class="form-group title">
+            <button id="back" type="submit" class="btn btn-primary">Back</button>
+        </div>
+    </form>
   </body>
 </html>
 

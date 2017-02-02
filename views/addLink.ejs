@@ -4,7 +4,9 @@
     <title>Tate Node Visualiser</title>
 
     <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+    <script src="http://malsup.github.com/jquery.form.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/addLink.js"></script>
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
@@ -16,37 +18,48 @@
 
     <div id="addLink" class="title">
         <h3>Add Link</h3>
-        <form class="form-inline">
+        <form id="addLinkForm" class="form-horizontal" action="/addNewLink" method="post">
             <div class="form-group">
-                <label for="fromNodeName">From Node Name</label>
-                <input type="text" class="form-control" id="fromNodeName">
+                <label for="graphID" class="col-md-1">Graph ID</label>
+                <div class="col-md-5">
+                    <input type="text" class="form-control" name="graphID" id="graphID">
+                </div>
             </div>
             <div class="form-group">
-                <label for="fromNodeType">From Node Type</label>
-                <input type="text" class="form-control" id="fromNodeType">
-            </div>
-        </form>
-        <form class="form-inline">
-            <div class="form-group">
-                <label for="toNodeName">To Node Name</label>
-                <input type="text" class="form-control" id="toNodeName">
-            </div>
-            <div class="form-group">
-                <label for="toNodeType">To Node Type</label>
-                <input type="text" class="form-control" id="toNodeType">
-            </div>
-        </form>
-        <form class="form-inline">
-            <div class="form-group">
-                <label for="linkName">Link Name</label>
-                <input type="text" class="form-control" id="linkName">
+                <label for="fromNodeName" class="col-md-1">From Node Name</label>
+                <div class="col-md-2">
+                    <input type="text" class="form-control" name="fromName" id="fromNodeName">
+                </div>
+                <label for="fromNodeType" class="col-md-1">From Node Type</label>
+                <div class="col-md-2">
+                    <input type="text" class="form-control" name="fromType" id="fromNodeType">
+                </div>
             </div>
             <div class="form-group">
-                <label for="linkType">Link Type</label>
-                <input type="text" class="form-control" id="linkType">
+                <label for="toNodeName" class="col-md-1">To Node Name</label>
+                <div class="col-md-2">
+                    <input type="text" class="form-control" name="toName" id="toNodeName">
+                </div>
+                <label for="toNodeType" class="col-md-1">To Node Type</label>
+                <div class="col-md-2">
+                    <input type="text" class="form-control" name="toType" id="toNodeType">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="linkType" class="col-md-1">Link Type</label>
+                <div class="col-md-2">
+                    <input type="text" class="form-control" name="linkType" id="linkType">
+                </div>
             </div>
         </form>
         <button id="addNewLink" type="button" class="btn btn-primary">Add Link</button>
     </div>
+    <span id="addStatus" class="label label-success"></span>
+
+    <form method="get" action="/">
+        <div class="form-group title">
+            <button id="back" type="submit" class="btn btn-primary">Back</button>
+        </div>
+    </form>
 </body>
 </html>

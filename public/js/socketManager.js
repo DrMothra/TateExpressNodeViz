@@ -13,7 +13,8 @@ var socketManager = (function() {
         },
 
         connect: function(addr, port) {
-            socket = io.connect(addr + ":" + port);
+            //socket = io.connect(addr + ":" + port);
+            socket = io.connect();
         },
 
         listen: function(event, elem) {

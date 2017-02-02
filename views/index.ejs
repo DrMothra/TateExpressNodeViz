@@ -7,8 +7,8 @@
       <script src="http://malsup.github.com/jquery.form.js"></script>
       <script type="text/javascript" src="js/bootstrap.min.js"></script>
       <script src="/socket.io/socket.io.js"></script>
-      <script type="text/javascript" src="js/socketManager.js?v=0.1"></script>
-      <script type="text/javascript" src="js/tateExpressViz.js"></script>
+      <script type="text/javascript" src="js/socketManager.js?v=0.2"></script>
+      <script type="text/javascript" src="js/tateExpressViz.js?v=0.2"></script>
 
       <link rel="stylesheet" href="css/bootstrap.min.css">
       <link rel="stylesheet" href="css/bootstrap-theme.min.css">
@@ -81,21 +81,21 @@
     <div id="options" class="container-fluid">
         <div class="row">
             <div class="col-md-1">
-                <form method="get" action="http://127.0.0.1:3000/updateNode">
+                <form method="get" action="/updateNode">
                     <div id="updateNode" class="form-group">
                         <button id="update" type="submit" class="btn btn-primary">Update Node</button>
                     </div>
                 </form>
             </div>
             <div class="col-md-1">
-                <form method="get" action="http://127.0.0.1:3000/addNode">
+                <form method="get" action="/addNode">
                     <div id="addNode" class="form-group">
                         <button id="nodeAdd" type="submit" class="btn btn-primary">Add Node</button>
                     </div>
                 </form>
             </div>
             <div class="col-md-1">
-                <form method="get" action="http://127.0.0.1:3000/addLink">
+                <form method="get" action="/addLink">
                     <div id="addLink" class="form-group">
                         <button id="linkAdd" type="submit" class="btn btn-primary">Add Link</button>
                     </div>

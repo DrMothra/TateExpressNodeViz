@@ -177,6 +177,9 @@ h1 {
 #graphProperties span {
     font-size: 1.0vw;
 }
+#links button {
+    margin: 1%;
+}
 #updateNode,
 #addNode,
 #addLink {
