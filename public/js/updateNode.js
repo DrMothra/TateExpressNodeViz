@@ -48,7 +48,25 @@ function updateLinkInfo(linkID, choice) {
     sendData(graphData, onLinkUpdated);
 }
 
+function validateForm() {
+    if($('#graphID').val() === "") {
+        alert("Enter a graph ID");
+        return false;
+    }
+
+    if($('#node_Name').val() === "") {
+        alert("Enter a node name");
+        return false;
+    }
+
+    return true;
+}
+
 $(document).ready(function() {
+
+    $('#searchForm').on("submit", function() {
+        return validateForm();
+    });
 
     $("[id*='yesLink']").on("click", function() {
         updateLinkInfo(this.id, 1);
