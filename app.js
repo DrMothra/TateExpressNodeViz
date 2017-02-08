@@ -88,6 +88,7 @@ app.post("/searchGraph", graphs.searchGraph);
 app.post("/processLinks", graphs.processLinks);
 app.post("/addNewNode", graphs.addNewNode);
 app.post("/addNewLink", graphs.addNewLink);
+app.post("/processSearch", graphs.searchCommons);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

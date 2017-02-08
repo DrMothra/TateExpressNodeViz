@@ -79,6 +79,20 @@ var graphManager = (function() {
                 dataType: 'JSON'
             };
             sendData(graphData);
+        },
+
+        searchGraph: function() {
+            var searchData = {
+
+            };
+
+            var graphData = {
+                method: "POST",
+                data: searchData,
+                url: '/processSearch',
+                dataType: 'JSON'
+            };
+            sendData(graphData);
         }
     }
 })();
@@ -107,5 +121,9 @@ $(document).ready(function() {
 
     $('#generate').on("click", function() {
         graphManager.generateGraph();
+    });
+
+    $("#search").on("click", function() {
+        graphManager.searchGraph();
     });
 });

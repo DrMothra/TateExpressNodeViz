@@ -213,3 +213,15 @@ exports.addNewLink = function(req, res, next) {
         })
     })
 };
+
+exports.searchCommons = function(req, res, next) {
+    var search_query = {
+        'query' : 'tate cartography'
+    };
+    var searchresults = function(results) {
+        console.log(results);
+        res.send( {msg: 'OK'} );
+    };
+
+    graphCommons.search(search_query, searchresults);
+};
