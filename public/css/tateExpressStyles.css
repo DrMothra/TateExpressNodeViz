@@ -195,3 +195,13 @@ h1 {
 #addNewLink {
     margin-top: 2%;
 }
+.columnTitle p {
+    font-size: 1.1vw;
+    font-weight: bold;
+}
+.graphInfo {
+    font-size: 0.9vw;
+}
+.graphInfo button {
+    margin-bottom: 2%;
+}

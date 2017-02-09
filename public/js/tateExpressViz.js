@@ -25,9 +25,40 @@ var graphManager = (function() {
         $('#graphID').html(response.msg);
     }
 
+    function onGraphsFound(response) {
+        //DEBUG
+        console.log("Graphs = ", response);
+        var i, graphInfo, numGraphs = response.msg.length;
+        var graphElem = $('#graphList');
+        for(i=0; i<numGraphs; ++i) {
+            graphInfo = response.msg[i];
+            graphElem.append("<div class='row graphInfo'>" +
+                "<div class='col-md-2'>" + graphInfo.name + "</div>" +
+                "<div class='col-md-3'>" + graphInfo.graphID + "</div>" +
+                "<div class='col-md-2'> <button type='button' class='btn btn-primary'>Modify</button></div>" +
+                "</div>");
+            //DEBUG
+            console.log("Elem = ", graphElem);
+        }
+
+    }
+
     return {
         init: function() {
 
+        },
+
+        getGraphs: function() {
+            //Get all graphs in account
+            var searchInfo = {
+                query: "TateCartographyProject"
+            };
+            var graphData = {method: "POST",
+                data: searchInfo,
+                url: '/processSearch',
+                dataType: 'JSON'};
+
+            sendData(graphData, onGraphsFound);
         },
 
         createNewGraph: function() {
@@ -79,20 +110,6 @@ var graphManager = (function() {
                 dataType: 'JSON'
             };
             sendData(graphData);
-        },
-
-        searchGraph: function() {
-            var searchData = {
-
-            };
-
-            var graphData = {
-                method: "POST",
-                data: searchData,
-                url: '/processSearch',
-                dataType: 'JSON'
-            };
-            sendData(graphData);
         }
     }
 })();
@@ -115,6 +132,8 @@ $(document).ready(function() {
     }
 
     //GUI callbacks
+    graphManager.getGraphs();
+
     $("#create").on("click", function() {
         graphManager.createNewGraph();
     });
@@ -123,7 +142,4 @@ $(document).ready(function() {
         graphManager.generateGraph();
     });
 
-    $("#search").on("click", function() {
-        graphManager.searchGraph();
-    });
 });

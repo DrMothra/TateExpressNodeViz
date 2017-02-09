@@ -214,13 +214,28 @@ exports.addNewLink = function(req, res, next) {
     })
 };
 
+function validateSearchResults(results) {
+    var i, graph, numResults = results.length;
+    var tateGraphs = [], tateGraph;
+    for(i=0; i<numResults; ++i) {
+        graph = results[i];
+        if(graph.obj === 'Graph' && graph.subtitle === 'TateCartographyProject' && graph.owner.username === 'tate') {
+            tateGraph = {};
+            tateGraph.graphID = graph.id;
+            tateGraph.name = graph.name;
+            tateGraphs.push(tateGraph);
+        }
+    }
+
+    return tateGraphs;
+}
 exports.searchCommons = function(req, res, next) {
     var search_query = {
-        'query' : 'tate cartography'
+        'query' : req.body.query
     };
     var searchresults = function(results) {
-        console.log(results);
-        res.send( {msg: 'OK'} );
+        var graphs = validateSearchResults(results);
+        res.send( {msg: graphs} );
     };
 
     graphCommons.search(search_query, searchresults);
