@@ -205,3 +205,25 @@ h1 {
 .graphInfo button {
     margin-bottom: 2%;
 }
+#home {
+    margin-top: 1%;
+}
+#modifyGraph p {
+    font-size: 0.9vw;
+}
+#instructions {
+    top: 2%;
+    left: 45%;
+}
+#instructions img {
+    width: 40%;
+}
+#instructionText {
+    margin-left: 1%;
+}
+#instructionText p {
+    text-align: justify;
+}
+#instructionText img {
+    width: 85%;
+}

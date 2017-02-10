@@ -2,7 +2,6 @@
  * Created by DrTone on 02/02/2017.
  */
 
-
 function sendData(data, callback) {
     $.ajax({
         type: data.method,
@@ -75,4 +74,9 @@ $(document).ready(function() {
     $("[id*='noLink']").on("click", function() {
         updateLinkInfo(this.id, 0);
     });
+
+    //Get url parameters
+    var params = new URLSearchParams(window.location.search);
+    var graphID = params.get('updateNodeGraphID');
+    $('#graphID').val(graphID);
 });

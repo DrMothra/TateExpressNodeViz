@@ -7,7 +7,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    res.render('update', { graphID: null, node_Name: null, node: null, linkData: []});
+    res.render('update', { graphID: req.body.updateNodeGraphID, node_Name: null, node: null, linkData: []});
 });
 
 module.exports = router;

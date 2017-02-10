@@ -52,5 +52,10 @@ $(document).ready(function() {
         if(!validateForm()) return;
         addNewLink();
     });
+
+    //Get url parameters
+    var params = new URLSearchParams(window.location.search);
+    var graphID = params.get('addLinkGraphID');
+    $('#graphID').val(graphID);
 });
 

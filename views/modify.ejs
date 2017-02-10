@@ -26,7 +26,7 @@
                 <div class="col-md-1">
                     <form method="get" action="/updateNode">
                         <div id="updateNode" class="form-group">
-                            <input type="text" name="" class="getGraphID noDisplay">
+                            <input type="text" name="updateNodeGraphID" class="getGraphID noDisplay">
                             <button id="update" type="submit" class="btn btn-primary">Update Node</button>
                         </div>
                     </form>
@@ -34,7 +34,7 @@
                 <div class="col-md-1">
                     <form method="get" action="/addNode">
                         <div id="addNode" class="form-group">
-                            <input type="text" name="" class="getGraphID noDisplay">
+                            <input type="text" name="addNodeGraphID" class="getGraphID noDisplay">
                             <button id="nodeAdd" type="submit" class="btn btn-primary">Add Node</button>
                         </div>
                     </form>
@@ -42,12 +42,19 @@
                 <div class="col-md-1">
                     <form method="get" action="/addLink">
                         <div id="addLink" class="form-group">
-                            <input type="text" name="" class="getGraphID noDisplay">
+                            <input type="text" name="addLinkGraphID" class="getGraphID noDisplay">
                             <button id="linkAdd" type="submit" class="btn btn-primary">Add Link</button>
                         </div>
                     </form>
                 </div>
             </div>
+
+            <form method="get" action="/">
+                <div class="form-group">
+                    <button id="home" type="submit" class="btn btn-primary">Home</button>
+                </div>
+            </form>
+
         </div>
 
     </body>

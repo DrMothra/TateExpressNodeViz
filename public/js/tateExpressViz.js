@@ -47,7 +47,7 @@ var graphManager = (function() {
             graphElem.append("<div class='row graphInfo'>" +
                 "<div class='col-md-2'>" + graphInfo.name + "</div>" +
                 "<div class='col-md-3'>" + graphInfo.graphID + "</div>" +
-                "<div class='col-md-2'> <button type='button' class='btn btn-primary'>Modify</button></div>" +
+                "<div class='col-md-2'> <button type='button' class='btn btn-primary' data-toggle='tooltip' data-placement='top' title='Modify this graph'>Modify</button></div>" +
                 "</div>");
         }
         //Set ids for buttons
