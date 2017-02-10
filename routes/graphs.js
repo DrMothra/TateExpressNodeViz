@@ -105,6 +105,10 @@ exports.searchGraph = function(req, res, next) {
         };
         graphCommons.nodes_search(search_query, function(results) {
             //console.log(results);
+            if(results.nodes.length === 0) {
+                res.render("update", { graphID: null, node_Name: null, node: "No nodes found", linkData: []} );
+                return;
+            }
             currentNodeID = results.nodes[0].id;
             currentNodeData = currentGraph.get_node(currentNodeID);
             currentEdgeData = currentGraph.edges_for(currentNodeData, "from");
