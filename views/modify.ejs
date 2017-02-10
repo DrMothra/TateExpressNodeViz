@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tate Node</title>
+
+        <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+        <script type="text/javascript" src="js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/modify.js"></script>
+
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+        <link rel='stylesheet' href="css/tateExpressStyles.css">
+
+    </head>
+    <body>
+        <h1>Tate Cartography Visualisation</h1>
+
+        <div id="modifyGraph" class="title">
+            <h2>Modify Graph</h2>
+            <p>Graph ID : <span id="graphID"></span></p>
+            <p>Name : <span id="graphName"></span></p>
+        </div>
+
+        <div id="options" class="container-fluid">
+            <div class="row">
+                <div class="col-md-1">
+                    <form method="get" action="/updateNode">
+                        <div id="updateNode" class="form-group">
+                            <input type="text" name="" class="getGraphID noDisplay">
+                            <button id="update" type="submit" class="btn btn-primary">Update Node</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-1">
+                    <form method="get" action="/addNode">
+                        <div id="addNode" class="form-group">
+                            <input type="text" name="" class="getGraphID noDisplay">
+                            <button id="nodeAdd" type="submit" class="btn btn-primary">Add Node</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-1">
+                    <form method="get" action="/addLink">
+                        <div id="addLink" class="form-group">
+                            <input type="text" name="" class="getGraphID noDisplay">
+                            <button id="linkAdd" type="submit" class="btn btn-primary">Add Link</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>

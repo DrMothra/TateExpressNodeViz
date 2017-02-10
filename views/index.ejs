@@ -8,7 +8,7 @@
       <script type="text/javascript" src="js/bootstrap.min.js"></script>
       <script src="/socket.io/socket.io.js"></script>
       <script type="text/javascript" src="js/socketManager.js?v=0.2"></script>
-      <script type="text/javascript" src="js/tateExpressViz.js?v=0.2"></script>
+      <script type="text/javascript" src="js/tateExpressViz.js?v=0.3"></script>
 
       <link rel="stylesheet" href="css/bootstrap.min.css">
       <link rel="stylesheet" href="css/bootstrap-theme.min.css">
@@ -89,32 +89,6 @@
         </div>
         <div id="status">
             <span id="graphStatus" class="label label-success"></span>
-        </div>
-    </div>
-
-    <div id="options" class="container-fluid">
-        <div class="row">
-            <div class="col-md-1">
-                <form method="get" action="/updateNode">
-                    <div id="updateNode" class="form-group">
-                        <button id="update" type="submit" class="btn btn-primary">Update Node</button>
-                    </div>
-                </form>
-            </div>
-            <div class="col-md-1">
-                <form method="get" action="/addNode">
-                    <div id="addNode" class="form-group">
-                        <button id="nodeAdd" type="submit" class="btn btn-primary">Add Node</button>
-                    </div>
-                </form>
-            </div>
-            <div class="col-md-1">
-                <form method="get" action="/addLink">
-                    <div id="addLink" class="form-group">
-                        <button id="linkAdd" type="submit" class="btn btn-primary">Add Link</button>
-                    </div>
-                </form>
-            </div>
         </div>
     </div>
 

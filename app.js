@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 var fileUpload = require('express-fileupload');
 var index = require('./routes/index');
 var update = require('./routes/update');
+var modifyGraph = require('./routes/modifyGraph');
 var addNode = require('./routes/addNode');
 var addLink = require('./routes/addLink');
 var graphs = require('./routes/graphs');
@@ -81,6 +82,7 @@ app.use('/', index);
 app.use('/updateNode', update);
 app.use('/addNode', addNode);
 app.use('/addLink', addLink);
+app.use('/modifyGraph', modifyGraph);
 
 app.post("/createGraph", graphs.generateNewGraph);
 app.post("/generateGraph", graphs.generateGraph);
