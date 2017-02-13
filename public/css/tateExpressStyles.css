@@ -227,3 +227,7 @@ h1 {
 #instructionText img {
     width: 85%;
 }
+#login,
+#createAccount {
+    margin-top: 2%;
+}

@@ -1,104 +1,62 @@
 <!DOCTYPE html>
-<html>
-  <head>
-      <title>Tate Node Visualiser</title>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tate Login</title>
 
-      <!-- build:js js/tateExpressViz.min.js -->
-      <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
-      <script type="text/javascript" src="js/jquery.form.js"></script>
-      <script type="text/javascript" src="js/bootstrap.min.js"></script>
-      <script type="text/javascript" src="js/socket.io.js"></script>
-      <script type="text/javascript" src="js/socketManager.js?v=0.2"></script>
-      <script type="text/javascript" src="js/tateExpressViz.js?v=0.3"></script>
-      <!-- endbuild -->
+    <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <!-- <script type="text/javascript" src="js/login.js"></script> -->
 
-      <!-- build:css css/tatestyles.min.css-->
-      <link rel="stylesheet" href="css/bootstrap.min.css">
-      <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-      <link rel='stylesheet' href="css/tateExpressStyles.css">
-      <!-- endbuild -->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel='stylesheet' href="css/tateExpressStyles.css">
 
-  </head>
-  <body>
-    <h1>Tate Cartography Visualisation</h1>
+</head>
+<body>
+    <h1>Welcome to the Tate Cartography Project</h1>
 
-    <div id="currentGraphs" class="title">
-        <h2>Current Tate Graphs</h2>
-        <div id="graphList" class="container-fluid">
-            <div class="row columnTitle">
-                <div class="col-md-2">
-                    <p>Graph Name</p>
-                </div>
-                <div class="col-md-3">
-                    <p>Graph ID</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="createGraph" class="title">
-        <h2>Create Graph</h2>
+    <div id="login" class="title">
+        <h3>Sign in to your account</h3>
         <form class="form-horizontal">
             <div class="form-group">
-                <label for="graphName" class="col-md-1 control-label">Graph Name</label>
+                <label for="userName" class="col-md-1 control-label">Username</label>
                 <div class="col-md-5">
-                    <input type="text" class="form-control" id="graphName">
+                    <input type="text" class="form-control" id="userName" name="userName">
                 </div>
             </div>
             <div class="form-group">
-                <label for="graphDescription" class="col-md-1 control-label">Description</label>
+                <label for="password" class="col-md-1 control-label">Password</label>
                 <div class="col-md-5">
-                    <input type="text" class="form-control" id="graphDescription">
+                    <input type="password" class="form-control" id="password" name="password">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-1 col-md-5">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox">Remember me
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-1 col-md-5">
+                    <button type="submit" class="btn btn-primary">Sign In</button>
                 </div>
             </div>
         </form>
-        <button type="button" id="create" class="btn btn-primary">New Graph</button>
-        <p><br>Graph ID: <span id="graphID">Not generated</span></p>
     </div>
 
-    <div id="generateGraph" class="title">
-        <h2>Generate Graph</h2>
-        <form ref='uploadForm' id="uploadForm" method="post" action="/generateGraph" enctype="multipart/form-data">
-            <input type="file" name="vizFile">
+    <div id="createAccount" class="title">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <div class="col-md-offset-1 col-md-5">
+                    <button type="submit" class="btn btn-primary">Create Account</button>
+                </div>
+            </div>
         </form>
-        <br>
-        <button type="button" class="btn btn-primary" id="generate">Generate graph</button>
     </div>
 
-    <div id="graphProperties" class="title">
-        <h2>Graph Properties</h2>
-        <div id="properties" class="container-fluid">
-            <div class="row">
-                <div class="col-md-3 col-md-offset-1">
-                    <p>Nodes to create : <span id="nodesToCreate"></span></p>
-                </div>
-                <div class="col-md-3">
-                    <p>Created :  <span class="label label-primary">Nodes <span id="nodesCreated" class="badge"></span></span></p>
-                </div>
-                <div class="col-md-5">
-                    &nbsp
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3 col-md-offset-1">
-                    <p>Edges to create : <span id="edgesToCreate"></span></p>
-                </div>
-                <div class="col-md-3">
-                    <p>Created : <span class="label label-primary">Edges <span id="edgesCreated" class="badge"></span></span> </p>
-                </div>
-                <div class="col-md-5">
-                    &nbsp
-                </div>
-            </div>
-        </div>
-        <div id="status">
-            <span id="graphStatus" class="label label-success"></span>
-        </div>
-    </div>
-
-    <div id="instructions" class="infoPanel">
-        <a href="tateInstructions.html" target="_blank"><img src="images/info.png"></a>
-    </div>
-
-  </body>
+</body>
 </html>
