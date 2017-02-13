@@ -86,9 +86,11 @@ var graphManager = (function() {
                 return;
             }
             var description = $('#graphdescription').val();
+            if(description === undefined) description = "";
             var graphInfo = {
                 name: name,
-                description: description
+                subtitle: "TateCartographyProject",
+                description: "Author='Tony G' " + description
             };
             var graphData = {method: "POST",
                         data: graphInfo,

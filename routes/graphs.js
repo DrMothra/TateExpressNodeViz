@@ -35,6 +35,7 @@ exports.generateNewGraph = function(req, res, next) {
     var graphData = {
         "name": req.body.name,
         "description": req.body.description,
+        "subtitle": req.body.subtitle,
         "status": 0
     };
     //console.log("graphcommons = ", graph);

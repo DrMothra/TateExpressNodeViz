@@ -10,7 +10,7 @@ var gulpIf = require('gulp-if');
 var cssnano = require('gulp-cssnano');
 
 gulp.task('build', function() {
-    return gulp.src('public/views/index.ejs')
+    return gulp.src('./views/index.ejs')
         .pipe(useref())
         .pipe(gulpIf('*.js', uglify()))
         .pipe(gulpIf('*.css', cssnano()))
