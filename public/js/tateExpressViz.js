@@ -134,18 +134,21 @@ var graphManager = (function() {
 $(document).ready(function() {
 
     //Socket io
-    socketManager.connect("http://localhost", 3000);
-    var messages = [
-        {msg: "NodesToCreate", element: "nodesToCreate"},
-        {msg: "NewNodeCreated", element: "nodesCreated"},
-        {msg: "EdgesToCreate", element: "edgesToCreate"},
-        {msg: "NewEdgeCreated", element: "edgesCreated"},
-        {msg: "GraphCompleted", element: "graphStatus"}
-    ];
-    var i, numMessages = messages.length, msg;
-    for(i=0; i<numMessages; ++i) {
-        msg = messages[i];
-        socketManager.listen(msg.msg, msg.element);
+    if(socketManager === undefined) {
+        socketManager = new SocketManager();
+        socketManager.connect("http://localhost", 3000);
+        var messages = [
+            {msg: "NodesToCreate", element: "nodesToCreate"},
+            {msg: "NewNodeCreated", element: "nodesCreated"},
+            {msg: "EdgesToCreate", element: "edgesToCreate"},
+            {msg: "NewEdgeCreated", element: "edgesCreated"},
+            {msg: "GraphCompleted", element: "graphStatus"}
+        ];
+        var i, numMessages = messages.length, msg;
+        for(i=0; i<numMessages; ++i) {
+            msg = messages[i];
+            socketManager.listen(msg.msg, msg.element);
+        }
     }
 
     //GUI callbacks

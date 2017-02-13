@@ -4,7 +4,8 @@
 
 //Handles all the socket data
 
-var socketManager = (function() {
+var socketManager = undefined;
+var SocketManager = function() {
     var socket;
 
     return {
@@ -24,4 +25,4 @@ var socketManager = (function() {
             })
         }
     }
-})();
+};
