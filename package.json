@@ -27,6 +27,7 @@
     "gulp-uglify": "^2.0.1",
     "gulp-useref": "^3.1.2",
     "gulp-util": "^3.0.8",
+    "mariasql": "^0.2.6",
     "socket.io": "^1.7.2"
   }
 }

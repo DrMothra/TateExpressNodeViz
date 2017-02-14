@@ -14,6 +14,8 @@ var addLink = require('./routes/addLink');
 var createAccount = require('./routes/createAccount');
 var graphs = require('./routes/graphs');
 var http = require('http');
+//Database
+var Client = require('mariasql');
 
 var app = express();
 
@@ -33,6 +35,30 @@ server.listen(port, address);
 //server.listen(port, '127.0.0.1');
 server.on('error', onError);
 server.on('listening', onListening);
+
+//Database
+var c = new Client();
+c.connect( {
+    host: '127.0.0.1',
+    user: 'root',
+    password: 'RAV4oct16',
+    db: 'tate'
+});
+
+c.on('connect', function() {
+  console.log("Client connected");
+})
+    .on('error', function(err) {
+      console.log("Client error: " + err);
+    });
+
+c.query('describe users', function(err, rows) {
+    if (err)
+        throw err;
+    console.dir(rows);
+});
+
+c.end();
 
 var socket;
 
