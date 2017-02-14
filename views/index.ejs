@@ -6,7 +6,7 @@
 
     <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
-    <!-- <script type="text/javascript" src="js/login.js"></script> -->
+    <script type="text/javascript" src="js/login.js"></script>
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
@@ -18,7 +18,7 @@
 
     <div id="login" class="title">
         <h3>Sign in to your account</h3>
-        <form class="form-horizontal">
+        <form id="loginForm" class="form-horizontal" action="/login" method="post">
             <div class="form-group">
                 <label for="userName" class="col-md-1 control-label">Username</label>
                 <div class="col-md-5">

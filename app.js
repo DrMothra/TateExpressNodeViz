@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var fileUpload = require('express-fileupload');
 var index = require('./routes/index');
+var loginUser = require('./routes/loginUser');
 var update = require('./routes/update');
 var modifyGraph = require('./routes/modifyGraph');
 var addNode = require('./routes/addNode');
@@ -91,6 +92,7 @@ app.post("/processLinks", graphs.processLinks);
 app.post("/addNewNode", graphs.addNewNode);
 app.post("/addNewLink", graphs.addNewLink);
 app.post("/processSearch", graphs.searchCommons);
+app.post("/login", loginUser.login);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
