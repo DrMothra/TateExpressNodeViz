@@ -21,4 +21,9 @@ $(document).ready(function() {
     $('#loginForm').on("submit", function() {
         return validateForm();
     });
+
+    $('#createAccount').on("click", function() {
+        window.location.href = "/createAccount";
+    });
+
 });

@@ -6,7 +6,14 @@
 
 exports.login = function(req, res, next) {
     //DEBUG
-    console.log("Received login request");
+    //console.log("Received login request");
 
     res.render("addGraph");
+};
+
+exports.createAccount = function(req, res, next) {
+    //DEBUG
+    console.log("Created new account");
+
+    res.render("created");
 };

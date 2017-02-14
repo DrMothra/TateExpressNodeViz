@@ -11,6 +11,7 @@ var update = require('./routes/update');
 var modifyGraph = require('./routes/modifyGraph');
 var addNode = require('./routes/addNode');
 var addLink = require('./routes/addLink');
+var createAccount = require('./routes/createAccount');
 var graphs = require('./routes/graphs');
 var http = require('http');
 
@@ -84,6 +85,7 @@ app.use('/updateNode', update);
 app.use('/addNode', addNode);
 app.use('/addLink', addLink);
 app.use('/modifyGraph', modifyGraph);
+app.use('/createAccount', createAccount);
 
 app.post("/createGraph", graphs.generateNewGraph);
 app.post("/generateGraph", graphs.generateGraph);
@@ -93,6 +95,7 @@ app.post("/addNewNode", graphs.addNewNode);
 app.post("/addNewLink", graphs.addNewLink);
 app.post("/processSearch", graphs.searchCommons);
 app.post("/login", loginUser.login);
+app.post("/newAccount", loginUser.createAccount);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
