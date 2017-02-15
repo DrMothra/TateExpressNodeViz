@@ -3,7 +3,6 @@
  */
 
 //Handle login procedure
-
 exports.login = function(req, res, next) {
     //DEBUG
     //console.log("Received login request");

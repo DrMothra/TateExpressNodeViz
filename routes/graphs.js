@@ -220,20 +220,38 @@ exports.addNewLink = function(req, res, next) {
 };
 
 function validateSearchResults(results) {
-    var i, graph, numResults = results.length;
+    var i, graph, strIndex, description, numResults = results.length;
     var tateGraphs = [], tateGraph;
     for(i=0; i<numResults; ++i) {
         graph = results[i];
-        if(graph.obj === 'Graph' && graph.subtitle === 'TateCartographyProject' && graph.owner.username === 'tate') {
-            tateGraph = {};
-            tateGraph.graphID = graph.id;
-            tateGraph.name = graph.name;
-            tateGraphs.push(tateGraph);
+        if(graph.obj === 'Graph' && graph.owner.username === 'tate') {
+            //Check graph subtitle
+            if(graph.subtitle !== "" && graph.subtitle.indexOf('TateCartographyProject') >= 0) {
+                tateGraph = {};
+                tateGraph.graphID = graph.id;
+                tateGraph.name = graph.name;
+                description = graph.description;
+                strIndex = description.indexOf("Author=");
+                if(strIndex >= 0) {
+                    //Take Author=" off
+                    description = description.slice(strIndex+8);
+                    strIndex = description.indexOf('"');
+                    if(strIndex >= 0) {
+                        description = description.substr(0, strIndex);
+                        tateGraph.author = description;
+                    }
+                } else {
+                    tateGraph.author = "None";
+                }
+
+                tateGraphs.push(tateGraph);
+            }
         }
     }
 
     return tateGraphs;
 }
+
 exports.searchCommons = function(req, res, next) {
     var search_query = {
         'query' : req.body.query

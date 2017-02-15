@@ -36,27 +36,58 @@ var graphManager = (function() {
         window.location.href = "/modifyGraph?graphID="+graphInfo.graphID+"&name="+graphInfo.name;
     }
 
+    function onCopyGraph(id) {
+        //Get graph id
+        var graphID = id.slice(-1);
+        console.log("ID = ", graphID);
+
+        var graphInfo = graphList[graphID];
+
+
+    }
+
     function onGraphsFound(response) {
         //DEBUG
         console.log("Graphs = ", response);
         var i, graphInfo, numGraphs = response.msg.length;
-        var graphElem = $('#graphList');
+
+        //General graphs
+        var graphElem;
         for(i=0; i<numGraphs; ++i) {
             graphInfo = response.msg[i];
             graphList.push(graphInfo);
-            graphElem.append("<div class='row graphInfo'>" +
-                "<div class='col-md-2'>" + graphInfo.name + "</div>" +
-                "<div class='col-md-3'>" + graphInfo.graphID + "</div>" +
-                "<div class='col-md-2'> <button type='button' class='btn btn-primary' data-toggle='tooltip' data-placement='top' title='Modify this graph'>Modify</button></div>" +
-                "</div>");
+            graphElem = $('#graphList');
+            if(graphInfo.author !== "TonyG") {
+                graphElem.append("<div class='row graphInfo'>" +
+                    "<div class='col-md-2'>" + graphInfo.name + "</div>" +
+                    "<div class='col-md-3'>" + graphInfo.graphID + "</div>" +
+                    "<div class='col-md-1'>" + graphInfo.author + "</div>" +
+                    "<div class='col-md-2'> <button type='button' class='btn btn-primary' data-toggle='tooltip' data-placement='top' title='Modify this graph'>Copy</button></div>" +
+                    "</div>");
+            } else {
+                graphElem = $('#yourGraphList');
+                graphElem.append("<div class='row graphInfo'>" +
+                    "<div class='col-md-2'>" + graphInfo.name + "</div>" +
+                    "<div class='col-md-3'>" + graphInfo.graphID + "</div>" +
+                    "<div class='col-md-2'> <button type='button' class='btn btn-primary' data-toggle='tooltip' data-placement='top' title='Modify this graph'>Modify</button></div>" +
+                    "</div>");
+            }
         }
         //Set ids for buttons
         $('#graphList button').attr("id", function(index, old) {
+            return 'copyGraph' + index;
+        });
+
+        $('#yourGraphList button').attr("id", function(index, old) {
             return 'modGraph' + index;
         });
 
         $("[id^='modGraph']").on("click", function() {
             onModifyGraph(this.id);
+        });
+
+        $("[id^='copyGraph']").on("click", function() {
+            onCopyGraph(this.id);
         });
     }
 
@@ -90,7 +121,7 @@ var graphManager = (function() {
             var graphInfo = {
                 name: name,
                 subtitle: "TateCartographyProject",
-                description: "Author='Tony G' " + description
+                description: 'Author="TonyG"' + description
             };
             var graphData = {method: "POST",
                         data: graphInfo,

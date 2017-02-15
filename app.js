@@ -48,17 +48,9 @@ c.connect( {
 c.on('connect', function() {
   console.log("Client connected");
 })
-    .on('error', function(err) {
-      console.log("Client error: " + err);
-    });
-
-c.query('describe users', function(err, rows) {
-    if (err)
-        throw err;
-    console.dir(rows);
+.on('error', function(err) {
+  console.log("Client error: " + err);
 });
-
-c.end();
 
 var socket;
 
