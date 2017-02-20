@@ -37,13 +37,30 @@ server.on('error', onError);
 server.on('listening', onListening);
 
 //Database
-var c = new Client();
+var c = new Client({
+  host: 'mysql.cs.nott.ac.uk',
+  user: 'psztg1_Tate',
+  password: 'VHRHFA',
+  db: 'psztg1_TateViz'
+});
+//Home
+/*
 c.connect( {
     host: '127.0.0.1',
     user: 'root',
     password: 'RAV4oct16',
     db: 'tate'
 });
+*/
+//Uni
+/*
+c.connect( {
+    host: 'mysql.cs.nott.ac.uk',
+    user: 'psztg1_Tate',
+    password: 'VHRHFA',
+    db: 'psztg1_TateViz'
+});
+*/
 
 c.on('connect', function() {
   console.log("Client connected");
@@ -107,6 +124,7 @@ app.use('/createAccount', createAccount);
 
 app.post("/createGraph", graphs.generateNewGraph);
 app.post("/generateGraph", graphs.generateGraph);
+app.post("/copyGraph", graphs.copyGraph);
 app.post("/searchGraph", graphs.searchGraph);
 app.post("/processLinks", graphs.processLinks);
 app.post("/addNewNode", graphs.addNewNode);

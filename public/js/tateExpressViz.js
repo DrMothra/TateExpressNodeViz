@@ -5,7 +5,8 @@
 var graphManager = (function() {
     var currentGraphID = undefined;
     var processing = false;
-    var graphList = [];
+    var mainGraphList = [];
+    var yourGraphList = [];
 
     function sendData(data, callback) {
         $.ajax({
@@ -22,7 +23,7 @@ var graphManager = (function() {
         })
     }
 
-    function onGraphCreated(response) {
+    function onGraphCreated(response) {s
         $('#graphID').html(response.msg);
     }
 
@@ -31,7 +32,7 @@ var graphManager = (function() {
         var graphID = id.slice(-1);
         console.log("ID = ", graphID);
 
-        var graphInfo = graphList[graphID];
+        var graphInfo = yourGraphList[graphID];
 
         window.location.href = "/modifyGraph?graphID="+graphInfo.graphID+"&name="+graphInfo.name;
     }
@@ -41,9 +42,20 @@ var graphManager = (function() {
         var graphID = id.slice(-1);
         console.log("ID = ", graphID);
 
-        var graphInfo = graphList[graphID];
+        var graphInfo = mainGraphList[graphID];
 
+        var graphData = {
+            method: "POST",
+            data: graphInfo,
+            url: '/copyGraph',
+            dataType: 'JSON'};
 
+        sendData(graphData, onGraphCopied);
+    }
+
+    function onGraphCopied() {
+        //DEBUG
+        console.log("Graph copied");
     }
 
     function onGraphsFound(response) {
@@ -55,16 +67,17 @@ var graphManager = (function() {
         var graphElem;
         for(i=0; i<numGraphs; ++i) {
             graphInfo = response.msg[i];
-            graphList.push(graphInfo);
             graphElem = $('#graphList');
             if(graphInfo.author !== "TonyG") {
+                mainGraphList.push(graphInfo);
                 graphElem.append("<div class='row graphInfo'>" +
                     "<div class='col-md-2'>" + graphInfo.name + "</div>" +
                     "<div class='col-md-3'>" + graphInfo.graphID + "</div>" +
                     "<div class='col-md-1'>" + graphInfo.author + "</div>" +
-                    "<div class='col-md-2'> <button type='button' class='btn btn-primary' data-toggle='tooltip' data-placement='top' title='Modify this graph'>Copy</button></div>" +
+                    "<div class='col-md-2'> <button type='button' class='btn btn-primary' data-toggle='tooltip' data-placement='top' title='Copy graph to your account'>Copy</button></div>" +
                     "</div>");
             } else {
+                yourGraphList.push(graphInfo);
                 graphElem = $('#yourGraphList');
                 graphElem.append("<div class='row graphInfo'>" +
                     "<div class='col-md-2'>" + graphInfo.name + "</div>" +

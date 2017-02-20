@@ -91,6 +91,37 @@ var currentNodeID;
 var currentNodeData;
 var currentEdgeData;
 
+exports.copyGraph = function(req, res, next) {
+    //Get data for this graph
+    currentGraphID = req.body.graphID;
+
+    graphCommons.graphs(currentGraphID, function(graph) {
+        //New graph with existing data
+        var graphData = {
+            "name": req.body.name,
+            "description": "Author='TonyG'",
+            "subtitle": "TateCartographyProject",
+            "status": 0
+        };
+        graphCommons.new_graph(graphData, function(result) {
+            //DEBUG
+            console.log("New copied graph created");
+            res.send( {msg: "Graph copied"} );
+            //Create all nodes from original
+            var i, currentNode, numNodes = graph.nodes.length;
+            dataManager.init(graphCommons);
+            dataManager.setGraphID(result.properties.id);
+            dataManager.setNumberNodesToCreate(numNodes);
+            dataManager.createGraphNodes(graph.nodes, 'json', function() {
+                console.log("All nodes created");
+                dataManager.createGraphEdges(graph.nodes, function() {
+                    console.log("All edges craeted");
+                })
+            });
+        });
+    });
+};
+
 exports.searchGraph = function(req, res, next) {
     //Search graph for required node
     currentGraphID = req.body.graphID;

@@ -98,6 +98,14 @@ exports.dataManager = function(graphID, vizData, res) {
         exports.emitter.emit("NodesToCreate", this.nodesToCreate);
     };
 
+    this.setNumberNodesToCreate = function(numNodes) {
+        this.nodesToCreate = numNodes;
+    };
+
+    this.onNodeCreateComplete = function() {
+        console.log("All nodes created");
+    };
+
     this.sortLinks = function() {
         var i, j, dataItem;
         for(i=0; i<this.numItems; ++i) {
@@ -151,6 +159,26 @@ exports.dataManager = function(graphID, vizData, res) {
         }, this.nodeRequestTime);
     };
 
+    this.createGraphNodes = function(nodes, dataType, onCompletion) {
+        //Create nodes according to type
+        this.onNodeCreateComplete = onCompletion !== undefined ? onCompletion : this.onNodeCreateComplete;
+        switch(dataType) {
+            case 'json':
+                var i, currentNode, numNodes = nodes.length;
+                for(i=0; i<numNodes; ++i) {
+                    currentNode = nodes[i];
+                    this.queueGraphNodeRequest(currentNode.type, currentNode.name, currentNode.description);
+                }
+                break;
+
+            case 'csv':
+                break;
+
+            default:
+                break;
+        }
+    };
+
     this.createGraphNode = function() {
         var _this = this;
         if(this.canCreateNode && this.nodeQueue.length > 0) {
@@ -164,7 +192,7 @@ exports.dataManager = function(graphID, vizData, res) {
                     clearInterval(_this.nodeRequestTimer);
                     //DEBUG
                     console.log("All nodes created");
-                    _this.createEdges();
+                    _this.onNodeCreateComplete();
                 }
             });
         }
