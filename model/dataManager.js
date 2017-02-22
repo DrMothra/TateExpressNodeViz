@@ -62,6 +62,8 @@ exports.dataManager = function(graphID, vizData, res) {
         this.nodesCreated = 0;
         this.edgesToCreate = 0;
         this.edgesCreated = 0;
+        this.nodeTypes = [];
+        this.edgeTypes = [];
         this.graphComplete = false;
     };
 
@@ -72,6 +74,32 @@ exports.dataManager = function(graphID, vizData, res) {
 
     this.setGraphID = function(graphID) {
         this.graph_id = graphID;
+    };
+
+    this.setCurrentGraph = function(graph) {
+        this.currentGraph = graph;
+    };
+
+    this.createTypes = function() {
+        //Create types from current graph
+        if(this.currentGraph !== undefined) {
+            var nodeTypes = this.currentGraph.properties.nodeTypes;
+            var i, numTypes = nodeTypes.length, nodeTypeInfo;
+            for(i=0; i<numTypes; ++i) {
+                nodeTypeInfo = {};
+                nodeTypeInfo.id = nodeTypes[i].id;
+                nodeTypeInfo.name = nodeTypes[i].name;
+                this.nodeTypes.push(nodeTypeInfo);
+            }
+            var edgeTypes = this.currentGraph.properties.edgeTypes, edgeTypeInfo;
+            numTypes = edgeTypes.length;
+            for(i=0; i<numTypes; ++i) {
+                edgeTypeInfo = {};
+                edgeTypeInfo.id = edgeTypes[i].id;
+                edgeTypeInfo.name = edgeTypes[i].name;
+                this.edgeTypes.push(edgeTypeInfo);
+            }
+        }
     };
 
     this.preSort = function() {
@@ -104,6 +132,14 @@ exports.dataManager = function(graphID, vizData, res) {
 
     this.onNodeCreateComplete = function() {
         console.log("All nodes created");
+    };
+
+    this.setNumberEdgesToCreate = function(numEdges) {
+        this.edgesToCreate = numEdges;
+    };
+
+    this.onEdgeCreateComplete = function() {
+        console.log("All edges created");
     };
 
     this.sortLinks = function() {
@@ -197,6 +233,19 @@ exports.dataManager = function(graphID, vizData, res) {
             });
         }
 
+    };
+
+    this.createGraphEdges = function(nodes, onCompletion) {
+        this.onEdgeCreateComplete = onCompletion !== undefined ? onCompletion : this.onEdgeCreateComplete;
+        //Get edge information from this node
+        var i, currentNode, edgesFrom, edgesTo, numNodes = nodes.length;
+        for(i=0; i<numNodes; ++i) {
+            currentNode = this.currentGraph.get_node(nodes[i].id);
+            edgesFrom = this.currentGraph.edges_from(currentNode);
+            //DEBUG
+            console.log("Edges from = ", edgesFrom);
+
+        }
     };
 
     this.createEdges = function() {

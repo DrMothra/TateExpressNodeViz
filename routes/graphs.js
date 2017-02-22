@@ -99,7 +99,7 @@ exports.copyGraph = function(req, res, next) {
         //New graph with existing data
         var graphData = {
             "name": req.body.name,
-            "description": "Author='TonyG'",
+            "description": 'Author="TonyG"',
             "subtitle": "TateCartographyProject",
             "status": 0
         };
@@ -111,11 +111,14 @@ exports.copyGraph = function(req, res, next) {
             var i, currentNode, numNodes = graph.nodes.length;
             dataManager.init(graphCommons);
             dataManager.setGraphID(result.properties.id);
+            dataManager.setCurrentGraph(graph);
+            dataManager.createTypes();
             dataManager.setNumberNodesToCreate(numNodes);
             dataManager.createGraphNodes(graph.nodes, 'json', function() {
                 console.log("All nodes created");
+                dataManager.setNumberEdgesToCreate(graph.edges.length);
                 dataManager.createGraphEdges(graph.nodes, function() {
-                    console.log("All edges craeted");
+                    console.log("All edges created");
                 })
             });
         });
