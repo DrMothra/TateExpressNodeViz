@@ -83,7 +83,7 @@ var graphManager = (function() {
                 graphElem = $('#yourGraphList');
                 graphElem.append("<div class='row graphInfo'>" +
                     "<div class='col-md-2'>" + graphInfo.name + "</div>" +
-                    "<div class='col-md-3'>" + graphLink + graphInfo.graphID + "</div>" +
+                    "<div class='col-md-3'>" + graphLink + graphInfo.graphID + "</a></div>" +
                     "<div class='col-md-2'> <button type='button' class='btn btn-primary' data-toggle='tooltip' data-placement='top' title='Modify this graph'>Modify</button>" +
                         "<button type='button' class='btn btn-primary' data-toggle='tooltip' data-placement='top' title='Delete this graph'>Delete</button></div>" +
                     "</div>");
