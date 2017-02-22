@@ -102,6 +102,17 @@ exports.dataManager = function(graphID, vizData, res) {
         }
     };
 
+    this.getToType = function(id) {
+        var i, numTypes = this.edgeTypes.length;
+        for(i=0; i<numTypes; ++i) {
+            if(id === this.edgeTypes[i].id) {
+                return this.edgeTypes[i].name;
+            }
+        }
+
+        return undefined;
+    };
+
     this.preSort = function() {
         //Remove whitespace from fields
         var i, dataItem, key, attribute;
@@ -238,14 +249,22 @@ exports.dataManager = function(graphID, vizData, res) {
     this.createGraphEdges = function(nodes, onCompletion) {
         this.onEdgeCreateComplete = onCompletion !== undefined ? onCompletion : this.onEdgeCreateComplete;
         //Get edge information from this node
-        var i, currentNode, edgesFrom, edgesTo, numNodes = nodes.length;
+        var i, currentNode, toNode, edgesFrom, edge, numEdges = 0, numNodes = nodes.length;
         for(i=0; i<numNodes; ++i) {
             currentNode = this.currentGraph.get_node(nodes[i].id);
             edgesFrom = this.currentGraph.edges_from(currentNode);
             //DEBUG
-            console.log("Edges from = ", edgesFrom);
-
+            //console.log("Edges from = ", edgesFrom);
+            //Get to types and names
+            if(edgesFrom.length !== 0) {
+                for(edge=0; edge<edgesFrom.length; ++edge) {
+                    toNode = this.currentGraph.get_node(edgesFrom[edge].to);
+                    ++numEdges;
+                    this.queueGraphEdgeRequest(nodes[i].type, nodes[i].name, toNode.type, toNode.name, edgesFrom[edge].name);
+                }
+            }
         }
+        this.edgesToCreate = numEdges;
     };
 
     this.createEdges = function() {
@@ -300,7 +319,7 @@ exports.dataManager = function(graphID, vizData, res) {
                     clearInterval(_this.edgeRequestTimer);
                     _this.graphComplete = true;
                     exports.emitter.emit("GraphCompleted", "Graph Completed");
-                    _this.onCompleted();
+                    _this.onEdgeCreateComplete();
                 }
             })
         }

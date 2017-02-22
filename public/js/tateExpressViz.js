@@ -65,14 +65,16 @@ var graphManager = (function() {
 
         //General graphs
         var graphElem;
+        var graphLink;
         for(i=0; i<numGraphs; ++i) {
             graphInfo = response.msg[i];
+            graphLink = "<a href='https://graphcommons.com/graphs/" + graphInfo.graphID + "' target='_blank'>";
             graphElem = $('#graphList');
             if(graphInfo.author !== "TonyG") {
                 mainGraphList.push(graphInfo);
                 graphElem.append("<div class='row graphInfo'>" +
                     "<div class='col-md-2'>" + graphInfo.name + "</div>" +
-                    "<div class='col-md-3'>" + graphInfo.graphID + "</div>" +
+                    "<div class='col-md-3'>" + graphLink + graphInfo.graphID + "</a></div>" +
                     "<div class='col-md-1'>" + graphInfo.author + "</div>" +
                     "<div class='col-md-2'> <button type='button' class='btn btn-primary' data-toggle='tooltip' data-placement='top' title='Copy graph to your account'>Copy</button></div>" +
                     "</div>");
@@ -81,7 +83,7 @@ var graphManager = (function() {
                 graphElem = $('#yourGraphList');
                 graphElem.append("<div class='row graphInfo'>" +
                     "<div class='col-md-2'>" + graphInfo.name + "</div>" +
-                    "<div class='col-md-3'>" + graphInfo.graphID + "</div>" +
+                    "<div class='col-md-3'>" + graphLink + graphInfo.graphID + "</div>" +
                     "<div class='col-md-2'> <button type='button' class='btn btn-primary' data-toggle='tooltip' data-placement='top' title='Modify this graph'>Modify</button></div>" +
                     "</div>");
             }
