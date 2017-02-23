@@ -76,7 +76,7 @@ $(document).ready(function() {
     });
 
     //Get url parameters
-    var params = new URLSearchParams(window.location.search);
-    var graphID = params.get('updateNodeGraphID');
-    $('#graphID').val(graphID);
+    //var params = new URLSearchParams(window.location.search);
+    //var graphID = params.get('updateNodeGraphID');
+    //$('#graphID').val(graphID);
 });

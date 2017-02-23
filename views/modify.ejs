@@ -47,6 +47,22 @@
                         </div>
                     </form>
                 </div>
+                <div class="col-md-1">
+                    <form method="get" action="/deleteNode">
+                        <div id="deleteNode" class="form-group">
+                            <input type="text" name="deleteNodeGraphID" class="getGraphID noDisplay">
+                            <button id="nodeDelete" type="submit" class="btn btn-primary">Delete Node</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-md-1">
+                    <form method="get" action="/deleteLink">
+                        <div id="deleteLink" class="form-group">
+                            <input type="text" name="deleteLinkGraphID" class="getGraphID noDisplay">
+                            <button id="linkDelete" type="submit" class="btn btn-primary">Delete Link</button>
+                        </div>
+                    </form>
+                </div>
             </div>
 
             <form method="post" action="/login">

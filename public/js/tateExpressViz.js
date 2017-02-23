@@ -58,6 +58,23 @@ var graphManager = (function() {
         console.log("Graph copied");
     }
 
+    function onDeleteGraph(id) {
+        var delGraph = confirm("Are you sure you want to delete this graph?");
+        if(delGraph) {
+            var graphID = id.slice(-1);
+            var graphInfo = yourGraphList[graphID];
+
+            var graphData = {
+                method: "POST",
+                data: graphInfo,
+                url: '/deleteGraph',
+                dataType: 'JSON'
+            };
+
+            sendData(graphData);
+        }
+    }
+
     function onGraphsFound(response) {
         //DEBUG
         console.log("Graphs = ", response);
@@ -84,8 +101,8 @@ var graphManager = (function() {
                 graphElem.append("<div class='row graphInfo'>" +
                     "<div class='col-md-2'>" + graphInfo.name + "</div>" +
                     "<div class='col-md-3'>" + graphLink + graphInfo.graphID + "</a></div>" +
-                    "<div class='col-md-2'> <button type='button' class='btn btn-primary' data-toggle='tooltip' data-placement='top' title='Modify this graph'>Modify</button>" +
-                        "<button type='button' class='btn btn-primary' data-toggle='tooltip' data-placement='top' title='Delete this graph'>Delete</button></div>" +
+                    "<div class='col-md-2'> <button type='button' class='btn btn-primary modify' data-toggle='tooltip' data-placement='top' title='Modify this graph'>Modify</button>" +
+                        "<button type='button' class='btn btn-primary delete' data-toggle='tooltip' data-placement='top' title='Delete this graph'>Delete</button></div>" +
                     "</div>");
             }
         }
@@ -94,12 +111,20 @@ var graphManager = (function() {
             return 'copyGraph' + index;
         });
 
-        $('#yourGraphList button').attr("id", function(index, old) {
+        $('#yourGraphList .modify').attr("id", function(index, old) {
             return 'modGraph' + index;
+        });
+
+        $('#yourGraphList .delete').attr("id", function(index, old) {
+            return 'deleteGraph' + index;
         });
 
         $("[id^='modGraph']").on("click", function() {
             onModifyGraph(this.id);
+        });
+
+        $("[id^='deleteGraph']").on("click", function() {
+            onDeleteGraph(this.id);
         });
 
         $("[id^='copyGraph']").on("click", function() {

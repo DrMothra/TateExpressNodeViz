@@ -167,6 +167,35 @@ exports.searchGraph = function(req, res, next) {
     });
 };
 
+exports.findNode = function(req, res, next) {
+    //Search graph for required node
+    currentGraphID = req.body.graphID;
+    var nodeName = req.body.nodeValue;
+
+    graphCommons.graphs(currentGraphID, function(graph) {
+        currentGraph = graph;
+        //Search for node
+        var search_query = {
+            "query": nodeName,
+            "graph": currentGraphID
+        };
+        graphCommons.nodes_search(search_query, function(results) {
+            //console.log(results);
+            var numNodes = results.nodes.length;
+            if(numNodes === 0) {
+                res.render("deleteNode", { graphID: currentGraphID, node_Name: null, node: "No nodes found", nodeData: []} );
+                return;
+            }
+            var i, nodeData = [];
+            for(i=0; i<numNodes; ++i) {
+                nodeData.push(results.nodes[i].name);
+            }
+
+            res.render("deleteNode", { graphID: currentGraphID, node_Name: null, node: null, nodeData: nodeData} );
+        });
+    });
+};
+
 exports.processLinks = function(req, res, next) {
     //Get updated graph
     graphCommons.graphs(currentGraphID, function(graph) {
@@ -296,4 +325,9 @@ exports.searchCommons = function(req, res, next) {
     };
 
     graphCommons.search(search_query, searchresults);
+};
+
+exports.deleteGraph = function(req, res, next) {
+    //Set author to deleted - can undelete later
+
 };

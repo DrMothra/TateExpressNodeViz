@@ -10,6 +10,7 @@ var loginUser = require('./routes/loginUser');
 var update = require('./routes/update');
 var modifyGraph = require('./routes/modifyGraph');
 var addNode = require('./routes/addNode');
+var deleteNode = require('./routes/deleteNode');
 var addLink = require('./routes/addLink');
 var createAccount = require('./routes/createAccount');
 var graphs = require('./routes/graphs');
@@ -116,8 +117,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
 
 app.use('/', index);
-app.use('/updateNode', update);
+app.use('/updateNode', update.update);
 app.use('/addNode', addNode);
+app.use('/deleteNode', deleteNode);
 app.use('/addLink', addLink);
 app.use('/modifyGraph', modifyGraph);
 app.use('/createAccount', createAccount);
@@ -126,10 +128,13 @@ app.post("/createGraph", graphs.generateNewGraph);
 app.post("/generateGraph", graphs.generateGraph);
 app.post("/copyGraph", graphs.copyGraph);
 app.post("/searchGraph", graphs.searchGraph);
+app.post("/findNodes", graphs.findNode);
 app.post("/processLinks", graphs.processLinks);
 app.post("/addNewNode", graphs.addNewNode);
 app.post("/addNewLink", graphs.addNewLink);
 app.post("/processSearch", graphs.searchCommons);
+app.post("/deleteGraph", graphs.deleteGraph);
+
 app.post("/login", loginUser.login);
 app.post("/newAccount", loginUser.createAccount);
 
