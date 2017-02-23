@@ -19,10 +19,6 @@ function validateForm() {
 }
 
 $(document).ready(function() {
-    //Get url parameters
-    var params = new URLSearchParams(window.location.search);
-    var graphID = params.get('deleteNodeGraphID');
-    $('#graphID').val(graphID);
 
     $('#searchForm').on("submit", function() {
         return validateForm();

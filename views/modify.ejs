@@ -24,7 +24,7 @@
         <div id="options" class="container-fluid">
             <div class="row">
                 <div class="col-md-1">
-                    <form method="get" action="/updateNode">
+                    <form method="post" action="/updateNode">
                         <div id="updateNode" class="form-group">
                             <input type="text" name="updateNodeGraphID" class="getGraphID noDisplay">
                             <button id="update" type="submit" class="btn btn-primary">Update Node</button>
@@ -48,7 +48,7 @@
                     </form>
                 </div>
                 <div class="col-md-1">
-                    <form method="get" action="/deleteNode">
+                    <form method="post" action="/deleteNode">
                         <div id="deleteNode" class="form-group">
                             <input type="text" name="deleteNodeGraphID" class="getGraphID noDisplay">
                             <button id="nodeDelete" type="submit" class="btn btn-primary">Delete Node</button>

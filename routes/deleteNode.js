@@ -2,13 +2,9 @@
  * Created by DrTone on 23/02/2017.
  */
 
+exports.deleteNode = function(req, res, next) {
+    //DEBUG
+    console.log("deleteNode graph id = ", req.body.deleteNodeGraphID);
 
-var express = require('express');
-var router = express.Router();
-
-/* GET home page. */
-router.get('/', function(req, res, next) {
-    res.render('deleteNode', { graphID: null, node_Name: null, node: null, nodeData: []} );
-});
-
-module.exports = router;
+    res.render('deleteNode', { graphID: req.body.deleteNodeGraphID, node_Name: null, node: null, nodeData: []} );
+};

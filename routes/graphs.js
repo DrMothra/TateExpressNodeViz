@@ -141,7 +141,7 @@ exports.searchGraph = function(req, res, next) {
         graphCommons.nodes_search(search_query, function(results) {
             //console.log(results);
             if(results.nodes.length === 0) {
-                res.render("update", { graphID: null, node_Name: null, node: "No nodes found", linkData: []} );
+                res.render("update", { graphID: currentGraphID, node_Name: req.body.nodeValue, node: "No nodes found", linkData: []} );
                 return;
             }
             currentNodeID = results.nodes[0].id;
@@ -162,7 +162,7 @@ exports.searchGraph = function(req, res, next) {
                 toNodes.push(linkData);
             }
 
-            res.render("update", { graphID: null, node_Name: null, node: req.body.nodeValue, linkData: toNodes} );
+            res.render("update", { graphID: currentGraphID, node_Name: req.body.nodeValue, node: results.nodes[0].name, linkData: toNodes} );
         });
     });
 };
@@ -183,7 +183,7 @@ exports.findNode = function(req, res, next) {
             //console.log(results);
             var numNodes = results.nodes.length;
             if(numNodes === 0) {
-                res.render("deleteNode", { graphID: currentGraphID, node_Name: null, node: "No nodes found", nodeData: []} );
+                res.render("deleteNode", { graphID: currentGraphID, node_Name: nodeName, node: "No nodes found", nodeData: []} );
                 return;
             }
             var i, nodeData = [];
@@ -191,7 +191,7 @@ exports.findNode = function(req, res, next) {
                 nodeData.push(results.nodes[i].name);
             }
 
-            res.render("deleteNode", { graphID: currentGraphID, node_Name: null, node: null, nodeData: nodeData} );
+            res.render("deleteNode", { graphID: currentGraphID, node_Name: nodeName, node: null, nodeData: nodeData} );
         });
     });
 };

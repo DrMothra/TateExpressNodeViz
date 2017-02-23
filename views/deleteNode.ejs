@@ -18,17 +18,17 @@
 
     <div id="deleteNode" class="title">
         <h3>Delete Node</h3>
-        <form id="searchForm" class="form-horizontal" action="/findNodes" method = "POST">
+        <form id="searchForm" class="form-horizontal" action="/findNodes" method = "post">
             <div class="form-group">
                 <label for="graphID" class="col-md-1 control-label">Graph ID</label>
                 <div class="col-md-5">
-                    <input type="text" class="form-control" name="graphID" id="graphID">
+                    <input type="text" class="form-control" name="graphID" id="graphID" value="<%= graphID %>">
                 </div>
             </div>
             <div class="form-group">
                 <label for="node_Name" class="col-md-1 control-label">Node Name</label>
                 <div class="col-md-5">
-                    <input type="text" class="form-control" name="nodeValue" id="node_Name">
+                    <input type="text" class="form-control" name="nodeValue" id="node_Name" value="<%= node_Name %>">
                 </div>
             </div>
             <button id="search" type="submit" class="btn btn-primary">Find</button>

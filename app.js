@@ -117,9 +117,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
 
 app.use('/', index);
-app.use('/updateNode', update.update);
+app.post('/updateNode', update.update);
 app.use('/addNode', addNode);
-app.use('/deleteNode', deleteNode);
+app.post('/deleteNode', deleteNode.deleteNode);
 app.use('/addLink', addLink);
 app.use('/modifyGraph', modifyGraph);
 app.use('/createAccount', createAccount);
