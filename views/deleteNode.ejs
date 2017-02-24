@@ -5,6 +5,7 @@
     <title>Tate Node Visualiser - Delete Node</title>
 
     <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery.form.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/deleteNode.js"></script>
 
@@ -31,26 +32,17 @@
                     <input type="text" class="form-control" name="nodeValue" id="node_Name" value="<%= node_Name %>">
                 </div>
             </div>
-            <button id="search" type="submit" class="btn btn-primary">Find</button>
+            <button id="find" type="button" class="btn btn-primary">Find</button>
         </form>
     </div>
 
     <div id="nodes" class="title">
         <h3>Nodes</h3>
+        <p id="numNodes">
 
-        <div class="container-fluid">
-            <% for(var i=0; i<nodeData.length; ++i) { %>
-            <div class="row">
-                <div class="col-md-3">
-                    <p>
-                        <%= nodeData[i] %>
-                    </p>
-                </div>
-                <div class="col-md-3 checkbox">
-                    <input type="checkbox">
-                </div>
-            </div>
-            <% } %>
+        </p>
+        <div id="nodeList" class="container-fluid">
+
         </div>
         <button type="button" class="btn btn-primary">Delete</button>
     </div>

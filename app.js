@@ -118,9 +118,9 @@ app.use(fileUpload());
 
 app.use('/', index);
 app.post('/updateNode', update.update);
-app.use('/addNode', addNode);
+app.post('/addNode', addNode.addNode);
 app.post('/deleteNode', deleteNode.deleteNode);
-app.use('/addLink', addLink);
+app.post('/addLink', addLink.addLink);
 app.use('/modifyGraph', modifyGraph);
 app.use('/createAccount', createAccount);
 

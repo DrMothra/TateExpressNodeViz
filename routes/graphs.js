@@ -128,8 +128,6 @@ exports.copyGraph = function(req, res, next) {
 exports.searchGraph = function(req, res, next) {
     //Search graph for required node
     currentGraphID = req.body.graphID;
-    //DEBUG
-    console.log("Graph id = ", currentGraphID);
 
     graphCommons.graphs(currentGraphID, function(graph) {
         currentGraph = graph;
@@ -182,16 +180,13 @@ exports.findNode = function(req, res, next) {
         graphCommons.nodes_search(search_query, function(results) {
             //console.log(results);
             var numNodes = results.nodes.length;
-            if(numNodes === 0) {
-                res.render("deleteNode", { graphID: currentGraphID, node_Name: nodeName, node: "No nodes found", nodeData: []} );
-                return;
-            }
             var i, nodeData = [];
             for(i=0; i<numNodes; ++i) {
                 nodeData.push(results.nodes[i].name);
             }
 
-            res.render("deleteNode", { graphID: currentGraphID, node_Name: nodeName, node: null, nodeData: nodeData} );
+            //res.render("deleteNode", { graphID: currentGraphID, node_Name: nodeName, node: null, nodeData: nodeData} );
+            res.send( {msg: nodeData} );
         });
     });
 };
