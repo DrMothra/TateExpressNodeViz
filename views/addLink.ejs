@@ -6,6 +6,7 @@
     <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
     <script type="text/javascript" src="js/jquery.form.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap3-typeahead.min.js"></script>
     <script type="text/javascript" src="js/addLink.js"></script>
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -18,7 +19,7 @@
 
     <div id="addLink" class="title">
         <h3>Add Link</h3>
-        <form id="addLinkForm" class="form-horizontal" action="/addNewLink" method="post">
+        <form id="addLinkForm" class="form-horizontal" action="/addNewLink" method="post" autocomplete="off">
             <div class="form-group">
                 <label for="graphID" class="col-md-1">Graph ID</label>
                 <div class="col-md-5">
