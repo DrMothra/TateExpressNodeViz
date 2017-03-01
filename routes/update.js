@@ -4,7 +4,7 @@
 
 exports.update = function(req, res, next) {
 
-    res.render('update', { graphID: req.body.updateNodeGraphID, node_Name: null, node: null, linkData: []});
+    res.render('update', { graphID: req.body.updateNodeGraphID, node_Name: null, nodes: [], linkData: []});
 };
 
 

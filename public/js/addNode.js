@@ -39,7 +39,7 @@ function getGraphNodes() {
     });
 }
 
-function getGraphTypes() {
+function getNodeTypes() {
     //Populate list of types
     var graphID = $('#graphID').val();
     var linkData = {
@@ -49,7 +49,7 @@ function getGraphTypes() {
     var graphData = {
         method: 'post',
         data: linkData,
-        url: '/getTypes',
+        url: '/getNodeTypes',
         dataType: 'JSON'
     };
 
@@ -102,7 +102,7 @@ function addNewNode() {
 $(document).ready(function() {
 
     //Autocomplete actions
-    getGraphTypes();
+    getNodeTypes();
 
     $('#addNewNode').on("click", function() {
         if(!validateForm()) return;

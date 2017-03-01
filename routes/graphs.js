@@ -139,12 +139,25 @@ exports.getNodes = function(req, res, next) {
 };
 
 exports.getTypes = function(req, res, next) {
-    //Get list of node types in graph
+    //Get list of edge types in graph
     currentGraphID = req.body.graphID;
     graphCommons.graphs(currentGraphID, function(graph) {
         var i, typeNames = [], numTypes = graph.properties.edgeTypes.length;
         for(i=0; i<numTypes; ++i) {
             typeNames.push(graph.properties.edgeTypes[i].name);
+        }
+
+        res.send( {msg: typeNames} );
+    });
+};
+
+exports.getNodeTypes = function (req, res, next) {
+    //Get list of node types in graph
+    currentGraphID = req.body.graphID;
+    graphCommons.graphs(currentGraphID, function(graph) {
+        var i, typeNames = [], numTypes = graph.properties.nodeTypes.length;
+        for(i=0; i<numTypes; ++i) {
+            typeNames.push(graph.properties.nodeTypes[i].name);
         }
 
         res.send( {msg: typeNames} );
@@ -164,33 +177,37 @@ exports.searchGraph = function(req, res, next) {
         };
         graphCommons.nodes_search(search_query, function(results) {
             //console.log(results);
-            if(results.nodes.length === 0) {
-                res.render("update", { graphID: currentGraphID, node_Name: req.body.nodeValue, node: "No nodes found", linkData: []} );
+            var numNodes = results.nodes.length;
+            if(numNodes === 0) {
+                res.render("update", { graphID: currentGraphID, node_Name: req.body.nodeValue, nodes: ["No nodes found"], linkData: []} );
                 return;
             }
-            currentNodeID = results.nodes[0].id;
-            currentNodeData = currentGraph.get_node(currentNodeID);
-            currentEdgeData = currentGraph.edges_for(currentNodeData, "from");
-            //DEBUG
-            //console.log("Edge data = ", currentEdgeData);
+            var i, nodeNames = [], nodeLinks = [], linkData;
+            var edge, numEdges, toNodes = [], currentNode;
+            for(i=0; i<numNodes; ++i) {
+                currentNode = results.nodes[i];
+                currentNodeID = currentNode.id;
+                currentNodeData = currentGraph.get_node(currentNodeID);
+                currentEdgeData = currentGraph.edges_from(currentNodeData);
 
-            //res.render("index", { graphID: req.body.graph_id});
-            //Get name of to nodes
-            var toNodes = [], linkData, nodeData, nodeResults = results.nodes[0].name;
-            var i, numNodes=currentEdgeData.length;
-            if(numNodes === 0) {
-                nodeResults = results.nodes[0].name + " has no links";
-            } else {
-                for(i=0; i<numNodes; ++i) {
-                    nodeData = currentGraph.get_node(currentEdgeData[i].to);
-                    linkData = {};
-                    linkData.linkType = currentEdgeData[i].name;
-                    linkData.linkTo = nodeData.name;
-                    toNodes.push(linkData);
+                numEdges = currentEdgeData.length;
+                if(numEdges === 0) {
+                    nodeNames.push(currentNode.name + " has no links");
+                    nodeLinks.push([]);
+                } else {
+                    nodeNames.push(currentNode.name);
+                    for(edge=0; edge<numEdges; ++edge) {
+                        nodeData = currentGraph.get_node(currentEdgeData[edge].to);
+                        linkData = {};
+                        linkData.linkType = currentEdgeData[edge].name;
+                        linkData.linkTo = nodeData.name;
+                        toNodes.push(linkData);
+                    }
+                    nodeLinks.push(toNodes);
                 }
             }
 
-            res.render("update", { graphID: currentGraphID, node_Name: req.body.nodeValue, node: nodeResults, linkData: toNodes} );
+            res.render("update", { graphID: currentGraphID, node_Name: req.body.nodeValue, nodes: nodeNames, linkData: nodeLinks} );
         });
     });
 };

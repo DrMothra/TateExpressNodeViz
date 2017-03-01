@@ -123,6 +123,7 @@ app.post('/addNode', addNode.addNode);
 app.post('/deleteNode', deleteNode.deleteNode);
 app.post('/getNodes', graphs.getNodes);
 app.post('/getTypes', graphs.getTypes);
+app.post('/getNodeTypes', graphs.getNodeTypes);
 app.post('/addLink', addLink.addLink);
 app.post('/deleteLink', deleteLink.deleteLink);
 app.use('/modifyGraph', modifyGraph);
