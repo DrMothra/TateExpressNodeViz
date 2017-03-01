@@ -83,6 +83,9 @@ function validateForm() {
 
 $(document).ready(function() {
 
+    //Autocomplete
+    getGraphNodes();
+
     $('#searchForm').on("submit", function() {
         return validateForm();
     });
@@ -94,7 +97,4 @@ $(document).ready(function() {
     $("[id*='noLink']").on("click", function() {
         updateLinkInfo(this.id, 0);
     });
-
-    //Autocomplete
-    getGraphNodes();
 });

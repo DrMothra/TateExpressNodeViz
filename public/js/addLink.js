@@ -2,6 +2,8 @@
  * Created by DrTone on 02/02/2017.
  */
 
+var graphNodeData, graphTypeData;
+
 function sendData(data, callback) {
     $.ajax({
         type: data.method,
@@ -15,35 +17,6 @@ function sendData(data, callback) {
             callback(response);
         }
     })
-}
-
-function validateForm() {
-    if($("#graphID").val() === "") {
-        alert("Enter a graph ID");
-        return false;
-    }
-    if($('#fromNodeName').val() === "") {
-        alert("Enter a node name");
-        return false;
-    }
-    if($('#fromNodeType').val() === "") {
-        alert("Enter a node type");
-        return false;
-    }
-    if($('#toNodeName').val() === "") {
-        alert("Enter a node name");
-        return false;
-    }
-    if($('#toNodeType').val() === "") {
-        alert("Enter a node type");
-        return false;
-    }
-    if($('#linkType').val() === "") {
-        alert("Enter a link type");
-        return false;
-    }
-
-    return true;
 }
 
 function getGraphNodes() {
@@ -61,9 +34,9 @@ function getGraphNodes() {
     };
 
     sendData(graphData, function(response) {
-        var nodesData = response.msg;
-        $('#fromNodeName').typeahead( {source: nodesData} );
-        $('#toNodeName').typeahead( {source: nodesData} );
+        graphNodeData = response.msg;
+        $('#fromNodeName').typeahead( {source: graphNodeData} );
+        $('#toNodeName').typeahead( {source: graphNodeData} );
     });
 }
 
@@ -82,11 +55,66 @@ function getGraphTypes() {
     };
 
     sendData(graphData, function(response) {
-        var typeData = response.msg;
-        $('#fromNodeType').typeahead( {source: typeData} );
-        $('#toNodeType').typeahead( {source: typeData} );
-        $('#linkType').typeahead( {source: typeData} );
+        graphTypeData = response.msg;
+        $('#fromNodeType').typeahead( {source: graphTypeData} );
+        $('#toNodeType').typeahead( {source: graphTypeData} );
+        $('#linkType').typeahead( {source: graphTypeData} );
     })
+}
+
+function validateForm() {
+    if($("#graphID").val() === "") {
+        alert("Enter a graph ID");
+        return false;
+    }
+
+    var fromName = $('#fromNodeName').val();
+    if(fromName === "") {
+        alert("Enter a node name");
+        return false;
+    }
+    if(graphNodeData.indexOf(fromName) < 0) {
+        alert("From node not in graph!");
+        return false;
+    }
+
+    var fromType = $('#fromNodeType').val();
+    if(fromType === "") {
+        alert("Enter a valid from type");
+        return false;
+    }
+    if(graphTypeData.indexOf(fromType) < 0) {
+        alert("Enter a valid type");
+        return false;
+    }
+
+    var toName = $('#toNodeName').val();
+    if(toName === "") {
+        alert("Enter a node name");
+        return false;
+    }
+    if(graphNodeData.indexOf(toName) < 0) {
+        alert("To node not in graph!");
+        return false;
+    }
+
+    var toType = $('#toNodeType').val();
+    if(toType === "") {
+        alert("Enter a node type");
+        return false;
+    }
+    if(graphTypeData.indexOf(toType) < 0) {
+        alert("Enter a valid to type");
+        return false;
+    }
+
+    var newType = $('#linkType').val();
+    if(newType === "") {
+        alert("Enter a link type");
+        return false;
+    }
+
+    return true;
 }
 
 function addNewLink() {

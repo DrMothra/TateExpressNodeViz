@@ -2,6 +2,8 @@
  * Created by atg on 01/02/2017.
  */
 
+var nodeData, typeData;
+
 function sendData(data, callback) {
     $.ajax({
         type: data.method,
@@ -32,8 +34,8 @@ function getGraphNodes() {
     };
 
     sendData(graphData, function(response) {
-        var nodesData = response.msg;
-        $('#addNodeName').typeahead( {source: nodesData} );
+        nodeData = response.msg;
+        $('#addNodeName').typeahead( {source: nodeData} );
     });
 }
 
@@ -52,7 +54,7 @@ function getGraphTypes() {
     };
 
     sendData(graphData, function(response) {
-        var typeData = response.msg;
+        typeData = response.msg;
         $('#addNodeType').typeahead( {source: typeData} );
     })
 }
@@ -62,12 +64,20 @@ function validateForm() {
         alert("Enter a graph ID");
         return false;
     }
+
     if($('#addNodeName').val() === "") {
         alert("Enter a node name");
         return false;
     }
-    if($('#addNodeType').val() === "" && $('#addNewType').val() === "") {
+
+    var nodeType = $('#addNodeType').val();
+    if(nodeType === "") {
         alert("Enter a node type");
+        return false;
+    }
+
+    if(typeData.indexOf(nodeType) < 0) {
+        alert("Enter a valid type");
         return false;
     }
 

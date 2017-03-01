@@ -176,17 +176,21 @@ exports.searchGraph = function(req, res, next) {
 
             //res.render("index", { graphID: req.body.graph_id});
             //Get name of to nodes
-            var toNodes = [], linkData, nodeData;
+            var toNodes = [], linkData, nodeData, nodeResults = results.nodes[0].name;
             var i, numNodes=currentEdgeData.length;
-            for(i=0; i<numNodes; ++i) {
-                nodeData = currentGraph.get_node(currentEdgeData[i].to);
-                linkData = {};
-                linkData.linkType = currentEdgeData[i].name;
-                linkData.linkTo = nodeData.name;
-                toNodes.push(linkData);
+            if(numNodes === 0) {
+                nodeResults = results.nodes[0].name + " has no links";
+            } else {
+                for(i=0; i<numNodes; ++i) {
+                    nodeData = currentGraph.get_node(currentEdgeData[i].to);
+                    linkData = {};
+                    linkData.linkType = currentEdgeData[i].name;
+                    linkData.linkTo = nodeData.name;
+                    toNodes.push(linkData);
+                }
             }
 
-            res.render("update", { graphID: currentGraphID, node_Name: req.body.nodeValue, node: results.nodes[0].name, linkData: toNodes} );
+            res.render("update", { graphID: currentGraphID, node_Name: req.body.nodeValue, node: nodeResults, linkData: toNodes} );
         });
     });
 };
