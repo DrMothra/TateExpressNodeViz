@@ -5,6 +5,7 @@
 
     <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap3-typeahead.min.js"></script>
     <script type="text/javascript" src="js/updateNode.js"></script>
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -17,7 +18,7 @@
 
     <div id="updateNode" class="title">
         <h3>Update Node</h3>
-        <form id="searchForm" class="form-horizontal" action="/searchGraph" method = "post">
+        <form id="searchForm" class="form-horizontal" action="/searchGraph" method = "post" autocomplete="off">
             <div class="form-group">
                 <label for="graphID" class="col-md-1 control-label">Graph ID</label>
                 <div class="col-md-5">
@@ -30,7 +31,7 @@
                     <input type="text" class="form-control" name="nodeValue" id="node_Name" value="<%= node_Name %>">
                 </div>
             </div>
-            <button id="search" type="submit" class="btn btn-primary">Search</button>
+            <button id="search" type="submit" class="btn btn-primary">Find Node</button>
         </form>
     </div>
 

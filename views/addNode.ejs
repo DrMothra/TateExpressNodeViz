@@ -4,8 +4,9 @@
       <title>Tate Node Visualiser</title>
 
       <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
-      <script src="http://malsup.github.com/jquery.form.js"></script>
+      <script type="text/javascript" src="js/jquery.form.js"></script>
       <script type="text/javascript" src="js/bootstrap.min.js"></script>
+      <script type="text/javascript" src="js/bootstrap3-typeahead.min.js"></script>
       <script type="text/javascript" src="js/addNode.js"></script>
 
       <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -18,7 +19,7 @@
 
     <div id="addNode" class="title">
         <h3>Add Node</h3>
-        <form id="addNodeForm" class="form-horizontal" action="/addNewNode" method="post">
+        <form id="addNodeForm" class="form-horizontal" action="/addNewNode" method="post" autocomplete="off">
             <div class="form-group">
                 <label for="graphID" class="col-md-1 control-label">Graph ID</label>
                 <div class="col-md-5">
@@ -36,12 +37,6 @@
                     <div class="col-md-5">
                         <input type="text" class="form-control" name="addNodeType" id="addNodeType">
                     </div>
-            </div>
-            <div class="form-group">
-                <label for="addNewType" class="col-md-1 control-label">New Node Type</label>
-                <div class="col-md-5">
-                    <input type="text" class="form-control" name="addNewType" id="addNewType">
-                </div>
             </div>
         </form>
         <button id="addNewNode" type="button" class="btn btn-primary">Add</button>

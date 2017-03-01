@@ -12,6 +12,7 @@ var modifyGraph = require('./routes/modifyGraph');
 var addNode = require('./routes/addNode');
 var deleteNode = require('./routes/deleteNode');
 var addLink = require('./routes/addLink');
+var deleteLink = require('./routes/deleteLink');
 var createAccount = require('./routes/createAccount');
 var graphs = require('./routes/graphs');
 var http = require('http');
@@ -120,7 +121,10 @@ app.use('/', index);
 app.post('/updateNode', update.update);
 app.post('/addNode', addNode.addNode);
 app.post('/deleteNode', deleteNode.deleteNode);
+app.post('/getNodes', graphs.getNodes);
+app.post('/getTypes', graphs.getTypes);
 app.post('/addLink', addLink.addLink);
+app.post('/deleteLink', deleteLink.deleteLink);
 app.use('/modifyGraph', modifyGraph);
 app.use('/createAccount', createAccount);
 

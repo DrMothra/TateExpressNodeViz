@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tate Node Visualiser - Delete Link</title>
+
+    <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery.form.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <!-- <script type="text/javascript" src="js/deleteNode.js"></script> -->
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel='stylesheet' href="css/tateExpressStyles.css">
+
+</head>
+<body>
+    <h1>Tate Node Visualiser</h1>
+
+    <div id="deleteLink" class="title">
+        <h3>Delete Link</h3>
+        <form id="searchForm" class="form-horizontal" action="/findNodes" method = "post">
+            <div class="form-group">
+                <label for="graphID" class="col-md-1 control-label">Graph ID</label>
+                <div class="col-md-5">
+                    <input type="text" class="form-control" name="graphID" id="graphID" value="<%= graphID %>">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="node_FromName" class="col-md-1 control-label">From Node Name</label>
+                <div class="col-md-5">
+                    <input type="text" class="form-control" name="nodeValue" id="node_FromName">
+                </div>
+            </div>
+            <div class="indent">
+                <button id="find" type="button" class="btn btn-primary">Find Node</button>
+            </div>
+            <div class="form-group">
+                <label for="node_ToName" class="col-md-1 control-label">To Node Name</label>
+                <div class="col-md-5">
+                    <input type="text" class="form-control" name="nodeValue" id="node_ToName">
+                </div>
+            </div>
+            <div class="indent">
+                <button id="find" type="button" class="btn btn-primary">Find Node</button>
+            </div>
+            <div class="form-group">
+                <label for="linkName" class="col-md-1 control-label">Link Name</label>
+                <div class="col-md-5">
+                    <input type="text" class="form-control" name="nodeValue" id="linkName">
+                </div>
+            </div>
+            <div class="indent">
+                <button id="find" type="button" class="btn btn-primary">Find Link</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="nodes" class="title">
+        <h3>Nodes</h3>
+        <p id="numNodes">
+
+        </p>
+        <div id="nodeList" class="container-fluid">
+
+        </div>
+        <button type="button" class="btn btn-primary">Delete</button>
+    </div>
+</body>
+</html>

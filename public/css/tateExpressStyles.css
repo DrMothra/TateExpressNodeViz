@@ -237,3 +237,6 @@ h1 {
 #yourGraphList button {
     margin-right: 2%;
 }
+.indent {
+    margin: 0 0 1% 8.333%;
+}

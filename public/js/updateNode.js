@@ -47,6 +47,26 @@ function updateLinkInfo(linkID, choice) {
     sendData(graphData, onLinkUpdated);
 }
 
+function getGraphNodes() {
+    //Populate list of nodes
+    var graphID = $('#graphID').val();
+    var nodeData = {
+        graphID: graphID
+    };
+
+    var graphData = {
+        method: 'post',
+        data: nodeData,
+        url: '/getNodes',
+        dataType: 'JSON'
+    };
+
+    sendData(graphData, function(response) {
+        var nodesData = response.msg;
+        $('#node_Name').typeahead( {source: nodesData} );
+    });
+}
+
 function validateForm() {
     if($('#graphID').val() === "") {
         alert("Enter a graph ID");
@@ -75,8 +95,6 @@ $(document).ready(function() {
         updateLinkInfo(this.id, 0);
     });
 
-    //Get url parameters
-    //var params = new URLSearchParams(window.location.search);
-    //var graphID = params.get('updateNodeGraphID');
-    //$('#graphID').val(graphID);
+    //Autocomplete
+    getGraphNodes();
 });

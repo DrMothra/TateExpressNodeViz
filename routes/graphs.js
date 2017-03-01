@@ -125,6 +125,32 @@ exports.copyGraph = function(req, res, next) {
     });
 };
 
+exports.getNodes = function(req, res, next) {
+    //Get list of node names in graph
+    currentGraphID = req.body.graphID;
+    graphCommons.graphs(currentGraphID, function(graph) {
+        var i, nodeNames = [], numNodes = graph.nodes.length;
+        for(i=0; i<numNodes; ++i) {
+            nodeNames.push(graph.nodes[i].name);
+        }
+
+        res.send( {msg: nodeNames} );
+    });
+};
+
+exports.getTypes = function(req, res, next) {
+    //Get list of node types in graph
+    currentGraphID = req.body.graphID;
+    graphCommons.graphs(currentGraphID, function(graph) {
+        var i, typeNames = [], numTypes = graph.properties.edgeTypes.length;
+        for(i=0; i<numTypes; ++i) {
+            typeNames.push(graph.properties.edgeTypes[i].name);
+        }
+
+        res.send( {msg: typeNames} );
+    });
+};
+
 exports.searchGraph = function(req, res, next) {
     //Search graph for required node
     currentGraphID = req.body.graphID;
