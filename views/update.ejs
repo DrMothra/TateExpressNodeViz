@@ -64,10 +64,20 @@
         </div>
     </div>
 
-    <form method="post" action="/login">
-        <div class="form-group title">
-            <button id="back" type="submit" class="btn btn-primary">Home</button>
-        </div>
-    </form>
+    <div>
+        <form id="backToModify" method="post" action="/modifyGraph">
+            <div class="form-group title">
+                <input type="text" name="modifyGraphID" class="getGraphID noDisplay">
+                <button id="modify" type="submit" class="btn btn-primary">Modify Graph</button>
+            </div>
+        </form>
+        <br>
+        <form method="post" action="/login">
+            <div class="form-group title">
+                <button id="back" type="submit" class="btn btn-primary">Home</button>
+            </div>
+        </form>
+    </div>
+
 </body>
 </html>

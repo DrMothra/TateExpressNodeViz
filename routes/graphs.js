@@ -373,3 +373,13 @@ exports.deleteGraph = function(req, res, next) {
     //Set author to deleted - can undelete later
 
 };
+
+exports.modifyGraph = function(req, res, next) {
+    //Get graph name
+    var graphName;
+    currentGraphID = req.body.graphID;
+    graphCommons.graphs(currentGraphID, function(graph) {
+        graphName = graph.properties.name;
+        res.render('modify', { graphID: currentGraphID, graphName: graphName} );
+    });
+};

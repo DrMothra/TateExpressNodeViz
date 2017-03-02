@@ -8,7 +8,6 @@ var fileUpload = require('express-fileupload');
 var index = require('./routes/index');
 var loginUser = require('./routes/loginUser');
 var update = require('./routes/update');
-var modifyGraph = require('./routes/modifyGraph');
 var addNode = require('./routes/addNode');
 var deleteNode = require('./routes/deleteNode');
 var addLink = require('./routes/addLink');
@@ -126,7 +125,7 @@ app.post('/getTypes', graphs.getTypes);
 app.post('/getNodeTypes', graphs.getNodeTypes);
 app.post('/addLink', addLink.addLink);
 app.post('/deleteLink', deleteLink.deleteLink);
-app.use('/modifyGraph', modifyGraph);
+app.post('/modifyGraph', graphs.modifyGraph);
 app.use('/createAccount', createAccount);
 
 app.post("/createGraph", graphs.generateNewGraph);

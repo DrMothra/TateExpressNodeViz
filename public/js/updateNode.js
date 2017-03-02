@@ -2,6 +2,8 @@
  * Created by DrTone on 02/02/2017.
  */
 
+var graphNodeData;
+
 function sendData(data, callback) {
     $.ajax({
         type: data.method,
@@ -62,8 +64,8 @@ function getGraphNodes() {
     };
 
     sendData(graphData, function(response) {
-        var nodesData = response.msg;
-        $('#node_Name').typeahead( {source: nodesData} );
+        graphNodeData = response.msg;
+        $('#node_Name').typeahead( {source: graphNodeData} );
     });
 }
 
@@ -73,8 +75,13 @@ function validateForm() {
         return false;
     }
 
-    if($('#node_Name').val() === "") {
+    var nodeName = $('#node_Name').val();
+    if(nodeName === "") {
         alert("Enter a node name");
+        return false;
+    }
+    if(graphNodeData.indexOf(nodeName) < 0) {
+        alert("Node not in graph!");
         return false;
     }
 
@@ -85,6 +92,9 @@ $(document).ready(function() {
 
     //Autocomplete
     getGraphNodes();
+
+    var graphID = $('#graphID').val();
+    $('.getGraphID').val(graphID);
 
     $('#searchForm').on("submit", function() {
         return validateForm();
