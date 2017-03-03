@@ -239,7 +239,8 @@ exports.dataManager = function(graphID, vizData, res) {
                     clearInterval(_this.nodeRequestTimer);
                     //DEBUG
                     console.log("All nodes created");
-                    _this.onNodeCreateComplete();
+                    //_this.onNodeCreateComplete();
+                    _this.createEdges();
                 }
             });
         }

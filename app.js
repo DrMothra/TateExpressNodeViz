@@ -17,7 +17,7 @@ var graphs = require('./routes/graphs');
 var modify = require('./routes/modify');
 var http = require('http');
 //Database
-var Client = require('mariasql');
+var dbase = require('./model/databaseManager');
 
 var app = express();
 
@@ -39,12 +39,7 @@ server.on('error', onError);
 server.on('listening', onListening);
 
 //Database
-var c = new Client({
-  host: 'mysql.cs.nott.ac.uk',
-  user: 'psztg1_Tate',
-  password: 'VHRHFA',
-  db: 'psztg1_TateViz'
-});
+
 //Home
 /*
 c.connect( {
@@ -64,12 +59,7 @@ c.connect( {
 });
 */
 
-c.on('connect', function() {
-  console.log("Client connected");
-})
-.on('error', function(err) {
-  console.log("Client error: " + err);
-});
+
 
 var socket;
 
