@@ -14,6 +14,7 @@ var addLink = require('./routes/addLink');
 var deleteLink = require('./routes/deleteLink');
 var createAccount = require('./routes/createAccount');
 var graphs = require('./routes/graphs');
+var modify = require('./routes/modify');
 var http = require('http');
 //Database
 var Client = require('mariasql');
@@ -120,12 +121,12 @@ app.use('/', index);
 app.post('/updateNode', update.update);
 app.post('/addNode', addNode.addNode);
 app.post('/deleteNode', deleteNode.deleteNode);
-app.post('/getNodes', graphs.getNodes);
-app.post('/getTypes', graphs.getTypes);
+app.post('/getNodeNames', graphs.getNodeNames);
+app.post('/getLinkTypes', graphs.getLinkTypes);
 app.post('/getNodeTypes', graphs.getNodeTypes);
 app.post('/addLink', addLink.addLink);
 app.post('/deleteLink', deleteLink.deleteLink);
-app.post('/modifyGraph', graphs.modifyGraph);
+app.use('/modifyGraph', modify.modify);
 app.use('/createAccount', createAccount);
 
 app.post("/createGraph", graphs.generateNewGraph);

@@ -2,7 +2,7 @@
  * Created by DrTone on 02/02/2017.
  */
 
-var graphNodeData, graphTypeData;
+var graphNodeNames, graphNodeTypes, graphLinkTypes;
 
 function sendData(data, callback) {
     $.ajax({
@@ -19,7 +19,7 @@ function sendData(data, callback) {
     })
 }
 
-function getGraphNodes() {
+function getGraphNodeNames() {
     //Populate list of nodes
     var graphID = $('#graphID').val();
     var nodeData = {
@@ -29,18 +29,18 @@ function getGraphNodes() {
     var graphData = {
         method: 'post',
         data: nodeData,
-        url: '/getNodes',
+        url: '/getNodeNames',
         dataType: 'JSON'
     };
 
     sendData(graphData, function(response) {
-        graphNodeData = response.msg;
-        $('#fromNodeName').typeahead( {source: graphNodeData} );
-        $('#toNodeName').typeahead( {source: graphNodeData} );
+        graphNodeNames = response.msg;
+        $('#fromNodeName').typeahead( {source: graphNodeNames} );
+        $('#toNodeName').typeahead( {source: graphNodeNames} );
     });
 }
 
-function getGraphTypes() {
+function getGraphNodeTypes() {
     //Populate list of types
     var graphID = $('#graphID').val();
     var linkData = {
@@ -50,15 +50,33 @@ function getGraphTypes() {
     var graphData = {
         method: 'post',
         data: linkData,
-        url: '/getTypes',
+        url: '/getNodeTypes',
         dataType: 'JSON'
     };
 
     sendData(graphData, function(response) {
-        graphTypeData = response.msg;
-        $('#fromNodeType').typeahead( {source: graphTypeData} );
-        $('#toNodeType').typeahead( {source: graphTypeData} );
-        $('#linkType').typeahead( {source: graphTypeData} );
+        graphNodeTypes = response.msg;
+        $('#fromNodeType').typeahead( {source: graphNodeTypes} );
+        $('#toNodeType').typeahead( {source: graphNodeTypes} );
+    })
+}
+
+function getGraphLinkTypes() {
+    var graphID = $('#graphID').val();
+    var linkData = {
+        graphID: graphID
+    };
+
+    var graphData = {
+        method: 'post',
+        data: linkData,
+        url: '/getLinkTypes',
+        dataType: 'JSON'
+    };
+
+    sendData(graphData, function(response) {
+        graphLinkTypes = response.msg;
+        $('#linkType').typeahead( {source: graphLinkTypes} );
     })
 }
 
@@ -73,7 +91,7 @@ function validateForm() {
         alert("Enter a node name");
         return false;
     }
-    if(graphNodeData.indexOf(fromName) < 0) {
+    if(graphNodeNames.indexOf(fromName) < 0) {
         alert("From node not in graph!");
         return false;
     }
@@ -93,7 +111,7 @@ function validateForm() {
         alert("Enter a node name");
         return false;
     }
-    if(graphNodeData.indexOf(toName) < 0) {
+    if(graphNodeNames.indexOf(toName) < 0) {
         alert("To node not in graph!");
         return false;
     }
@@ -135,8 +153,9 @@ function addNewLink() {
 $(document).ready(function() {
 
     //Autocomplete
-    getGraphNodes();
-    getGraphTypes();
+    getGraphNodeNames();
+    getGraphNodeTypes();
+    getGraphLinkTypes();
 
     $('#addNewLink').on("click", function() {
         if(!validateForm()) return;

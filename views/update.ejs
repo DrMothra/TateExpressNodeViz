@@ -17,7 +17,8 @@
     <h1>Tate Node Visualiser</h1>
 
     <div id="updateNode" class="title">
-        <h3>Update Node</h3>
+        <h2>Update Node</h2>
+        <h3>Graph - <span id="graphName"><%= graphName %></span></h3>
         <form id="searchForm" class="form-horizontal" action="/searchGraph" method = "post" autocomplete="off">
             <div class="form-group">
                 <label for="graphID" class="col-md-1 control-label">Graph ID</label>
@@ -64,20 +65,14 @@
         </div>
     </div>
 
-    <div>
-        <form id="backToModify" method="post" action="/modifyGraph">
-            <div class="form-group title">
-                <input type="text" name="modifyGraphID" class="getGraphID noDisplay">
-                <button id="modify" type="submit" class="btn btn-primary">Modify Graph</button>
-            </div>
-        </form>
-        <br>
-        <form method="post" action="/login">
-            <div class="form-group title">
-                <button id="back" type="submit" class="btn btn-primary">Home</button>
-            </div>
-        </form>
+    <div class="title">
+        <button id="backToModify" type="submit" class="btn btn-primary">Modify Graph</button>
     </div>
-
+    <br>
+    <form method="post" action="/login">
+        <div class="form-group title">
+            <button id="back" type="submit" class="btn btn-primary">Home</button>
+        </div>
+    </form>
 </body>
 </html>

@@ -125,7 +125,7 @@ exports.copyGraph = function(req, res, next) {
     });
 };
 
-exports.getNodes = function(req, res, next) {
+exports.getNodeNames = function(req, res, next) {
     //Get list of node names in graph
     currentGraphID = req.body.graphID;
     graphCommons.graphs(currentGraphID, function(graph) {
@@ -138,7 +138,7 @@ exports.getNodes = function(req, res, next) {
     });
 };
 
-exports.getTypes = function(req, res, next) {
+exports.getLinkTypes = function(req, res, next) {
     //Get list of edge types in graph
     currentGraphID = req.body.graphID;
     graphCommons.graphs(currentGraphID, function(graph) {
@@ -376,8 +376,11 @@ exports.deleteGraph = function(req, res, next) {
 
 exports.modifyGraph = function(req, res, next) {
     //Get graph name
-    var graphName;
     currentGraphID = req.body.graphID;
+    var graphName = req.body.name;
+    if(graphName === undefined) {
+
+    }
     graphCommons.graphs(currentGraphID, function(graph) {
         graphName = graph.properties.name;
         res.render('modify', { graphID: currentGraphID, graphName: graphName} );

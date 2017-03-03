@@ -2,7 +2,7 @@
  * Created by DrTone on 02/02/2017.
  */
 
-var graphNodeData;
+var graphNodeNames;
 
 function sendData(data, callback) {
     $.ajax({
@@ -49,7 +49,7 @@ function updateLinkInfo(linkID, choice) {
     sendData(graphData, onLinkUpdated);
 }
 
-function getGraphNodes() {
+function getGraphNodeNames() {
     //Populate list of nodes
     var graphID = $('#graphID').val();
     var nodeData = {
@@ -59,14 +59,20 @@ function getGraphNodes() {
     var graphData = {
         method: 'post',
         data: nodeData,
-        url: '/getNodes',
+        url: '/getNodeNames',
         dataType: 'JSON'
     };
 
     sendData(graphData, function(response) {
-        graphNodeData = response.msg;
-        $('#node_Name').typeahead( {source: graphNodeData} );
+        graphNodeNames = response.msg;
+        $('#node_Name').typeahead( {source: graphNodeNames} );
     });
+}
+
+function onBack() {
+    var graphID = $('#graphID').val();
+    var name = $('#graphName').html();
+    window.location.href = "/modifyGraph?graphID="+graphID+"&name="+name;
 }
 
 function validateForm() {
@@ -91,7 +97,7 @@ function validateForm() {
 $(document).ready(function() {
 
     //Autocomplete
-    getGraphNodes();
+    getGraphNodeNames();
 
     var graphID = $('#graphID').val();
     $('.getGraphID').val(graphID);
@@ -107,4 +113,8 @@ $(document).ready(function() {
     $("[id*='noLink']").on("click", function() {
         updateLinkInfo(this.id, 0);
     });
+
+    $("#backToModify").on("click", function () {
+        onBack();
+    })
 });

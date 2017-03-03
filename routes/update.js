@@ -3,8 +3,5 @@
  */
 
 exports.update = function(req, res, next) {
-
-    res.render('update', { graphID: req.body.updateNodeGraphID, node_Name: null, nodes: [], linkData: []});
+    res.render('update', { graphID: req.body.updateNodeGraphID, graphName: req.body.updateNodeGraphName, node_Name: null, nodes: [], linkData: []});
 };
-
-
