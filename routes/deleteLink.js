@@ -3,5 +3,5 @@
  */
 
 exports.deleteLink = function(req, res, next) {
-    res.render('deleteLink', { graphID: req.body.deleteLinkGraphID} );
+    res.render('deleteLink', { graphID: req.body.deleteLinkGraphID, graphName: req.body.deleteLinkGraphName } );
 };

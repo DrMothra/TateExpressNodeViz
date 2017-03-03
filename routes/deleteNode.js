@@ -3,8 +3,5 @@
  */
 
 exports.deleteNode = function(req, res, next) {
-    //DEBUG
-    console.log("deleteNode graph id = ", req.body.deleteNodeGraphID);
-
-    res.render('deleteNode', { graphID: req.body.deleteNodeGraphID, node_Name: null, node: null, nodeData: []} );
+    res.render('deleteNode', { graphID: req.body.deleteNodeGraphID, graphName: req.body.deleteNodeGraphName, node_Name: null, node: null, nodeData: []} );
 };

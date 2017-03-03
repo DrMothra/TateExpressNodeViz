@@ -88,7 +88,7 @@ function validateForm() {
 
     var fromName = $('#fromNodeName').val();
     if(fromName === "") {
-        alert("Enter a node name");
+        alert("Enter a from node name");
         return false;
     }
     if(graphNodeNames.indexOf(fromName) < 0) {
@@ -101,14 +101,14 @@ function validateForm() {
         alert("Enter a valid from type");
         return false;
     }
-    if(graphTypeData.indexOf(fromType) < 0) {
-        alert("Enter a valid type");
+    if(graphNodeTypes.indexOf(fromType) < 0) {
+        alert("Enter a valid from type");
         return false;
     }
 
     var toName = $('#toNodeName').val();
     if(toName === "") {
-        alert("Enter a node name");
+        alert("Enter a to node name");
         return false;
     }
     if(graphNodeNames.indexOf(toName) < 0) {
@@ -118,10 +118,10 @@ function validateForm() {
 
     var toType = $('#toNodeType').val();
     if(toType === "") {
-        alert("Enter a node type");
+        alert("Enter a node to type");
         return false;
     }
-    if(graphTypeData.indexOf(toType) < 0) {
+    if(graphNodeTypes.indexOf(toType) < 0) {
         alert("Enter a valid to type");
         return false;
     }
@@ -150,6 +150,12 @@ function addNewLink() {
     });
 }
 
+function onBack() {
+    var graphID = $('#graphID').val();
+    var name = $('#graphName').html();
+    window.location.href = "/modifyGraph?graphID="+graphID+"&name="+name;
+}
+
 $(document).ready(function() {
 
     //Autocomplete
@@ -160,6 +166,10 @@ $(document).ready(function() {
     $('#addNewLink').on("click", function() {
         if(!validateForm()) return;
         addNewLink();
+    });
+
+    $("#backToModify").on("click", function () {
+        onBack();
     });
 });
 

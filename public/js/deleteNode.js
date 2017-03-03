@@ -2,6 +2,8 @@
  * Created by DrTone on 23/02/2017.
  */
 
+var graphNodeNames;
+
 function sendData(data, callback) {
     $.ajax({
         type: data.method,
@@ -54,15 +56,20 @@ function validateForm() {
         return false;
     }
 
-    if($('#node_Name').val() === "") {
+    var nodeName = $('#node_Name').val();
+    if(nodeName === "") {
         alert("Enter a node name");
+        return false;
+    }
+    if(graphNodeNames.indexOf(nodeName) < 0) {
+        alert("Node not in graph!");
         return false;
     }
 
     return true;
 }
 
-function getGraphNodes() {
+function getGraphNodeNames() {
     //Populate list of nodes
     var graphID = $('#graphID').val();
     var nodeData = {
@@ -72,20 +79,26 @@ function getGraphNodes() {
     var graphData = {
         method: 'post',
         data: nodeData,
-        url: '/getNodes',
+        url: '/getNodeNames',
         dataType: 'JSON'
     };
 
     sendData(graphData, function(response) {
-        var nodesData = response.msg;
-        $('#node_Name').typeahead( {source: nodesData} );
+        graphNodeNames = response.msg;
+        $('#node_Name').typeahead( {source: graphNodeNames} );
     });
+}
+
+function onBack() {
+    var graphID = $('#graphID').val();
+    var name = $('#graphName').html();
+    window.location.href = "/modifyGraph?graphID="+graphID+"&name="+name;
 }
 
 $(document).ready(function() {
 
     //Autocomplete
-    getGraphNodes();
+    getGraphNodeNames();
 
     $("[id^='deleteCheck']").on("click", function() {
         onDeleteNode(this.id);
@@ -93,6 +106,10 @@ $(document).ready(function() {
 
     $('#find').on("click", function() {
         onDeleteNodes();
+    });
+
+    $("#backToModify").on("click", function () {
+        onBack();
     });
 });
 

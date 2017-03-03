@@ -240,3 +240,6 @@ h1 {
 .indent {
     margin: 0 0 1% 8.333%;
 }
+#nodes {
+    margin-bottom: 1%;
+}

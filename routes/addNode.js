@@ -3,5 +3,5 @@
  */
 
 exports.addNode = function(req, res, next) {
-    res.render('addNode', { graphID: req.body.addNodeGraphID} );
+    res.render('addNode', { graphID: req.body.addNodeGraphID, graphName: req.body.addNodeGraphName} );
 };

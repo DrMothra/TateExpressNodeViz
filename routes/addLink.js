@@ -3,5 +3,5 @@
  */
 
 exports.addLink = function(req, res, next) {
-    res.render('addLink', { graphID: req.body.addLinkGraphID} );
+    res.render('addLink', { graphID: req.body.addLinkGraphID, graphName: req.body.addLinkGraphName} );
 };

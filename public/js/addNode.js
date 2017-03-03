@@ -2,7 +2,7 @@
  * Created by atg on 01/02/2017.
  */
 
-var nodeData, typeData;
+var graphNodeNames, graphNodeTypes;
 
 function sendData(data, callback) {
     $.ajax({
@@ -19,7 +19,7 @@ function sendData(data, callback) {
     })
 }
 
-function getGraphNodes() {
+function getGraphNodeNames() {
     //Populate list of nodes
     var graphID = $('#graphID').val();
     var nodeData = {
@@ -29,17 +29,17 @@ function getGraphNodes() {
     var graphData = {
         method: 'post',
         data: nodeData,
-        url: '/getNodes',
+        url: '/getNodeNames',
         dataType: 'JSON'
     };
 
     sendData(graphData, function(response) {
-        nodeData = response.msg;
-        $('#addNodeName').typeahead( {source: nodeData} );
+        graphNodeNames = response.msg;
+        $('#addNodeName').typeahead( {source: graphNodeNames} );
     });
 }
 
-function getNodeTypes() {
+function getGraphNodeTypes() {
     //Populate list of types
     var graphID = $('#graphID').val();
     var linkData = {
@@ -54,8 +54,8 @@ function getNodeTypes() {
     };
 
     sendData(graphData, function(response) {
-        typeData = response.msg;
-        $('#addNodeType').typeahead( {source: typeData} );
+        graphNodeTypes = response.msg;
+        $('#addNodeType').typeahead( {source: graphNodeTypes} );
     })
 }
 
@@ -65,8 +65,13 @@ function validateForm() {
         return false;
     }
 
-    if($('#addNodeName').val() === "") {
+    var nodeName = $('#addNodeName').val();
+    if(nodeName === "") {
         alert("Enter a node name");
+        return false;
+    }
+    if(graphNodeNames.indexOf(nodeName) < 0) {
+        alert("Node not in graph!");
         return false;
     }
 
@@ -75,8 +80,7 @@ function validateForm() {
         alert("Enter a node type");
         return false;
     }
-
-    if(typeData.indexOf(nodeType) < 0) {
+    if(graphNodeTypes.indexOf(nodeType) < 0) {
         alert("Enter a valid type");
         return false;
     }
@@ -99,13 +103,24 @@ function addNewNode() {
     });
 }
 
+function onBack() {
+    var graphID = $('#graphID').val();
+    var name = $('#graphName').html();
+    window.location.href = "/modifyGraph?graphID="+graphID+"&name="+name;
+}
+
 $(document).ready(function() {
 
     //Autocomplete actions
-    getNodeTypes();
+    getGraphNodeNames();
+    getGraphNodeTypes();
 
     $('#addNewNode').on("click", function() {
         if(!validateForm()) return;
         addNewNode();
+    });
+
+    $("#backToModify").on("click", function () {
+        onBack();
     });
 });

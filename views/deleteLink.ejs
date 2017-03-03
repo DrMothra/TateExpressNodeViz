@@ -19,7 +19,8 @@
     <h1>Tate Node Visualiser</h1>
 
     <div id="deleteLink" class="title">
-        <h3>Delete Link</h3>
+        <h2>Delete Link</h2>
+        <h3>Graph - <span id="graphName"><%= graphName %></span></h3>
         <form id="searchForm" class="form-horizontal" action="/findNodes" method = "post" autocomplete="off">
             <div class="form-group">
                 <label for="graphID" class="col-md-1 control-label">Graph ID</label>
@@ -51,5 +52,14 @@
     <div id="nodes" class="title">
         <button id="linkDelete" type="button" class="btn btn-primary">Delete</button>
     </div>
+
+    <div class="title">
+        <button id="backToModify" type="submit" class="btn btn-primary">Modify Graph</button>
+    </div>
+    <form method="post" action="/login">
+        <div class="form-group title">
+            <button id="home" type="submit" class="btn btn-primary">Home</button>
+        </div>
+    </form>
 </body>
 </html>

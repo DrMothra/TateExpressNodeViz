@@ -207,7 +207,7 @@ exports.searchGraph = function(req, res, next) {
                 }
             }
 
-            res.render("update", { graphID: currentGraphID, node_Name: req.body.nodeValue, nodes: nodeNames, linkData: nodeLinks} );
+            res.render("update", { graphID: currentGraphID, graphName: graph.properties.name, node_Name: req.body.nodeValue, nodes: nodeNames, linkData: nodeLinks} );
         });
     });
 };
