@@ -17,12 +17,18 @@ exports.login = function(req, res, next) {
             console.log("User found");
             res.send( {msg: "User found"} );
         }
-    })
+    });
 };
 
 exports.createAccount = function(req, res, next) {
-    //DEBUG
-    console.log("Created new account");
-
-    res.render("created");
+    //See if user already exists
+    dbase.checkForUser(req.body.fullName, req.body.username, function(exists) {
+        if(exists) {
+            console.log("User already exists");
+            res.send( {msg: "User already exists"} );
+        } else {
+            console.log("Valid user");
+            res.send( {msg: "Valid new user"} );
+        }
+    });
 };

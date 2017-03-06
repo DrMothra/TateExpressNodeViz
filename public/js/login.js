@@ -19,6 +19,11 @@ function validateForm() {
 function signIn() {
     if(!validateForm()) return;
 
+    if($('#rememberMe').prop("checked")) {
+        var userName = $('#userName').val();
+        localStorage.setItem("TateUsername", userName);
+    }
+
     $('#loginForm').ajaxSubmit({
 
         error: function() {
@@ -41,6 +46,14 @@ function signIn() {
 }
 
 $(document).ready(function() {
+
+    //See if we have logged in before
+    var userName = localStorage.getItem("TateUsername");
+    //DEBUG
+    console.log("Username = ", userName);
+    if(userName !== undefined) {
+        $('#userName').val(userName);
+    }
 
     $('#signIn').on("click", function() {
         $('#noSuchUser').hide();

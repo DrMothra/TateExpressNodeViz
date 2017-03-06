@@ -41,3 +41,24 @@ exports.validateUser = function(username, password, callback) {
     c.end();
 };
 
+exports.checkForUser = function(fullName, userName, callback) {
+    c.query('select Fullname, Username from users', function(err, rows) {
+        if(err) {
+            throw err;
+        }
+        //See if name already exists
+        var exists = false;
+        var i, numRows = rows.length;
+        for(i=0; i<numRows; ++i) {
+            if(rows[i].Fullname === fullName || rows[i].Username === userName) {
+                exists = true;
+                break;
+            }
+        }
+        if(callback) {
+            callback(exists);
+        }
+    });
+
+    c.end();
+};

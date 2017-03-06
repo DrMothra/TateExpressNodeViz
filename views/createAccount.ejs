@@ -5,6 +5,7 @@
     <title>Create New Account</title>
 
     <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery.form.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/account.js"></script>
 
@@ -45,7 +46,7 @@
             </div>
             <div class="form-group">
                 <div class="col-md-offset-1 col-md-5">
-                    <button type="submit" class="btn btn-primary">Create</button>
+                    <button id="accountCreate" type="button" class="btn btn-primary">Create</button><span id="accountStatus" class="noDisplay"></span>
                 </div>
             </div>
         </form>
@@ -57,7 +58,6 @@
                 </div>
             </form>
         </div>
-
     </div>
 </body>
 </html>

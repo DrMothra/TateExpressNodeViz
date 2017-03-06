@@ -251,3 +251,7 @@ h1 {
     top: 25%;
     color: red;
 }
+#accountStatus {
+    margin-left: 1%;
+    color: red;
+}

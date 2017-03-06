@@ -26,9 +26,32 @@ function validateForm() {
     return true;
 }
 
+function createAccount() {
+    if(!validateForm()) return;
+
+    $('#newAccountForm').ajaxSubmit({
+
+        error: function() {
+            console.log("Error adding new node");
+        },
+
+        success: function(response) {
+            //Show login validation
+            var msg = response.msg;
+            var displayelem = $('#accountStatus');
+            displayelem.show();
+            if(msg === "User already exists") {
+                displayelem.html("User already exists, enter different name/username.");
+            } else {
+                displayelem.html("Account created! Press back to login to your account.")
+            }
+        }
+    });
+}
+
 $(document).ready(function() {
 
-    $('#newAccountForm').on("submit", function() {
-        return validateForm();
+    $('#accountCreate').on("click", function() {
+        return createAccount();
     })
 });
