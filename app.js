@@ -15,9 +15,8 @@ var deleteLink = require('./routes/deleteLink');
 var createAccount = require('./routes/createAccount');
 var graphs = require('./routes/graphs');
 var modify = require('./routes/modify');
+var show = require('./routes/show');
 var http = require('http');
-//Database
-var dbase = require('./model/databaseManager');
 
 var app = express();
 
@@ -37,29 +36,6 @@ server.listen(port, address);
 //server.listen(port, '127.0.0.1');
 server.on('error', onError);
 server.on('listening', onListening);
-
-//Database
-
-//Home
-/*
-c.connect( {
-    host: '127.0.0.1',
-    user: 'root',
-    password: 'RAV4oct16',
-    db: 'tate'
-});
-*/
-//Uni
-/*
-c.connect( {
-    host: 'mysql.cs.nott.ac.uk',
-    user: 'psztg1_Tate',
-    password: 'VHRHFA',
-    db: 'psztg1_TateViz'
-});
-*/
-
-
 
 var socket;
 
@@ -119,6 +95,7 @@ app.post('/deleteLink', deleteLink.deleteLink);
 app.use('/modifyGraph', modify.modify);
 app.use('/createAccount', createAccount);
 
+app.use('/showGraphs', show.showGraphs);
 app.post("/createGraph", graphs.generateNewGraph);
 app.post("/generateGraph", graphs.generateGraph);
 app.post("/copyGraph", graphs.copyGraph);

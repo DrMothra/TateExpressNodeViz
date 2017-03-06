@@ -5,8 +5,9 @@
     <title>Tate Login</title>
 
     <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery.form.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/login.js"></script>
+    <script type="text/javascript" src="js/login.js?v=0.1"></script>
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
@@ -42,7 +43,7 @@
             </div>
             <div class="form-group">
                 <div class="col-md-offset-1 col-md-5">
-                    <button type="submit" class="btn btn-primary">Sign In</button>
+                    <button id="signIn" type="button" class="btn btn-primary">Sign In</button>
                 </div>
             </div>
         </form>
@@ -52,6 +53,12 @@
         <button id="createAccount" type="button" class="btn btn-primary">Create Account</button>
     </div>
 
+    <div id="noSuchUser" class="noDisplay infoPanel">
+        <p>
+            There is no record of that user!<br>
+            Please re-type your username or create an account
+        </p>
+    </div>
 
 </body>
 </html>
