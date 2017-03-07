@@ -230,12 +230,16 @@ exports.findNode = function(req, res, next) {
         graphCommons.nodes_search(search_query, function(results) {
             //console.log(results);
             var numNodes = results.nodes.length;
-            var i, nodeData = [];
+            var i, currentNode, nodeData = [], nodeInfo;
             for(i=0; i<numNodes; ++i) {
-                nodeData.push(results.nodes[i].name);
+                currentNode = results.nodes[i];
+                nodeInfo = {};
+                nodeInfo.name = currentNode.name;
+                nodeInfo.id = currentNode.id;
+                nodeInfo.type = currentNode.nodetype.name;
+                nodeData.push(nodeInfo);
             }
 
-            //res.render("deleteNode", { graphID: currentGraphID, node_Name: nodeName, node: null, nodeData: nodeData} );
             res.send( {msg: nodeData} );
         });
     });
@@ -327,6 +331,24 @@ exports.addNewLink = function(req, res, next) {
     })
 };
 
+exports.deleteANode = function(req, res, next) {
+    currentGraphID = req.body.graphID;
+
+    var signals = { "signals" : [
+        {
+            "action": "node_delete",
+            "id": req.body.nodeID
+        }
+    ]};
+
+    graphCommons.graphs(currentGraphID, function(graph) {
+        graphCommons.update_graph(currentGraphID, signals, function() {
+            console.log("Deleted node");
+            res.send( {msg: 'OK'} );
+        })
+    })
+};
+
 exports.deleteALink = function(req, res, next) {
     currentGraphID = req.body.graphID;
 
@@ -378,6 +400,7 @@ function validateSearchResults(results) {
     var tateGraphs = [], tateGraph;
     for(i=0; i<numResults; ++i) {
         graph = results[i];
+        if(!graph) continue;
         if(graph.obj === 'Graph' && graph.owner.username === 'tate') {
             //Check graph subtitle
             if(graph.subtitle !== "" && graph.subtitle.indexOf('TateCartographyProject') >= 0) {
@@ -420,7 +443,9 @@ exports.searchCommons = function(req, res, next) {
 
 exports.deleteGraph = function(req, res, next) {
     //Delete graph
-    graphCommons.delete_graph(req.body.graphID);
+    graphCommons.delete_graph(req.body.graphID, function(response) {
+        res.send( {msg: "Graph deleted"});
+    });
 };
 
 exports.modifyGraph = function(req, res, next) {

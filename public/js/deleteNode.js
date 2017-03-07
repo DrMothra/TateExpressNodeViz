@@ -2,7 +2,7 @@
  * Created by DrTone on 23/02/2017.
  */
 
-var graphNodeNames;
+var graphNodeNames, nodeData, currentNode;
 
 function sendData(data, callback) {
     $.ajax({
@@ -19,9 +19,39 @@ function sendData(data, callback) {
     })
 }
 
-function onDeleteNodes() {
+function onDeleteNode(id) {
+    var index = id.slice(-1);
+    currentNode = nodeData[index];
+
+    //DEBUG
+    console.log("Node = ", currentNode.name);
+}
+
+function deleteNode() {
+    var graphID = $('#graphID').val();
+    var nodeData = {
+        graphID: graphID,
+        nodeID: currentNode.id
+    };
+
+    var graphData = {
+        method: 'post',
+        data: nodeData,
+        url: '/deleteANode',
+        dataType: 'JSON'
+    };
+
+    sendData(graphData, function(response) {
+        $('#addStatus').html("Node deleted");
+    })
+}
+
+function onFindNodes() {
     //Create list of potential nodes to delete
     if(validateForm()) {
+        //Clear any previous search
+        var elem = $('#nodeList');
+        elem.empty();
         $('#searchForm').ajaxSubmit({
 
             error: function() {
@@ -35,16 +65,23 @@ function onDeleteNodes() {
                     $('#numNodes').html("No nodes found");
                     return;
                 }
-                var i, node, elem = $('#nodeList');
+                nodeData = response.msg;
+                var i, nodeInfo;
                 for(i=0; i<numNodes; ++i) {
-                    node = response.msg[i];
+                    nodeInfo = response.msg[i];
                     elem.append("<div class='row'>" +
-                            "<div class='col-md-3'>" + node + "</div>" +
-                            "<div class='col-md-3 checkbox'><input type='checkbox'></div>" +
+                            "<div class='col-md-3'>" + nodeInfo.name + " (" + nodeInfo.type + ")</div>" +
+                            "<div class='col-md-3 checkbox'><input type='checkbox' class='deleteList'></div>" +
                             "</div>");
                 }
                 //Set up ids for checkboxes
-                
+                $('.deleteList').attr("id", function(index, old) {
+                    return 'deleteNode' + index;
+                });
+
+                $("[id^='deleteNode']").on("click", function() {
+                    onDeleteNode(this.id);
+                });
             }
         })
     }
@@ -100,12 +137,12 @@ $(document).ready(function() {
     //Autocomplete
     getGraphNodeNames();
 
-    $("[id^='deleteCheck']").on("click", function() {
-        onDeleteNode(this.id);
+    $('#find').on("click", function() {
+        onFindNodes();
     });
 
-    $('#find').on("click", function() {
-        onDeleteNodes();
+    $('#nodeDelete').on("click", function() {
+        deleteNode();
     });
 
     $("#backToModify").on("click", function () {

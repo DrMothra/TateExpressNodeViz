@@ -52,11 +52,12 @@ var graphManager = (function() {
             dataType: 'JSON'};
 
         sendData(graphData, onGraphCopied);
+        $('#graphStatus').html("Copying...");
     }
 
     function onGraphCopied() {
         //Refresh page
-        window.location.reload(true);
+        //window.location.reload(true);
     }
 
     function onDeleteGraph(id) {
@@ -72,7 +73,10 @@ var graphManager = (function() {
                 dataType: 'JSON'
             };
 
-            sendData(graphData);
+            sendData(graphData, function() {
+                //Refresh graph status
+                window.location.reload(true);
+            });
         }
     }
 
@@ -213,6 +217,11 @@ var graphManager = (function() {
                 dataType: 'JSON'
             };
             sendData(graphData);
+        },
+
+        graphCompleted: function() {
+            //Refresh graph status
+            window.location.reload(true);
         }
     }
 })();
@@ -228,12 +237,12 @@ $(document).ready(function() {
             {msg: "NewNodeCreated", element: "nodesCreated"},
             {msg: "EdgesToCreate", element: "edgesToCreate"},
             {msg: "NewEdgeCreated", element: "edgesCreated"},
-            {msg: "GraphCompleted", element: "graphStatus"}
+            {msg: "GraphCompleted", element: "graphStatus", onReceived: graphManager.graphCompleted }
         ];
         var i, numMessages = messages.length, msg;
         for(i=0; i<numMessages; ++i) {
             msg = messages[i];
-            socketManager.listen(msg.msg, msg.element);
+            socketManager.listen(messages[i]);
         }
     }
 

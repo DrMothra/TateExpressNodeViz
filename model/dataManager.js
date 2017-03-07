@@ -146,6 +146,7 @@ exports.dataManager = function(graphID, vizData, res) {
 
     this.setNumberNodesToCreate = function(numNodes) {
         this.nodesToCreate = numNodes;
+        exports.emitter.emit("NodesToCreate", this.nodesToCreate);
     };
 
     this.onNodeCreateComplete = function() {
@@ -154,6 +155,7 @@ exports.dataManager = function(graphID, vizData, res) {
 
     this.setNumberEdgesToCreate = function(numEdges) {
         this.edgesToCreate = numEdges;
+        exports.emitter.emit("EdgesToCreate", this.edgesToCreate);
     };
 
     this.onEdgeCreateComplete = function() {

@@ -105,6 +105,7 @@ app.post("/processLinks", graphs.processLinks);
 app.post("/addNewNode", graphs.addNewNode);
 app.post("/addNewLink", graphs.addNewLink);
 app.post("/deleteALink", graphs.deleteALink);
+app.post("/deleteANode", graphs.deleteANode);
 app.post("/processSearch", graphs.searchCommons);
 app.post("/deleteGraph", graphs.deleteGraph);
 

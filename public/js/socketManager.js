@@ -18,10 +18,13 @@ var SocketManager = function() {
             socket = io.connect();
         },
 
-        listen: function(event, elem) {
-            socket.on(event, function(data) {
+        listen: function(msgInfo) {
+            socket.on(msgInfo.msg, function(data) {
                 console.log("Received ", data.msg);
-                $('#'+elem).html(data.msg);
+                $('#'+msgInfo.element).html(data.msg);
+                if(msgInfo.onReceived) {
+                    msgInfo.onReceived();
+                }
             })
         }
     }
