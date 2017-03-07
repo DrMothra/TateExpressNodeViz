@@ -21,7 +21,7 @@
     <div id="deleteLink" class="title">
         <h2>Delete Link</h2>
         <h3>Graph - <span id="graphName"><%= graphName %></span></h3>
-        <form id="searchForm" class="form-horizontal" action="/findNodes" method = "post" autocomplete="off">
+        <form id="deleteLinkForm" class="form-horizontal" action="/deleteALink" method = "post" autocomplete="off">
             <div class="form-group">
                 <label for="graphID" class="col-md-1 control-label">Graph ID</label>
                 <div class="col-md-5">
@@ -31,19 +31,19 @@
             <div class="form-group">
                 <label for="node_FromName" class="col-md-1 control-label">From Node Name</label>
                 <div class="col-md-5">
-                    <input type="text" class="form-control" name="nodeValue" id="node_FromName">
+                    <input type="text" class="form-control" name="node_FromName" id="node_FromName">
                 </div>
             </div>
             <div class="form-group">
                 <label for="node_ToName" class="col-md-1 control-label">To Node Name</label>
                 <div class="col-md-5">
-                    <input type="text" class="form-control" name="nodeValue" id="node_ToName">
+                    <input type="text" class="form-control" name="node_ToName" id="node_ToName">
                 </div>
             </div>
             <div class="form-group">
                 <label for="linkName" class="col-md-1 control-label">Link Name</label>
                 <div class="col-md-5">
-                    <input type="text" class="form-control" name="nodeValue" id="linkName">
+                    <input type="text" class="form-control" name="linkName" id="linkName">
                 </div>
             </div>
         </form>
@@ -51,6 +51,10 @@
 
     <div id="nodes" class="title">
         <button id="linkDelete" type="button" class="btn btn-primary">Delete</button>
+    </div>
+
+    <div>
+        <p id="addStatus" class="label label-success"></p>
     </div>
 
     <div class="title">

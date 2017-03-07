@@ -26,7 +26,7 @@ function onLinkUpdated(response) {
         return;
     }
 
-    var elem = $('#'+link+'updated');
+    var elem = $('#updated'+link);
     elem.show();
     setTimeout(function() {
         elem.hide();
@@ -35,7 +35,7 @@ function onLinkUpdated(response) {
 
 function updateLinkInfo(linkID, choice) {
     //Strip out id
-    var id = linkID.charAt(0);
+    var id = linkID.slice(-1);
     var linkData = {
         link: id,
         choice: choice

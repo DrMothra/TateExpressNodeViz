@@ -327,6 +327,52 @@ exports.addNewLink = function(req, res, next) {
     })
 };
 
+exports.deleteALink = function(req, res, next) {
+    currentGraphID = req.body.graphID;
+
+    var i, fromID, toID, nodeData, edgeData, edgeID, linkName = req.body.linkName;
+    graphCommons.graphs(currentGraphID, function(graph) {
+        var search_query = {
+            "query": req.body.node_FromName,
+            "graph": currentGraphID
+        };
+        graphCommons.nodes_search(search_query, function(results) {
+            fromID = results.nodes[0].id;
+            search_query = {
+                "query": req.body.node_ToName,
+                "graph": currentGraphID
+            };
+            graphCommons.nodes_search(search_query, function(results) {
+                toID = results.nodes[0].id;
+                nodeData = graph.get_node(fromID);
+                edgeData = graph.edges_from(nodeData);
+                for(i=0; i<edgeData.length; ++i) {
+                    if(edgeData[i].name === linkName) {
+                        edgeID = edgeData[i].id;
+                        break;
+                    }
+                }
+                if(edgeID !== undefined) {
+                    var signals = { "signals" : [
+                        {
+                            "action": "edge_delete",
+                            "id": edgeID,
+                            "from": fromID,
+                            "to": toID,
+                            "name": linkName
+                        }
+                    ]};
+                    graphCommons.update_graph(currentGraphID, signals, function() {
+                        console.log("Deleted link");
+                        res.send( {msg: 'OK'} );
+                    });
+                }
+            });
+        });
+
+    })
+};
+
 function validateSearchResults(results) {
     var i, graph, strIndex, description, numResults = results.length;
     var tateGraphs = [], tateGraph;

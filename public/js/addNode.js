@@ -70,10 +70,6 @@ function validateForm() {
         alert("Enter a node name");
         return false;
     }
-    if(graphNodeNames.indexOf(nodeName) < 0) {
-        alert("Node not in graph!");
-        return false;
-    }
 
     var nodeType = $('#addNodeType').val();
     if(nodeType === "") {
@@ -112,7 +108,7 @@ function onBack() {
 $(document).ready(function() {
 
     //Autocomplete actions
-    getGraphNodeNames();
+    //getGraphNodeNames();
     getGraphNodeTypes();
 
     $('#addNewNode').on("click", function() {

@@ -99,8 +99,18 @@ function getGraphNodeNames() {
     });
 }
 
-function deleteLink() {
+function deleteALink() {
+    $('#deleteLinkForm').ajaxSubmit({
 
+        error: function() {
+            console.log("Error deleting link");
+        },
+
+        success: function(response) {
+            console.log("Received ", response);
+            $('#addStatus').html("Link deleted");
+        }
+    });
 }
 
 function onBack() {
@@ -116,7 +126,7 @@ $(document).ready(function() {
 
     $('#linkDelete').on("click", function() {
         if(!validateForm()) return;
-        deleteLink();
+        deleteALink();
     });
 
     $("#backToModify").on("click", function () {
