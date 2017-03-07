@@ -5,13 +5,23 @@
 //All database handling
 var Client = require('mariasql');
 
+//Uni
+/*
 var c = new Client({
     host: 'mysql.cs.nott.ac.uk',
     user: 'psztg1_TateViz',
     password: 'VHRHFA',
     db: 'psztg1_TateViz'
 });
-console.log("Client connected");
+*/
+
+//Home
+var c = new Client({
+    host: 'localhost',
+    user: 'root',
+    password: 'RAV4oct16',
+    db: 'TateViz'
+});
 
 c.on('connect', function() {
     console.log("Client connected");
@@ -61,4 +71,16 @@ exports.checkForUser = function(fullName, userName, callback) {
     });
 
     c.end();
+};
+
+exports.addUser = function(fullName, userName) {
+    c.query('insert into users (Username, Password, Fullname) values (:userName,"xxx", :fullName)',
+        { userName: userName, fullName: fullName},
+        function(err, rows) {
+            if(err) {
+                throw err;
+            }
+            //DEBUG
+            console.log("New user inserted");
+        });
 };

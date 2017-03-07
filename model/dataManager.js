@@ -48,6 +48,8 @@ exports.dataManager = function(graphID, vizData, res) {
         ]
     };
 
+    var CREATE=0, COPY=1;
+
     this.nodeQueue = [];
     this.nodeRequestTime = 200;
     this.canCreateNode = true;
@@ -65,6 +67,7 @@ exports.dataManager = function(graphID, vizData, res) {
         this.nodeTypes = [];
         this.edgeTypes = [];
         this.graphComplete = false;
+        this.status = CREATE;
     };
 
     this.setFileData = function(file) {
@@ -80,7 +83,11 @@ exports.dataManager = function(graphID, vizData, res) {
         this.currentGraph = graph;
     };
 
-    this.createTypes = function() {
+    this.setStatus = function(status) {
+        this.status = status;
+    };
+
+    this.copyTypes = function() {
         //Create types from current graph
         if(this.currentGraph !== undefined) {
             var nodeTypes = this.currentGraph.properties.nodeTypes;
@@ -206,7 +213,7 @@ exports.dataManager = function(graphID, vizData, res) {
         }, this.nodeRequestTime);
     };
 
-    this.createGraphNodes = function(nodes, dataType, onCompletion) {
+    this.copyGraphNodes = function(nodes, dataType, onCompletion) {
         //Create nodes according to type
         this.onNodeCreateComplete = onCompletion !== undefined ? onCompletion : this.onNodeCreateComplete;
         switch(dataType) {
@@ -239,15 +246,19 @@ exports.dataManager = function(graphID, vizData, res) {
                     clearInterval(_this.nodeRequestTimer);
                     //DEBUG
                     console.log("All nodes created");
-                    //_this.onNodeCreateComplete();
-                    _this.createEdges();
+                    //
+                    if(_this.status === CREATE) {
+                        _this.createEdges();
+                    } else {
+                        _this.onNodeCreateComplete();
+                    }
                 }
             });
         }
 
     };
 
-    this.createGraphEdges = function(nodes, onCompletion) {
+    this.copyGraphEdges = function(nodes, onCompletion) {
         this.onEdgeCreateComplete = onCompletion !== undefined ? onCompletion : this.onEdgeCreateComplete;
         //Get edge information from this node
         var i, currentNode, toNode, edgesFrom, edge, numEdges = 0, numNodes = nodes.length;

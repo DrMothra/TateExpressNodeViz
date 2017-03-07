@@ -43,6 +43,7 @@ var graphManager = (function() {
         console.log("ID = ", graphID);
 
         var graphInfo = mainGraphList[graphID];
+        graphInfo.userName = localStorage.getItem("TateUsername");
 
         var graphData = {
             method: "POST",
@@ -54,8 +55,8 @@ var graphManager = (function() {
     }
 
     function onGraphCopied() {
-        //DEBUG
-        console.log("Graph copied");
+        //Refresh page
+        window.location.reload(true);
     }
 
     function onDeleteGraph(id) {
@@ -76,9 +77,15 @@ var graphManager = (function() {
     }
 
     function onGraphsFound(response) {
-        //DEBUG
-        console.log("Graphs = ", response);
         var i, graphInfo, numGraphs = response.msg.length;
+        var currentUserName = localStorage.getItem("TateUsername");
+        //DEBUG
+        console.log("Username = ", currentUserName);
+
+        if(currentUserName === undefined) {
+            alert("You must be logged in!");
+            return;
+        }
 
         //General graphs
         var graphElem;
@@ -87,7 +94,7 @@ var graphManager = (function() {
             graphInfo = response.msg[i];
             graphLink = "<a href='https://graphcommons.com/graphs/" + graphInfo.graphID + "' target='_blank'>";
             graphElem = $('#graphList');
-            if(graphInfo.author !== "TonyG") {
+            if(graphInfo.author !== currentUserName) {
                 mainGraphList.push(graphInfo);
                 graphElem.append("<div class='row graphInfo'>" +
                     "<div class='col-md-2'>" + graphInfo.name + "</div>" +
@@ -159,10 +166,15 @@ var graphManager = (function() {
             }
             var description = $('#graphdescription').val();
             if(description === undefined) description = "";
+            var userName = localStorage.getItem("TateUsername");
+            if(userName === undefined) {
+                alert("You must be logged in!");
+                return;
+            }
             var graphInfo = {
                 name: name,
                 subtitle: "TateCartographyProject",
-                description: 'Author="TonyG"' + description
+                description: 'Author="'+userName+'"' + description
             };
             var graphData = {method: "POST",
                         data: graphInfo,
@@ -236,4 +248,7 @@ $(document).ready(function() {
         graphManager.generateGraph();
     });
 
+    $('#refreshGraphs').on("click", function() {
+        window.location.reload(true);
+    });
 });

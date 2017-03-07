@@ -19,10 +19,16 @@ function validateForm() {
 function signIn() {
     if(!validateForm()) return;
 
+    //DEBUG
+    var userName = $('#userName').val();
+    /*
     if($('#rememberMe').prop("checked")) {
         var userName = $('#userName').val();
         localStorage.setItem("TateUsername", userName);
     }
+    */
+    //Always store name for now
+    localStorage.setItem("TateUsername", userName);
 
     $('#loginForm').ajaxSubmit({
 

@@ -29,6 +29,7 @@ exports.createAccount = function(req, res, next) {
         } else {
             console.log("Valid user");
             res.send( {msg: "Valid new user"} );
+            dbase.addUser(req.body.fullName, req.body.username);
         }
     });
 };
