@@ -373,8 +373,8 @@ exports.searchCommons = function(req, res, next) {
 };
 
 exports.deleteGraph = function(req, res, next) {
-    //Set author to deleted - can undelete later
-
+    //Delete graph
+    graphCommons.delete_graph(req.body.graphID);
 };
 
 exports.modifyGraph = function(req, res, next) {
