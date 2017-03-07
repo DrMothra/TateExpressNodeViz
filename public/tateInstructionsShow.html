@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tate Visualisation Instructions</title>
+
+    <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <link rel='stylesheet' href="css/tateExpressStyles.css?v=0.7">
+
+</head>
+<body>
+    <h1>Tate Cartography Instructions</h1>
+
+    <div id="instructionText" class="container-fluid">
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Managing Graphs</h3>
+                <p>
+                    When the page first loads you'll see a list of graphs towards the top. These are divided into two sections - graphs that have been created by the
+                    project members - Tate Graphs, and graphs that you have created - Your Graphs.<br>
+                    Each graph is denoted by a name, an id and an author (if the graph has not been created by you). The image below illustrates.
+                </p>
+                <img src="images/instruct1.jpg">
+                <h3>Copying a graph</h3>
+                <p>
+                    Next to each graph are a number of buttons that allow you to perform various actions on these graphs.
+                    If the graph does not belong to you then there is a copy option - this will copy the graph to your account, thereby allowing you to manipulate it.
+                    You cannot modify graphs that do not belong to you, although you can look at them.
+                    Each graph has a link to its page on the Graph Commons website by clicking on the link below the Graph ID column.
+                    It is often very useful to have the graph open in another tab on your browser whilst you perform the various actions on the graph.
+                </p>
+                <h3>Creating a new graph</h3>
+                <p>
+                    If you'd like to generate a completely new graph then you'll need to supply a name for the graph and an optional description.<br>
+                    Once you've entered these then just click on New Graph and a new graph will be created in the Graph Commons account with the graph ID indicated.<br>
+                    When you create a new graph it will automatically be constructed with you as the author (by using your supplied user name).
+                </p>
+                <img src="images/instruct2.jpg">
+                <p>
+                    This just creates an empty graph, we need to add some content.
+                    At this point you could just go the Graph Commons account and start adding items to the newly-created graph, which is absolutely fine. Alternatively if you have a lot of existing data that
+                    you'd like to add to the graph then a better way is to use a spreadsheet file.<br>
+                    From your spreadsheet file, save the file as a csv file (this stands for comma separated values - as it says all the data just separated with commas, very straightforward). If you then select
+                    the Choose File option and locate your csv file, load it and then hit the
+                    Generate graph button, the app will then create all the necessary nodes and links that form your graph.<br>
+                    If you need a sample file to test, you can download one <a href="http://www.cs.nott.ac.uk/~psztg1/Documentation/TateCartography.csv">here</a>.<br>
+                    An indication of how this is progressing is given towards the bottom of the page, denoting how many nodes and links are going to be generated and the current progress.<br>
+                </p>
+                <img src="images/instruct3.jpg">
+                <p>
+                    When this is all done the page will refresh and you should see your newly created graph in the list of Your Graphs.
+                </p>
+                <h3>Modifying a graph</h3>
+                <p>
+                    If you select the Modify option for your graph then you'll be presented with a range of options to update your graph. Instructions for completing these
+                    actions are given on the Modify Graph page.
+                </p>
+                <h3>Deleting a graph</h3>
+                <p>
+                    Another option that you may perform on Your Graphs is to delete them. If you click the Delete button you will receive a confirmation message asking if you are
+                    sure that you really want to do this (you can't get it back once it's gone!). If you click OK then this graph will be deleted and the page will refresh to update the
+                    graphs in your collection.
+                </p>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
