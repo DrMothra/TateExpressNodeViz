@@ -5,7 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var fileUpload = require('express-fileupload');
-var index = require('./routes/index');
+var start = require('./routes/start');
 var loginUser = require('./routes/loginUser');
 var update = require('./routes/update');
 var addNode = require('./routes/addNode');
@@ -33,10 +33,10 @@ var io = require('socket.io')(server);
 
 var address = '0.0.0.0';
 server.listen(port, address);
-//server.listen(port, '127.0.0.1');
 server.on('error', onError);
 server.on('listening', onListening);
 
+//Sockets and emitters
 var socket;
 
 io.sockets.on('connection', function(s) {
@@ -83,19 +83,25 @@ app.use(express.static(path.join(__dirname, 'public')));
 //app.use(express.static('public'));
 app.use(fileUpload());
 
-app.use('/', index);
+//Routing
+//Main page
+app.use('/', start);
+
+//User login, account validation
+app.post("/login", loginUser.login);
+app.post("/newAccount", loginUser.createAccount);
+app.use('/createAccount', createAccount);
+
+//Node/link related functionality
 app.post('/updateNode', update.update);
 app.post('/addNode', addNode.addNode);
 app.post('/deleteNode', deleteNode.deleteNode);
-app.post('/getNodeNames', graphs.getNodeNames);
-app.post('/getLinkTypes', graphs.getLinkTypes);
-app.post('/getNodeTypes', graphs.getNodeTypes);
 app.post('/addLink', addLink.addLink);
 app.post('/deleteLink', deleteLink.deleteLink);
 app.use('/modifyGraph', modify.modify);
-app.use('/createAccount', createAccount);
-
 app.use('/showGraphs', show.showGraphs);
+
+//All graph-related functionality
 app.post("/createGraph", graphs.generateNewGraph);
 app.post("/generateGraph", graphs.generateGraph);
 app.post("/copyGraph", graphs.copyGraph);
@@ -108,9 +114,10 @@ app.post("/deleteALink", graphs.deleteALink);
 app.post("/deleteANode", graphs.deleteANode);
 app.post("/processSearch", graphs.searchCommons);
 app.post("/deleteGraph", graphs.deleteGraph);
+app.post('/getNodeNames', graphs.getNodeNames);
+app.post('/getLinkTypes', graphs.getLinkTypes);
+app.post('/getNodeTypes', graphs.getNodeTypes);
 
-app.post("/login", loginUser.login);
-app.post("/newAccount", loginUser.createAccount);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

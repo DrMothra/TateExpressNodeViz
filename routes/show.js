@@ -4,5 +4,5 @@
 
 
 exports.showGraphs = function(req, res, next) {
-    res.render('addGraph');
+    res.render('showGraphs');
 };
