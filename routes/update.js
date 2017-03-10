@@ -1,7 +1,0 @@
-/**
- * Created by DrTone on 31/01/2017.
- */
-
-exports.update = function(req, res, next) {
-    res.render('update', { graphID: req.body.updateNodeGraphID, graphName: req.body.updateNodeGraphName, node_Name: null, nodes: [], linkData: []});
-};

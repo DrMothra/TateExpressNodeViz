@@ -5,22 +5,14 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var fileUpload = require('express-fileupload');
-var start = require('./routes/start');
-var loginUser = require('./routes/loginUser');
-var update = require('./routes/update');
-var addNode = require('./routes/addNode');
-var deleteNode = require('./routes/deleteNode');
-var addLink = require('./routes/addLink');
-var deleteLink = require('./routes/deleteLink');
-var createAccount = require('./routes/createAccount');
-var graphs = require('./routes/graphs');
-var modify = require('./routes/modify');
-var show = require('./routes/show');
+var accountRoutes = require('./routes/account');
+var nodeLinkRoutes = require('./routes/nodeLinks');
+var graphRoutes = require('./routes/graphs');
 var http = require('http');
 
 var app = express();
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = process.env.PORT || '3000';
 app.set('port', port);
 
 var server = http.Server(app);
@@ -44,27 +36,27 @@ io.sockets.on('connection', function(s) {
   socket = s;
 });
 
-graphs.manager.emitter.on("NodeCreated", function(data) {
+graphRoutes.manager.emitter.on("NodeCreated", function(data) {
   console.log("Received nodes created ", data);
   socket.emit("NewNodeCreated", {msg: data});
 });
 
-graphs.manager.emitter.on("NodesToCreate", function(data) {
+graphRoutes.manager.emitter.on("NodesToCreate", function(data) {
   console.log("Received number nodes", data);
   socket.emit("NodesToCreate", {msg: data});
 });
 
-graphs.manager.emitter.on("EdgeCreated", function(data) {
+graphRoutes.manager.emitter.on("EdgeCreated", function(data) {
     console.log("Received edge created ", data);
     socket.emit("NewEdgeCreated", {msg: data});
 });
 
-graphs.manager.emitter.on("EdgesToCreate", function(data) {
+graphRoutes.manager.emitter.on("EdgesToCreate", function(data) {
     console.log("Received number edges", data);
     socket.emit("EdgesToCreate", {msg: data});
 });
 
-graphs.manager.emitter.on("GraphCompleted", function(data) {
+graphRoutes.manager.emitter.on("GraphCompleted", function(data) {
     console.log("Received GraphCompleted", data);
     socket.emit("GraphCompleted", {msg: data});
 });
@@ -85,39 +77,38 @@ app.use(fileUpload());
 
 //Routing
 //Main page
-app.use('/', start);
+app.get('/', accountRoutes.home);
 
 //User login, account validation
-app.post("/login", loginUser.login);
-app.post("/newAccount", loginUser.createAccount);
-app.use('/createAccount', createAccount);
+app.post("/login", accountRoutes.login);
+app.post("/newAccount", accountRoutes.newAccount);
+app.get('/createAccount', accountRoutes.createAccount);
 
 //Node/link related functionality
-app.post('/updateNode', update.update);
-app.post('/addNode', addNode.addNode);
-app.post('/deleteNode', deleteNode.deleteNode);
-app.post('/addLink', addLink.addLink);
-app.post('/deleteLink', deleteLink.deleteLink);
-app.use('/modifyGraph', modify.modify);
-app.use('/showGraphs', show.showGraphs);
+app.post('/updateNode', nodeLinkRoutes.update);
+app.post('/addNode', nodeLinkRoutes.addNode);
+app.post('/deleteNode', nodeLinkRoutes.deleteNode);
+app.post('/addLink', nodeLinkRoutes.addLink);
+app.post('/deleteLink', nodeLinkRoutes.deleteLink);
+app.get('/modifyGraph', nodeLinkRoutes.modify);
+app.get('/showGraphs', nodeLinkRoutes.showGraphs);
 
 //All graph-related functionality
-app.post("/createGraph", graphs.generateNewGraph);
-app.post("/generateGraph", graphs.generateGraph);
-app.post("/copyGraph", graphs.copyGraph);
-app.post("/searchGraph", graphs.searchGraph);
-app.post("/findNodes", graphs.findNode);
-app.post("/processLinks", graphs.processLinks);
-app.post("/addNewNode", graphs.addNewNode);
-app.post("/addNewLink", graphs.addNewLink);
-app.post("/deleteALink", graphs.deleteALink);
-app.post("/deleteANode", graphs.deleteANode);
-app.post("/processSearch", graphs.searchCommons);
-app.post("/deleteGraph", graphs.deleteGraph);
-app.post('/getNodeNames', graphs.getNodeNames);
-app.post('/getLinkTypes', graphs.getLinkTypes);
-app.post('/getNodeTypes', graphs.getNodeTypes);
-
+app.post("/createGraph", graphRoutes.generateNewGraph);
+app.post("/generateGraph", graphRoutes.generateGraph);
+app.post("/copyGraph", graphRoutes.copyGraph);
+app.post("/searchGraph", graphRoutes.searchGraph);
+app.post("/findNodes", graphRoutes.findNode);
+app.post("/processLinks", graphRoutes.processLinks);
+app.post("/addNewNode", graphRoutes.addNewNode);
+app.post("/addNewLink", graphRoutes.addNewLink);
+app.post("/deleteALink", graphRoutes.deleteALink);
+app.post("/deleteANode", graphRoutes.deleteANode);
+app.post("/processSearch", graphRoutes.searchCommons);
+app.post("/deleteGraph", graphRoutes.deleteGraph);
+app.post('/getNodeNames', graphRoutes.getNodeNames);
+app.post('/getLinkTypes', graphRoutes.getLinkTypes);
+app.post('/getNodeTypes', graphRoutes.getNodeTypes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

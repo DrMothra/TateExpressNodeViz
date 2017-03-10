@@ -5,6 +5,13 @@
 //Database
 var dbase = require('../model/databaseManager');
 
+//Home page
+exports.home = function(req, res, next) {
+    //DEBUG
+    //console.log("Home");
+    res.render("home");
+};
+
 //Handle login procedure
 exports.login = function(req, res, next) {
     //DEBUG
@@ -20,7 +27,7 @@ exports.login = function(req, res, next) {
     });
 };
 
-exports.createAccount = function(req, res, next) {
+exports.newAccount = function(req, res, next) {
     //See if user already exists
     dbase.checkForUser(req.body.fullName, req.body.username, function(exists) {
         if(exists) {
@@ -32,4 +39,8 @@ exports.createAccount = function(req, res, next) {
             dbase.addUser(req.body.fullName, req.body.username);
         }
     });
+};
+
+exports.createAccount = function(req, res, next) {
+    res.render('createAccount');
 };
