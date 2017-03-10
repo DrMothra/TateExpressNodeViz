@@ -61,7 +61,7 @@ exports.generateGraph = function(req, res, next) {
 
     //Have data - create graph
     dataManager.init(graphCommons);
-    dataManager.setStatus(0);
+    dataManager.setStatus(dataManager.status.CREATE);
     dataManager.setFileData(fileData);
     dataManager.setGraphID(currentGraphID);
     dataManager.createNodesAndEdges(function() {
@@ -96,7 +96,7 @@ exports.copyGraph = function(req, res, next) {
             //Create all nodes from original
             var i, currentNode, numNodes = graph.nodes.length;
             dataManager.init(graphCommons);
-            dataManager.setStatus(1);
+            dataManager.setStatus(dataManager.status.COPY);
             dataManager.setGraphID(result.properties.id);
             dataManager.setCurrentGraph(graph);
             dataManager.copyTypes();

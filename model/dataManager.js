@@ -6,6 +6,12 @@
 var events = require("events");
 var emitter = module.exports.emitter = new events.EventEmitter();
 
+var status = {
+    CREATE: 0,
+    COPY: 1
+};
+exports.status = status;
+
 exports.dataManager = function(graphID, vizData, res) {
     //Links
     var linkTypes = ["Made by", "Inspired by", "In opposition to", "In response to", "Associated / works with", "Exhibited with", "Exhibited at"];
@@ -48,8 +54,6 @@ exports.dataManager = function(graphID, vizData, res) {
         ]
     };
 
-    var CREATE=0, COPY=1;
-
     this.nodeQueue = [];
     this.nodeRequestTime = 200;
     this.canCreateNode = true;
@@ -67,7 +71,7 @@ exports.dataManager = function(graphID, vizData, res) {
         this.nodeTypes = [];
         this.edgeTypes = [];
         this.graphComplete = false;
-        this.status = CREATE;
+        this.status = status.CREATE;
     };
 
     this.setFileData = function(file) {
@@ -249,7 +253,7 @@ exports.dataManager = function(graphID, vizData, res) {
                     //DEBUG
                     console.log("All nodes created");
                     //
-                    if(_this.status === CREATE) {
+                    if(_this.status === status.CREATE) {
                         _this.createEdges();
                     } else {
                         _this.onNodeCreateComplete();
