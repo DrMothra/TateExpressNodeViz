@@ -143,6 +143,17 @@ var CSVToArray = function( strData, strDelimiter ){
     return( arrData );
 };
 
+exports.convertToJSON = function(csvData) {
+    var parseOutput = parser.parse(csvData, true , "auto", false, false);
+
+    var dataGrid = parseOutput.dataGrid;
+    var headerNames = parseOutput.headerNames;
+    var headerTypes = parseOutput.headerTypes;
+    var errors = parseOutput.errors;
+
+    return parser.dataGridRenderer(dataGrid, headerNames, headerTypes, "  ", "\n");
+};
+
 exports.dataGridRenderer = function(dataGrid, headerNames, headerTypes, indent, newLine) {
     //inits...
     var commentLine = "//";

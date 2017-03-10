@@ -37,7 +37,7 @@ function deleteNode() {
     var graphData = {
         method: 'post',
         data: nodeData,
-        url: '/deleteANode',
+        url: '/processDeleteNode',
         dataType: 'JSON'
     };
 

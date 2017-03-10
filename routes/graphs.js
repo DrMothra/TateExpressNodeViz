@@ -4,18 +4,6 @@
 
 var parser = require("../model/parser");
 
-function convertToJSON(csvData) {
-    var parseOutput = parser.parse(csvData, true , "auto", false, false);
-
-    var dataGrid = parseOutput.dataGrid;
-    var headerNames = parseOutput.headerNames;
-    var headerTypes = parseOutput.headerTypes;
-    var errors = parseOutput.errors;
-
-    var outputText = parser.dataGridRenderer(dataGrid, headerNames, headerTypes, "  ", "\n");
-
-    return outputText;
-}
 var manager = exports.manager = require("../model/dataManager");
 
 var dataManager = new manager.dataManager();
@@ -27,8 +15,6 @@ var graphCommons = new gc(accesskey, function(result) {
 });
 
 var currentGraphID;
-//DEBUG
-var processed = false;
 
 //Routes for all graph-related pages
 exports.generateNewGraph = function(req, res, next) {
@@ -48,8 +34,6 @@ exports.generateNewGraph = function(req, res, next) {
     });
 };
 
-var processing = false;
-
 exports.generateGraph = function(req, res, next) {
 
     var fileName = req.files.vizFile.name;
@@ -59,7 +43,7 @@ exports.generateGraph = function(req, res, next) {
 
     switch(ext) {
         case ".csv":
-            fileData = convertToJSON(fileData);
+            fileData = parser.convertToJSON(fileData);
             fileData = JSON.parse(fileData);
             break;
 
@@ -331,7 +315,7 @@ exports.addNewLink = function(req, res, next) {
     })
 };
 
-exports.deleteANode = function(req, res, next) {
+exports.deleteNode = function(req, res, next) {
     currentGraphID = req.body.graphID;
 
     var signals = { "signals" : [
@@ -349,7 +333,7 @@ exports.deleteANode = function(req, res, next) {
     })
 };
 
-exports.deleteALink = function(req, res, next) {
+exports.deleteLink = function(req, res, next) {
     currentGraphID = req.body.graphID;
 
     var i, fromID, toID, nodeData, edgeData, edgeID, linkName = req.body.linkName;
