@@ -148,7 +148,7 @@ var graphManager = (function() {
 
         },
 
-        getGraphs: function() {
+        getGraphs: ()=> {
             //Get all graphs in account
             var searchInfo = {
                 query: "TateCartographyProject"
@@ -161,7 +161,7 @@ var graphManager = (function() {
             sendData(graphData, onGraphsFound);
         },
 
-        createNewGraphID: function() {
+        createNewGraphID: ()=> {
             //Ensure we have graph name
             var name = $('#graphName').val();
             if(!name) {
@@ -188,7 +188,7 @@ var graphManager = (function() {
             sendData(graphData, onGraphCreated);
         },
 
-        createGraph: function() {
+        createGraph: ()=> {
             //Submit data file
             $('#uploadForm').ajaxSubmit({
 
@@ -201,22 +201,6 @@ var graphManager = (function() {
                     $('#graphStatus').html(" " + response.msg);
                 }
             });
-        },
-
-        updateLinkInfo: function(linkID, choice) {
-            //Strip out id
-            var id = linkID.charAt(0);
-            var linkData = {
-                link: id,
-                choice: choice
-            };
-            var graphData = {
-                method: "POST",
-                data: linkData,
-                url: '/processLinks',
-                dataType: 'JSON'
-            };
-            sendData(graphData);
         },
 
         graphCompleted: function() {

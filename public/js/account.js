@@ -37,8 +37,8 @@ function createAccount() {
 
         success: function(response) {
             //Show login validation
-            var msg = response.msg;
-            var displayelem = $('#accountStatus');
+            let msg = response.msg;
+            let displayelem = $('#accountStatus');
             displayelem.show();
             if(msg === "User already exists") {
                 displayelem.html("User already exists, enter different name/username.");

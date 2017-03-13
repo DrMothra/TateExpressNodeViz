@@ -14,8 +14,6 @@ exports.home = function(req, res, next) {
 
 //Handle login procedure
 exports.validateLogin = function(req, res, next) {
-    //DEBUG
-    //console.log("Received login request");
     dbase.validateUser(req.body.userName, req.body.password, function(valid) {
         if(!valid) {
             console.log("User not found");
