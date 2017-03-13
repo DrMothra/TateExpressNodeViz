@@ -59,7 +59,7 @@ function getGraphNodeNames() {
     var graphData = {
         method: 'post',
         data: nodeData,
-        url: '/getNodeNames',
+        url: '/processGetNodeNames',
         dataType: 'JSON'
     };
 

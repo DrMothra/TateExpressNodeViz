@@ -13,7 +13,7 @@ exports.home = function(req, res, next) {
 };
 
 //Handle login procedure
-exports.login = function(req, res, next) {
+exports.validateLogin = function(req, res, next) {
     //DEBUG
     //console.log("Received login request");
     dbase.validateUser(req.body.userName, req.body.password, function(valid) {
@@ -27,7 +27,7 @@ exports.login = function(req, res, next) {
     });
 };
 
-exports.newAccount = function(req, res, next) {
+exports.validateNewAccount = function(req, res, next) {
     //See if user already exists
     dbase.checkForUser(req.body.fullName, req.body.username, function(exists) {
         if(exists) {

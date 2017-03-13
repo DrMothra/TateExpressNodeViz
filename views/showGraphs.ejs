@@ -9,7 +9,7 @@
       <script type="text/javascript" src="js/bootstrap.min.js"></script>
       <script type="text/javascript" src="js/socket.io.js"></script>
       <script type="text/javascript" src="js/socketManager.js?v=0.2"></script>
-      <script type="text/javascript" src="js/tateExpressViz.js?v=0.3"></script>
+      <script type="text/javascript" src="js/showGraphs.js"></script>
       <!-- endbuild -->
 
       <!-- build:css css/tatestyles.min.css-->
@@ -63,7 +63,7 @@
         </div>
     </div>
 
-    <div id="createGraph" class="title">
+    <div id="createGraphID" class="title">
         <h2>Create Graph</h2>
         <form class="form-horizontal">
             <div class="form-group">
@@ -79,17 +79,17 @@
                 </div>
             </div>
         </form>
-        <button type="button" id="create" class="btn btn-primary">New Graph</button>
+        <button type="button" id="createID" class="btn btn-primary">New Graph</button>
         <p><br>Graph ID: <span id="graphID">Not generated</span></p>
     </div>
 
     <div id="generateGraph" class="title">
         <h2>Generate Graph</h2>
-        <form ref='uploadForm' id="uploadForm" method="post" action="/generateGraph" enctype="multipart/form-data">
+        <form ref='uploadForm' id="uploadForm" method="post" action="/processCreateGraph" enctype="multipart/form-data">
             <input type="file" name="vizFile">
         </form>
         <br>
-        <button type="button" class="btn btn-primary" id="generate">Generate graph</button>
+        <button type="button" class="btn btn-primary" id="createGraph">Generate graph</button>
     </div>
 
     <div id="graphProperties" class="title">

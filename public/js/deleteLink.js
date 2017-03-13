@@ -68,7 +68,7 @@ function getGraphLinkTypes() {
     var graphData = {
         method: 'post',
         data: linkData,
-        url: '/getLinkTypes',
+        url: '/processGetLinkTypes',
         dataType: 'JSON'
     };
 
@@ -88,7 +88,7 @@ function getGraphNodeNames() {
     var graphData = {
         method: 'post',
         data: nodeData,
-        url: '/getNodeNames',
+        url: '/processGetNodeNames',
         dataType: 'JSON'
     };
 

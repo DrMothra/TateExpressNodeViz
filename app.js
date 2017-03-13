@@ -80,8 +80,8 @@ app.use(fileUpload());
 app.get('/', accountRoutes.home);
 
 //User login, account validation
-app.post("/login", accountRoutes.login);
-app.post("/newAccount", accountRoutes.newAccount);
+app.post("/processLogin", accountRoutes.validateLogin);
+app.post("/processNewAccount", accountRoutes.validateNewAccount);
 app.get('/createAccount', accountRoutes.createAccount);
 
 //Node/link related functionality
@@ -90,25 +90,37 @@ app.post('/addNode', nodeLinkRoutes.addNode);
 app.post('/deleteNode', nodeLinkRoutes.deleteNode);
 app.post('/addLink', nodeLinkRoutes.addLink);
 app.post('/deleteLink', nodeLinkRoutes.deleteLink);
-app.get('/modifyGraph', nodeLinkRoutes.modify);
+app.get('/modifyGraph', nodeLinkRoutes.modifyGraph);
 app.get('/showGraphs', nodeLinkRoutes.showGraphs);
 
 //All graph-related functionality
-app.post("/createGraph", graphRoutes.generateNewGraph);
-app.post("/generateGraph", graphRoutes.generateGraph);
-app.post("/copyGraph", graphRoutes.copyGraph);
-app.post("/searchGraph", graphRoutes.searchGraph);
-app.post("/findNodes", graphRoutes.findNode);
+app.post("/processGenerateNewGraphID", graphRoutes.generateNewGraphID);
+app.post("/processCreateGraph", graphRoutes.createGraph);
+app.post("/processCopyGraph", graphRoutes.copyGraph);
+
+//Used for finding link info
+app.post("/processSearchGraph", graphRoutes.searchGraph);
+
+//Find nodes for deletion
+app.post("/processFindNodes", graphRoutes.findNodes);
+
+//Agree/disagree with links
 app.post("/processLinks", graphRoutes.processLinks);
-app.post("/addNewNode", graphRoutes.addNewNode);
-app.post("/addNewLink", graphRoutes.addNewLink);
+
+app.post("/processAddNewNode", graphRoutes.addNewNode);
+app.post("/processAddNewLink", graphRoutes.addNewLink);
 app.post("/processDeleteLink", graphRoutes.deleteLink);
 app.post("/processDeleteNode", graphRoutes.deleteNode);
-app.post("/processSearch", graphRoutes.searchCommons);
-app.post("/deleteGraph", graphRoutes.deleteGraph);
-app.post('/getNodeNames', graphRoutes.getNodeNames);
-app.post('/getLinkTypes', graphRoutes.getLinkTypes);
-app.post('/getNodeTypes', graphRoutes.getNodeTypes);
+
+//Get all graph info
+app.post("/processSearchCommons", graphRoutes.searchCommons);
+
+app.post("/processDeleteGraph", graphRoutes.deleteGraph);
+
+//Auto-complete functionality
+app.post('/processGetNodeNames', graphRoutes.getNodeNames);
+app.post('/processGetLinkTypes', graphRoutes.getLinkTypes);
+app.post('/processGetNodeTypes', graphRoutes.getNodeTypes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

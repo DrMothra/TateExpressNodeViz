@@ -48,7 +48,7 @@ var graphManager = (function() {
         var graphData = {
             method: "POST",
             data: graphInfo,
-            url: '/copyGraph',
+            url: '/processCopyGraph',
             dataType: 'JSON'};
 
         sendData(graphData, onGraphCopied);
@@ -69,7 +69,7 @@ var graphManager = (function() {
             var graphData = {
                 method: "POST",
                 data: graphInfo,
-                url: '/deleteGraph',
+                url: '/processDeleteGraph',
                 dataType: 'JSON'
             };
 
@@ -155,13 +155,13 @@ var graphManager = (function() {
             };
             var graphData = {method: "POST",
                 data: searchInfo,
-                url: '/processSearch',
+                url: '/processSearchCommons',
                 dataType: 'JSON'};
 
             sendData(graphData, onGraphsFound);
         },
 
-        createNewGraph: function() {
+        createNewGraphID: function() {
             //Ensure we have graph name
             var name = $('#graphName').val();
             if(!name) {
@@ -182,13 +182,13 @@ var graphManager = (function() {
             };
             var graphData = {method: "POST",
                         data: graphInfo,
-                        url: '/createGraph',
+                        url: '/processGenerateNewGraphID',
                         dataType: 'JSON'};
 
             sendData(graphData, onGraphCreated);
         },
 
-        generateGraph: function() {
+        createGraph: function() {
             //Submit data file
             $('#uploadForm').ajaxSubmit({
 
@@ -249,12 +249,12 @@ $(document).ready(function() {
     //GUI callbacks
     graphManager.getGraphs();
 
-    $("#create").on("click", function() {
-        graphManager.createNewGraph();
+    $("#createID").on("click", function() {
+        graphManager.createNewGraphID();
     });
 
-    $('#generate').on("click", function() {
-        graphManager.generateGraph();
+    $('#createGraph').on("click", function() {
+        graphManager.createGraph();
     });
 
     $('#refreshGraphs').on("click", function() {

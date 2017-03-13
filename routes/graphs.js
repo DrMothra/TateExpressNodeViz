@@ -17,7 +17,7 @@ var graphCommons = new gc(accesskey, function(result) {
 var currentGraphID;
 
 //Routes for all graph-related pages
-exports.generateNewGraph = function(req, res, next) {
+exports.generateNewGraphID = function(req, res, next) {
     var graphData = {
         "name": req.body.name,
         "description": req.body.description,
@@ -34,7 +34,7 @@ exports.generateNewGraph = function(req, res, next) {
     });
 };
 
-exports.generateGraph = function(req, res, next) {
+exports.createGraph = function(req, res, next) {
 
     var fileName = req.files.vizFile.name;
     var fileData = req.files.vizFile.data;
@@ -194,12 +194,12 @@ exports.searchGraph = function(req, res, next) {
                 }
             }
 
-            res.render("update", { graphID: currentGraphID, graphName: graph.properties.name, node_Name: req.body.nodeValue, nodes: nodeNames, linkData: nodeLinks} );
+            res.render("updateNode", { graphID: currentGraphID, graphName: graph.properties.name, node_Name: req.body.nodeValue, nodes: nodeNames, linkData: nodeLinks} );
         });
     });
 };
 
-exports.findNode = function(req, res, next) {
+exports.findNodes = function(req, res, next) {
     //Search graph for required node
     currentGraphID = req.body.graphID;
     var nodeName = req.body.nodeValue;

@@ -29,7 +29,7 @@ function getGraphNodeNames() {
     var graphData = {
         method: 'post',
         data: nodeData,
-        url: '/getNodeNames',
+        url: '/processGetNodeNames',
         dataType: 'JSON'
     };
 
@@ -49,7 +49,7 @@ function getGraphNodeTypes() {
     var graphData = {
         method: 'post',
         data: linkData,
-        url: '/getNodeTypes',
+        url: '/processGetNodeTypes',
         dataType: 'JSON'
     };
 

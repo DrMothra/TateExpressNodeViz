@@ -3,7 +3,7 @@
  */
 
 exports.update = function(req, res, next) {
-    res.render('update', { graphID: req.body.updateNodeGraphID, graphName: req.body.updateNodeGraphName, node_Name: null, nodes: [], linkData: []});
+    res.render('updateNode', { graphID: req.body.updateNodeGraphID, graphName: req.body.updateNodeGraphName, node_Name: null, nodes: [], linkData: []});
 };
 
 exports.addNode = function(req, res, next) {
@@ -22,8 +22,8 @@ exports.deleteLink = function(req, res, next) {
     res.render('deleteLink', { graphID: req.body.deleteLinkGraphID, graphName: req.body.deleteLinkGraphName } );
 };
 
-exports.modify = function(req, res, next) {
-    res.render('modify');
+exports.modifyGraph = function(req, res, next) {
+    res.render('modifyGraph');
 };
 
 exports.showGraphs = function(req, res, next) {
