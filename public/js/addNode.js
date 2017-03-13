@@ -106,7 +106,6 @@ function onBack() {
 }
 
 $(document).ready(function() {
-
     //Autocomplete actions
     //getGraphNodeNames();
     getGraphNodeTypes();

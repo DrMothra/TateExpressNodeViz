@@ -96,6 +96,13 @@ function validateForm() {
 
 $(document).ready(function() {
 
+    //Check that logged in
+    if(!LoginManager.userLoggedIn()) {
+        alert("Please log in before continuing!");
+        window.location.href = "/";
+        return;
+    }
+
     //Autocomplete
     getGraphNodeNames();
 

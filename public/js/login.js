@@ -2,6 +2,8 @@
  * Created by DrTone on 14/02/2017.
  */
 
+var userLoggedIn = 'UserLoggedIn';
+
 function validateForm() {
     if($('#userName').val() === "") {
         alert("Enter a user name");
@@ -39,6 +41,7 @@ function signIn() {
         success: function(response) {
             //Show login validation
             var msg = response.msg;
+            LoginManager.loginUser();
             //DEBUG
             console.log("Response = ", msg);
 
@@ -54,9 +57,11 @@ function signIn() {
 $(document).ready(function() {
 
     //See if we have logged in before
+    LoginManager.setLoginCredentials();
+
     var userName = localStorage.getItem("TateUsername");
     //DEBUG
-    console.log("Username = ", userName);
+    //console.log("Username = ", userName);
     if(userName !== undefined) {
         $('#userName').val(userName);
     }

@@ -225,6 +225,10 @@ exports.dataManager = function(graphID, vizData, res) {
         switch(dataType) {
             case 'json':
                 var i, currentNode, numNodes = nodes.length;
+                if(numNodes === 0) {
+                    this.onNodeCreateComplete();
+                    break;
+                }
                 for(i=0; i<numNodes; ++i) {
                     currentNode = nodes[i];
                     this.queueGraphNodeRequest(currentNode.type, currentNode.name, currentNode.description);
@@ -283,6 +287,11 @@ exports.dataManager = function(graphID, vizData, res) {
             }
         }
         this.edgesToCreate = numEdges;
+        if(numEdges === 0) {
+            this.graphComplete = true;
+            exports.emitter.emit("GraphCompleted", "Graph Completed");
+            this.onEdgeCreateComplete();
+        }
     };
 
     this.createEdges = function() {
@@ -405,7 +414,7 @@ exports.dataManager = function(graphID, vizData, res) {
 
     this.transmit = function() {
 
-    },
+    };
 
     this.graphCompleted = function() {
         return this.graphComplete;

@@ -228,6 +228,12 @@ var graphManager = (function() {
 
 $(document).ready(function() {
 
+    //Check that logged in
+    if(!LoginManager.userLoggedIn()) {
+        alert("Please log in before continuing!");
+        window.location.href = "/";
+        return;
+    }
     //Socket io
     if(socketManager === undefined) {
         socketManager = new SocketManager();
