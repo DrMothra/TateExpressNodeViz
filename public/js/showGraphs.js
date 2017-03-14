@@ -2,11 +2,11 @@
  * Created by DrTone on 15/12/2016.
  */
 
-var graphManager = (function() {
-    var currentGraphID = undefined;
-    var processing = false;
-    var mainGraphList = [];
-    var yourGraphList = [];
+let graphManager = (function() {
+    let currentGraphID = undefined;
+    let processing = false;
+    let mainGraphList = [];
+    let yourGraphList = [];
 
     function sendData(data, callback) {
         $.ajax({
@@ -14,7 +14,7 @@ var graphManager = (function() {
             data: data.data,
             url: data.url,
             dataType: data.dataType
-        }).done(function(response) {
+        }).done((response)=> {
             //DEBUG
             console.log("Data sent");
             if(callback !== undefined) {
@@ -29,23 +29,23 @@ var graphManager = (function() {
 
     function onModifyGraph(id) {
         //Get graph id
-        var graphID = id.slice(-1);
+        let graphID = id.slice(-1);
         console.log("ID = ", graphID);
 
-        var graphInfo = yourGraphList[graphID];
+        let graphInfo = yourGraphList[graphID];
 
         window.location.href = "/modifyGraph?graphID="+graphInfo.graphID+"&name="+graphInfo.name;
     }
 
     function onCopyGraph(id) {
         //Get graph id
-        var graphID = id.slice(-1);
+        let graphID = id.slice(-1);
         console.log("ID = ", graphID);
 
-        var graphInfo = mainGraphList[graphID];
+        let graphInfo = mainGraphList[graphID];
         graphInfo.userName = localStorage.getItem("TateUsername");
 
-        var graphData = {
+        let graphData = {
             method: "POST",
             data: graphInfo,
             url: '/processCopyGraph',
@@ -61,19 +61,19 @@ var graphManager = (function() {
     }
 
     function onDeleteGraph(id) {
-        var delGraph = confirm("Are you sure you want to delete this graph?");
+        let delGraph = confirm("Are you sure you want to delete this graph?");
         if(delGraph) {
-            var graphID = id.slice(-1);
-            var graphInfo = yourGraphList[graphID];
+            let graphID = id.slice(-1);
+            let graphInfo = yourGraphList[graphID];
 
-            var graphData = {
+            let graphData = {
                 method: "POST",
                 data: graphInfo,
                 url: '/processDeleteGraph',
                 dataType: 'JSON'
             };
 
-            sendData(graphData, function() {
+            sendData(graphData, ()=> {
                 //Refresh graph status
                 window.location.reload(true);
             });
@@ -81,8 +81,8 @@ var graphManager = (function() {
     }
 
     function onGraphsFound(response) {
-        var i, graphInfo, numGraphs = response.msg.length;
-        var currentUserName = localStorage.getItem("TateUsername");
+        let i, graphInfo, numGraphs = response.msg.length;
+        let currentUserName = localStorage.getItem("TateUsername");
         //DEBUG
         console.log("Username = ", currentUserName);
 
@@ -92,8 +92,8 @@ var graphManager = (function() {
         }
 
         //General graphs
-        var graphElem;
-        var graphLink;
+        let graphElem;
+        let graphLink;
         for(i=0; i<numGraphs; ++i) {
             graphInfo = response.msg[i];
             graphLink = "<a href='https://graphcommons.com/graphs/" + graphInfo.graphID + "' target='_blank'>";
@@ -118,15 +118,15 @@ var graphManager = (function() {
             }
         }
         //Set ids for buttons
-        $('#graphList button').attr("id", function(index, old) {
+        $('#graphList button').attr("id", (index, old)=> {
             return 'copyGraph' + index;
         });
 
-        $('#yourGraphList .modify').attr("id", function(index, old) {
+        $('#yourGraphList .modify').attr("id", (index, old)=> {
             return 'modGraph' + index;
         });
 
-        $('#yourGraphList .delete').attr("id", function(index, old) {
+        $('#yourGraphList .delete').attr("id", (index, old)=> {
             return 'deleteGraph' + index;
         });
 
@@ -150,10 +150,10 @@ var graphManager = (function() {
 
         getGraphs: ()=> {
             //Get all graphs in account
-            var searchInfo = {
+            let searchInfo = {
                 query: "TateCartographyProject"
             };
-            var graphData = {method: "POST",
+            let graphData = {method: "POST",
                 data: searchInfo,
                 url: '/processSearchCommons',
                 dataType: 'JSON'};
@@ -163,24 +163,24 @@ var graphManager = (function() {
 
         createNewGraphID: ()=> {
             //Ensure we have graph name
-            var name = $('#graphName').val();
+            let name = $('#graphName').val();
             if(!name) {
                 alert("Enter a graph name");
                 return;
             }
-            var description = $('#graphdescription').val();
+            let description = $('#graphdescription').val();
             if(description === undefined) description = "";
-            var userName = localStorage.getItem("TateUsername");
+            let userName = localStorage.getItem("TateUsername");
             if(userName === undefined) {
                 alert("You must be logged in!");
                 return;
             }
-            var graphInfo = {
+            let graphInfo = {
                 name: name,
                 subtitle: "TateCartographyProject",
                 description: 'Author="'+userName+'"' + description
             };
-            var graphData = {method: "POST",
+            let graphData = {method: "POST",
                         data: graphInfo,
                         url: '/processGenerateNewGraphID',
                         dataType: 'JSON'};
@@ -192,25 +192,25 @@ var graphManager = (function() {
             //Submit data file
             $('#uploadForm').ajaxSubmit({
 
-                error: function() {
+                error: ()=> {
                     console.log("error");
                 },
 
-                success: function(response) {
+                success: response => {
                     console.log("Received ", response);
                     $('#graphStatus').html(" " + response.msg);
                 }
             });
         },
 
-        graphCompleted: function() {
+        graphCompleted: ()=> {
             //Refresh graph status
             window.location.reload(true);
         }
     }
 })();
 
-$(document).ready(function() {
+$(document).ready(()=> {
 
     //Check that logged in
     if(!LoginManager.userLoggedIn()) {
@@ -222,14 +222,14 @@ $(document).ready(function() {
     if(socketManager === undefined) {
         socketManager = new SocketManager();
         socketManager.connect("http://localhost", 3000);
-        var messages = [
+        let messages = [
             {msg: "NodesToCreate", element: "nodesToCreate"},
             {msg: "NewNodeCreated", element: "nodesCreated"},
             {msg: "EdgesToCreate", element: "edgesToCreate"},
             {msg: "NewEdgeCreated", element: "edgesCreated"},
             {msg: "GraphCompleted", element: "graphStatus", onReceived: graphManager.graphCompleted }
         ];
-        var i, numMessages = messages.length, msg;
+        let i, numMessages = messages.length, msg;
         for(i=0; i<numMessages; ++i) {
             msg = messages[i];
             socketManager.listen(messages[i]);
@@ -239,15 +239,15 @@ $(document).ready(function() {
     //GUI callbacks
     graphManager.getGraphs();
 
-    $("#createID").on("click", function() {
+    $("#createID").on("click", ()=> {
         graphManager.createNewGraphID();
     });
 
-    $('#createGraph').on("click", function() {
+    $('#createGraph').on("click", ()=> {
         graphManager.createGraph();
     });
 
-    $('#refreshGraphs').on("click", function() {
+    $('#refreshGraphs').on("click", ()=> {
         window.location.reload(true);
     });
 });
