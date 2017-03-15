@@ -2,30 +2,32 @@
  * Created by atg on 16/01/2017.
  */
 
-var parser = require("../model/parser");
+let parser = require("../model/parser");
 
-var manager = exports.manager = require("../model/dataManager");
+let manager = exports.manager = require("../model/dataManager");
 
-var dataManager = new manager.dataManager();
+let dataManager = new manager.dataManager();
 
-var gc = require("graphcommons");
-var accesskey = process.env.GRAPH_COMMONS_API_KEY;
-var graphCommons = new gc(accesskey, function(result) {
+let gc = require("graphcommons");
+let accesskey = process.env.GRAPH_COMMONS_API_KEY;
+let graphCommons = new gc(accesskey, result => {
     console.log("Created graph commons = ", result);
 });
 
-var currentGraphID;
+//Database
+let dbase = require('../model/databaseManager');
+let currentGraphID;
 
 //Routes for all graph-related pages
-exports.generateNewGraphID = function(req, res, next) {
-    var graphData = {
+exports.generateNewGraphID = (req, res, next) => {
+    let graphData = {
         "name": req.body.name,
         "description": req.body.description,
         "subtitle": req.body.subtitle,
         "status": 0
     };
     //console.log("graphcommons = ", graph);
-    graphCommons.new_graph(graphData, function(result) {
+    graphCommons.new_graph(graphData, result => {
         //currentGraph.setCurrentGraphID(result.properties.id);
         //DEBUG
         console.log("Graph id = ", result.properties.id);
@@ -34,12 +36,12 @@ exports.generateNewGraphID = function(req, res, next) {
     });
 };
 
-exports.createGraph = function(req, res, next) {
+exports.createGraph = (req, res, next) => {
 
-    var fileName = req.files.vizFile.name;
-    var fileData = req.files.vizFile.data;
+    let fileName = req.files.vizFile.name;
+    let fileData = req.files.vizFile.data;
     fileData = fileData.toString();
-    var ext = fileName.slice(-4);
+    let ext = fileName.slice(-4);
 
     switch(ext) {
         case ".csv":
@@ -64,47 +66,47 @@ exports.createGraph = function(req, res, next) {
     dataManager.setStatus(dataManager.status.CREATE);
     dataManager.setFileData(fileData);
     dataManager.setGraphID(currentGraphID);
-    dataManager.createNodesAndEdges(function() {
+    dataManager.createNodesAndEdges( () => {
         console.log("Graph created");
     });
 
     res.send( {msg: "Generating graph..."} );
 };
 
-var currentGraph;
-var currentNodeID;
-var currentNodeData;
-var currentEdgeData;
+let currentGraph;
+let currentNodeID;
+let currentNodeData;
+let currentEdgeData;
 
-exports.copyGraph = function(req, res, next) {
+exports.copyGraph = (req, res, next) => {
     //Get data for this graph
     currentGraphID = req.body.graphID;
-    var userName = req.body.userName;
+    let userName = req.body.userName;
 
-    graphCommons.graphs(currentGraphID, function(graph) {
+    graphCommons.graphs(currentGraphID, graph => {
         //New graph with existing data
-        var graphData = {
+        let graphData = {
             "name": req.body.name,
             "description": 'Author="'+userName+'"',
             "subtitle": "TateCartographyProject",
             "status": 0
         };
-        graphCommons.new_graph(graphData, function(result) {
+        graphCommons.new_graph(graphData, result => {
             //DEBUG
             console.log("New copied graph created");
             res.send( {msg: "Graph copied"} );
             //Create all nodes from original
-            var i, currentNode, numNodes = graph.nodes.length;
+            let numNodes = graph.nodes.length;
             dataManager.init(graphCommons);
             dataManager.setStatus(dataManager.status.COPY);
             dataManager.setGraphID(result.properties.id);
             dataManager.setCurrentGraph(graph);
             dataManager.copyTypes();
             dataManager.setNumberNodesToCreate(numNodes);
-            dataManager.copyGraphNodes(graph.nodes, 'json', function() {
+            dataManager.copyGraphNodes(graph.nodes, 'json', () => {
                 console.log("All nodes created");
                 dataManager.setNumberEdgesToCreate(graph.edges.length);
-                dataManager.copyGraphEdges(graph.nodes, function() {
+                dataManager.copyGraphEdges(graph.nodes, () => {
                     console.log("All edges created");
                 })
             });
@@ -112,11 +114,11 @@ exports.copyGraph = function(req, res, next) {
     });
 };
 
-exports.getNodeNames = function(req, res, next) {
+exports.getNodeNames = (req, res, next) => {
     //Get list of node names in graph
     currentGraphID = req.body.graphID;
-    graphCommons.graphs(currentGraphID, function(graph) {
-        var i, nodeNames = [], numNodes = graph.nodes.length;
+    graphCommons.graphs(currentGraphID, graph => {
+        let i, nodeNames = [], numNodes = graph.nodes.length;
         for(i=0; i<numNodes; ++i) {
             nodeNames.push(graph.nodes[i].name);
         }
@@ -125,11 +127,11 @@ exports.getNodeNames = function(req, res, next) {
     });
 };
 
-exports.getLinkTypes = function(req, res, next) {
+exports.getLinkTypes = (req, res, next) => {
     //Get list of edge types in graph
     currentGraphID = req.body.graphID;
     graphCommons.graphs(currentGraphID, function(graph) {
-        var i, typeNames = [], numTypes = graph.properties.edgeTypes.length;
+        let i, typeNames = [], numTypes = graph.properties.edgeTypes.length;
         for(i=0; i<numTypes; ++i) {
             typeNames.push(graph.properties.edgeTypes[i].name);
         }
@@ -138,11 +140,11 @@ exports.getLinkTypes = function(req, res, next) {
     });
 };
 
-exports.getNodeTypes = function (req, res, next) {
+exports.getNodeTypes =  (req, res, next) => {
     //Get list of node types in graph
     currentGraphID = req.body.graphID;
     graphCommons.graphs(currentGraphID, function(graph) {
-        var i, typeNames = [], numTypes = graph.properties.nodeTypes.length;
+        let i, typeNames = [], numTypes = graph.properties.nodeTypes.length;
         for(i=0; i<numTypes; ++i) {
             typeNames.push(graph.properties.nodeTypes[i].name);
         }
@@ -151,26 +153,26 @@ exports.getNodeTypes = function (req, res, next) {
     });
 };
 
-exports.searchGraph = function(req, res, next) {
+exports.searchGraph = (req, res, next) => {
     //Search graph for required node
     currentGraphID = req.body.graphID;
 
-    graphCommons.graphs(currentGraphID, function(graph) {
+    graphCommons.graphs(currentGraphID, graph => {
         currentGraph = graph;
         //Search for node
-        var search_query = {
+        let search_query = {
             "query": req.body.nodeValue,
             "graph": currentGraphID
         };
-        graphCommons.nodes_search(search_query, function(results) {
+        graphCommons.nodes_search(search_query, results => {
             //console.log(results);
-            var numNodes = results.nodes.length;
+            let numNodes = results.nodes.length;
             if(numNodes === 0) {
                 res.render("update", { graphID: currentGraphID, node_Name: req.body.nodeValue, nodes: ["No nodes found"], linkData: []} );
                 return;
             }
-            var i, nodeNames = [], nodeLinks = [], linkData;
-            var edge, numEdges, toNodes = [], currentNode;
+            let i, nodeNames = [], nodeLinks = [], linkData;
+            let edge, numEdges, toNodes = [], currentNode;
             for(i=0; i<numNodes; ++i) {
                 currentNode = results.nodes[i];
                 currentNodeID = currentNode.id;
@@ -199,22 +201,22 @@ exports.searchGraph = function(req, res, next) {
     });
 };
 
-exports.findNodes = function(req, res, next) {
+exports.findNodes = (req, res, next) => {
     //Search graph for required node
     currentGraphID = req.body.graphID;
-    var nodeName = req.body.nodeValue;
+    let nodeName = req.body.nodeValue;
 
-    graphCommons.graphs(currentGraphID, function(graph) {
+    graphCommons.graphs(currentGraphID, graph => {
         currentGraph = graph;
         //Search for node
-        var search_query = {
+        let search_query = {
             "query": nodeName,
             "graph": currentGraphID
         };
-        graphCommons.nodes_search(search_query, function(results) {
+        graphCommons.nodes_search(search_query, results => {
             //console.log(results);
-            var numNodes = results.nodes.length;
-            var i, currentNode, nodeData = [], nodeInfo;
+            let numNodes = results.nodes.length;
+            let i, currentNode, nodeData = [], nodeInfo;
             for(i=0; i<numNodes; ++i) {
                 currentNode = results.nodes[i];
                 nodeInfo = {};
@@ -229,13 +231,13 @@ exports.findNodes = function(req, res, next) {
     });
 };
 
-exports.processLinks = function(req, res, next) {
+exports.processLinks = (req, res, next) => {
     //Get updated graph
     graphCommons.graphs(currentGraphID, function(graph) {
         currentGraph = graph;
         //Get index into edge data
-        var index = req.body.link;
-        var choice = parseInt(req.body.choice, 10);
+        let index = req.body.link;
+        let choice = parseInt(req.body.choice, 10);
         console.log("Choice = ", choice);
 
         currentNodeData = currentGraph.get_node(currentNodeID);
@@ -243,10 +245,10 @@ exports.processLinks = function(req, res, next) {
 
         //DEBUG
         console.log("Edge data = ", currentEdgeData[index]);
-        var weight = parseInt(currentEdgeData[index].weight, 10);
+        let weight = parseInt(currentEdgeData[index].weight, 10);
         console.log("Weight = ", weight);
 
-        var signals = { "signals" : [
+        let signals = { "signals" : [
             {
                 "action": "edge_update",
                 "id": currentEdgeData[index].id,
@@ -267,17 +269,17 @@ exports.processLinks = function(req, res, next) {
             res.send( {msg: 'OK'} );
             return;
         }
-        graphCommons.update_graph(currentGraphID, signals, function() {
+        graphCommons.update_graph(currentGraphID, signals, () => {
             console.log("Updated choice ", index);
             res.send( {msg: index} );
         })
     });
 };
 
-exports.addNewNode = function(req, res, next) {
+exports.addNewNode = (req, res, next) => {
     currentGraphID = req.body.graphID;
 
-    var signals = { "signals" : [
+    let signals = { "signals" : [
         {
             "action": "node_create",
             "type": req.body.addNodeType,
@@ -285,18 +287,22 @@ exports.addNewNode = function(req, res, next) {
         }
     ]};
 
-    graphCommons.graphs(currentGraphID, function(graph) {
-        graphCommons.update_graph(currentGraphID, signals, function() {
+    graphCommons.graphs(currentGraphID, graph => {
+        graphCommons.update_graph(currentGraphID, signals, response => {
             console.log("Added new node");
+            let temp = graph;
             res.send( {msg: 'OK'});
+            //Update database
+            req.body.nodeID = response.graph.signals[0].id;
+            dbase.addNode(req.body);
         })
     });
 };
 
-exports.addNewLink = function(req, res, next) {
+exports.addNewLink = (req, res, next) => {
     currentGraphID = req.body.graphID;
 
-    var signals = { "signals" : [
+    let signals = { "signals" : [
         {
             "action": "edge_create",
             "from_name": req.body.fromName,
@@ -307,7 +313,7 @@ exports.addNewLink = function(req, res, next) {
         }
     ]};
 
-    graphCommons.graphs(currentGraphID, function(graph) {
+    graphCommons.graphs(currentGraphID, graph => {
         graphCommons.update_graph(currentGraphID, signals, function() {
             console.log("Added new link");
             res.send( {msg: 'OK'} );
@@ -315,17 +321,17 @@ exports.addNewLink = function(req, res, next) {
     })
 };
 
-exports.deleteNode = function(req, res, next) {
+exports.deleteNode = (req, res, next) => {
     currentGraphID = req.body.graphID;
 
-    var signals = { "signals" : [
+    let signals = { "signals" : [
         {
             "action": "node_delete",
             "id": req.body.nodeID
         }
     ]};
 
-    graphCommons.graphs(currentGraphID, function(graph) {
+    graphCommons.graphs(currentGraphID, graph => {
         graphCommons.update_graph(currentGraphID, signals, function() {
             console.log("Deleted node");
             res.send( {msg: 'OK'} );
@@ -333,22 +339,22 @@ exports.deleteNode = function(req, res, next) {
     })
 };
 
-exports.deleteLink = function(req, res, next) {
+exports.deleteLink = (req, res, next) => {
     currentGraphID = req.body.graphID;
 
-    var i, fromID, toID, nodeData, edgeData, edgeID, linkName = req.body.linkName;
-    graphCommons.graphs(currentGraphID, function(graph) {
-        var search_query = {
+    let i, fromID, toID, nodeData, edgeData, edgeID, linkName = req.body.linkName;
+    graphCommons.graphs(currentGraphID, graph => {
+        let search_query = {
             "query": req.body.node_FromName,
             "graph": currentGraphID
         };
-        graphCommons.nodes_search(search_query, function(results) {
+        graphCommons.nodes_search(search_query, results => {
             fromID = results.nodes[0].id;
             search_query = {
                 "query": req.body.node_ToName,
                 "graph": currentGraphID
             };
-            graphCommons.nodes_search(search_query, function(results) {
+            graphCommons.nodes_search(search_query, results => {
                 toID = results.nodes[0].id;
                 nodeData = graph.get_node(fromID);
                 edgeData = graph.edges_from(nodeData);
@@ -359,7 +365,7 @@ exports.deleteLink = function(req, res, next) {
                     }
                 }
                 if(edgeID !== undefined) {
-                    var signals = { "signals" : [
+                    let signals = { "signals" : [
                         {
                             "action": "edge_delete",
                             "id": edgeID,
@@ -368,7 +374,7 @@ exports.deleteLink = function(req, res, next) {
                             "name": linkName
                         }
                     ]};
-                    graphCommons.update_graph(currentGraphID, signals, function() {
+                    graphCommons.update_graph(currentGraphID, signals, () => {
                         console.log("Deleted link");
                         res.send( {msg: 'OK'} );
                     });
@@ -380,8 +386,8 @@ exports.deleteLink = function(req, res, next) {
 };
 
 function validateSearchResults(results) {
-    var i, graph, strIndex, description, numResults = results.length;
-    var tateGraphs = [], tateGraph;
+    let i, graph, strIndex, description, numResults = results.length;
+    let tateGraphs = [], tateGraph;
     for(i=0; i<numResults; ++i) {
         graph = results[i];
         if(!graph) continue;
@@ -413,33 +419,33 @@ function validateSearchResults(results) {
     return tateGraphs;
 }
 
-exports.searchCommons = function(req, res, next) {
-    var search_query = {
+exports.searchCommons = (req, res, next) => {
+    let search_query = {
         'query' : req.body.query
     };
-    var searchresults = function(results) {
-        var graphs = validateSearchResults(results);
+    let searchresults = function(results) {
+        let graphs = validateSearchResults(results);
         res.send( {msg: graphs} );
     };
 
     graphCommons.search(search_query, searchresults);
 };
 
-exports.deleteGraph = function(req, res, next) {
+exports.deleteGraph = (req, res, next) => {
     //Delete graph
-    graphCommons.delete_graph(req.body.graphID, function(response) {
+    graphCommons.delete_graph(req.body.graphID, response => {
         res.send( {msg: "Graph deleted"});
     });
 };
 
-exports.modifyGraph = function(req, res, next) {
+exports.modifyGraph = (req, res, next) => {
     //Get graph name
     currentGraphID = req.body.graphID;
-    var graphName = req.body.name;
+    let graphName = req.body.name;
     if(graphName === undefined) {
 
     }
-    graphCommons.graphs(currentGraphID, function(graph) {
+    graphCommons.graphs(currentGraphID, graph => {
         graphName = graph.properties.name;
         res.render('modify', { graphID: currentGraphID, graphName: graphName} );
     });

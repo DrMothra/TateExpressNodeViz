@@ -3,7 +3,7 @@
  */
 
 //Database
-var dbase = require('../model/databaseManager');
+let dbase = require('../model/databaseManager');
 
 //Home page
 exports.home = function(req, res, next) {

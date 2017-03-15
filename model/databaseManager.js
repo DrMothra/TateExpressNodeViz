@@ -7,6 +7,8 @@ let Client = require('mariasql');
 
 //Get correct database
 let dbase = process.env.DATABASE_ENV || 'UNI';
+//DEBUG
+dbase = 'HOME';
 let c;
 if(dbase === 'UNI') {
     c = new Client({
@@ -37,7 +39,7 @@ exports.validateUser = function(username, password, callback) {
             throw err;
         }
         //Search for user
-        var i, numUsers = rows.length, valid = false;
+        let i, numUsers = rows.length, valid = false;
         for(i=0; i<numUsers; ++i) {
             if(rows[i].Username === username) {
                 valid = true;
@@ -58,8 +60,8 @@ exports.checkForUser = function(fullName, userName, callback) {
             throw err;
         }
         //See if name already exists
-        var exists = false;
-        var i, numRows = rows.length;
+        let exists = false;
+        let i, numRows = rows.length;
         for(i=0; i<numRows; ++i) {
             if(rows[i].Fullname === fullName || rows[i].Username === userName) {
                 exists = true;
@@ -84,4 +86,20 @@ exports.addUser = function(fullName, userName) {
             //DEBUG
             console.log("New user inserted");
         });
+
+    c.end();
+};
+
+exports.addNode = editInfo => {
+    //Get database values
+    let time = Date.now();
+    c.query('insert into edits (author, time, graphID, type, fromNodeID) values (:author, :time, :graphID, "AddNode", :nodeID)',
+        { author: editInfo.author, time: time, graphID: editInfo.graphID, nodeID: editInfo.nodeID },
+        function(err, rows) {
+            if(err) {
+                throw err;
+            }
+        });
+
+    c.end();
 };

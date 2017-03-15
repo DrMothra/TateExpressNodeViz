@@ -2,7 +2,7 @@
  * Created by atg on 01/02/2017.
  */
 
-var graphNodeNames, graphNodeTypes;
+let graphNodeNames, graphNodeTypes;
 
 function sendData(data, callback) {
     $.ajax({
@@ -21,12 +21,12 @@ function sendData(data, callback) {
 
 function getGraphNodeNames() {
     //Populate list of nodes
-    var graphID = $('#graphID').val();
-    var nodeData = {
+    let graphID = $('#graphID').val();
+    let nodeData = {
         graphID: graphID
     };
 
-    var graphData = {
+    let graphData = {
         method: 'post',
         data: nodeData,
         url: '/processGetNodeNames',
@@ -41,12 +41,12 @@ function getGraphNodeNames() {
 
 function getGraphNodeTypes() {
     //Populate list of types
-    var graphID = $('#graphID').val();
-    var linkData = {
+    let graphID = $('#graphID').val();
+    let linkData = {
         graphID: graphID
     };
 
-    var graphData = {
+    let graphData = {
         method: 'post',
         data: linkData,
         url: '/processGetNodeTypes',
@@ -65,13 +65,13 @@ function validateForm() {
         return false;
     }
 
-    var nodeName = $('#addNodeName').val();
+    let nodeName = $('#addNodeName').val();
     if(nodeName === "") {
         alert("Enter a node name");
         return false;
     }
 
-    var nodeType = $('#addNodeType').val();
+    let nodeType = $('#addNodeType').val();
     if(nodeType === "") {
         alert("Enter a node type");
         return false;
@@ -86,6 +86,8 @@ function validateForm() {
 
 function addNewNode() {
     //Send new node info
+    //Add author info
+    $('#author').val(localStorage.getItem("TateUsername"));
     $('#addNodeForm').ajaxSubmit({
 
         error: function() {
@@ -100,8 +102,8 @@ function addNewNode() {
 }
 
 function onBack() {
-    var graphID = $('#graphID').val();
-    var name = $('#graphName').html();
+    let graphID = $('#graphID').val();
+    let name = $('#graphName').html();
     window.location.href = "/modifyGraph?graphID="+graphID+"&name="+name;
 }
 
