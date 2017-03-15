@@ -3,26 +3,26 @@
  */
 
 //All database handling
-var Client = require('mariasql');
+let Client = require('mariasql');
 
-//Uni
-/*
-var c = new Client({
-    host: 'mysql.cs.nott.ac.uk',
-    user: 'psztg1_TateViz',
-    password: 'VHRHFA',
-    db: 'psztg1_TateViz'
-});
-*/
-
-//Home
-
-var c = new Client({
-    host: 'localhost',
-    user: 'root',
-    password: 'RAV4oct16',
-    db: 'TateViz'
-});
+//Get correct database
+let dbase = process.env.DATABASE_ENV || 'UNI';
+let c;
+if(dbase === 'UNI') {
+    c = new Client({
+        host: 'mysql.cs.nott.ac.uk',
+        user: 'psztg1_TateViz',
+        password: 'VHRHFA',
+        db: 'psztg1_TateViz'
+    });
+} else {
+    c = new Client({
+        host: 'localhost',
+        user: 'root',
+        password: 'RAV4oct16',
+        db: 'TateViz'
+    });
+}
 
 c.on('connect', function() {
     console.log("Client connected");

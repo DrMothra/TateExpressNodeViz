@@ -27,12 +27,11 @@ let graphManager = (function() {
         $('#graphID').html(response.msg);
     }
 
-    function onModifyGraph(id) {
+    function onModifyGraph(id, type) {
         //Get graph id
         let graphID = id.slice(-1);
         console.log("ID = ", graphID);
-
-        let graphInfo = yourGraphList[graphID];
+        let graphInfo = type.indexOf("modifyTate") < 0 ? yourGraphList[graphID] : mainGraphList[graphID];
 
         window.location.href = "/modifyGraph?graphID="+graphInfo.graphID+"&name="+graphInfo.name;
     }
@@ -104,7 +103,8 @@ let graphManager = (function() {
                     "<div class='col-md-2'>" + graphInfo.name + "</div>" +
                     "<div class='col-md-3'>" + graphLink + graphInfo.graphID + "</a></div>" +
                     "<div class='col-md-1'>" + graphInfo.author + "</div>" +
-                    "<div class='col-md-2'> <button type='button' class='btn btn-primary' data-toggle='tooltip' data-placement='top' title='Copy graph to your account'>Copy</button></div>" +
+                    "<div class='col-md-2'> <button type='button' class='btn btn-primary' data-toggle='tooltip' data-placement='top' title='Copy graph to your account'>Create View</button>" +
+                        "<button type='button' class='btn btn-primary modifyTate' data-toggle='tooltip' data-placement='top' title='Modify this graph'>Modify</button></div>" +
                     "</div>");
             } else {
                 yourGraphList.push(graphInfo);
@@ -112,7 +112,7 @@ let graphManager = (function() {
                 graphElem.append("<div class='row graphInfo'>" +
                     "<div class='col-md-2'>" + graphInfo.name + "</div>" +
                     "<div class='col-md-3'>" + graphLink + graphInfo.graphID + "</a></div>" +
-                    "<div class='col-md-2'><button type='button' class='btn btn-primary modify' data-toggle='tooltip' data-placement='top' title='Modify this graph'>Modify</button>" +
+                    "<div class='col-md-2'><button type='button' class='btn btn-primary modifyYours' data-toggle='tooltip' data-placement='top' title='Modify this graph'>Modify</button>" +
                         "<button type='button' class='btn btn-primary delete' data-toggle='tooltip' data-placement='top' title='Delete this graph'>Delete</button></div>" +
                     "</div>");
             }
@@ -122,8 +122,12 @@ let graphManager = (function() {
             return 'copyGraph' + index;
         });
 
-        $('#yourGraphList .modify').attr("id", (index, old)=> {
-            return 'modGraph' + index;
+        $('#graphList .modifyTate').attr("id", (index, old)=> {
+            return 'modGraphTate' + index;
+        });
+
+        $('#yourGraphList .modifyYours').attr("id", (index, old)=> {
+            return 'modGraphYours' + index;
         });
 
         $('#yourGraphList .delete').attr("id", (index, old)=> {
@@ -131,7 +135,7 @@ let graphManager = (function() {
         });
 
         $("[id^='modGraph']").on("click", function() {
-            onModifyGraph(this.id);
+            onModifyGraph(this.id, this.className);
         });
 
         $("[id^='deleteGraph']").on("click", function() {

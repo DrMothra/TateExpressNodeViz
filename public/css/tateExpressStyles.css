@@ -234,6 +234,7 @@ h1 {
 #createContainer {
     margin-left: 9%;
 }
+#graphList button,
 #yourGraphList button {
     margin-right: 2%;
 }

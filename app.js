@@ -1,65 +1,32 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-var fileUpload = require('express-fileupload');
-var accountRoutes = require('./routes/account');
-var nodeLinkRoutes = require('./routes/nodeLinks');
-var graphRoutes = require('./routes/graphs');
-var http = require('http');
+let express = require('express');
+let path = require('path');
+let favicon = require('serve-favicon');
+let logger = require('morgan');
+let cookieParser = require('cookie-parser');
+let bodyParser = require('body-parser');
+let fileUpload = require('express-fileupload');
+let accountRoutes = require('./routes/account');
+let nodeLinkRoutes = require('./routes/nodeLinks');
+let graphRoutes = require('./routes/graphs');
+let http = require('http');
 
-var app = express();
+let app = express();
 
-var port = process.env.PORT || '3000';
+let port = process.env.PORT || '3000';
 app.set('port', port);
 
-var server = http.Server(app);
+let server = http.Server(app);
 
-var io = require('socket.io')(server);
+let io = require('socket.io')(server);
 
 /**
  * Listen on provided port, on all network interfaces.
  */
 
-var address = '0.0.0.0';
+let address = '0.0.0.0';
 server.listen(port, address);
 server.on('error', onError);
 server.on('listening', onListening);
-
-//Sockets and emitters
-var socket;
-
-io.sockets.on('connection', function(s) {
-  console.log("User connected");
-  socket = s;
-});
-
-graphRoutes.manager.emitter.on("NodeCreated", function(data) {
-  console.log("Received nodes created ", data);
-  socket.emit("NewNodeCreated", {msg: data});
-});
-
-graphRoutes.manager.emitter.on("NodesToCreate", function(data) {
-  console.log("Received number nodes", data);
-  socket.emit("NodesToCreate", {msg: data});
-});
-
-graphRoutes.manager.emitter.on("EdgeCreated", function(data) {
-    console.log("Received edge created ", data);
-    socket.emit("NewEdgeCreated", {msg: data});
-});
-
-graphRoutes.manager.emitter.on("EdgesToCreate", function(data) {
-    console.log("Received number edges", data);
-    socket.emit("EdgesToCreate", {msg: data});
-});
-
-graphRoutes.manager.emitter.on("GraphCompleted", function(data) {
-    console.log("Received GraphCompleted", data);
-    socket.emit("GraphCompleted", {msg: data});
-});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -74,6 +41,39 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 //app.use(express.static('public'));
 app.use(fileUpload());
+
+//Sockets and emitters
+let socket;
+
+io.sockets.on('connection', function(s) {
+    console.log("User connected");
+    socket = s;
+});
+
+graphRoutes.manager.emitter.on("NodeCreated", data => {
+    console.log("Received nodes created ", data);
+    socket.emit("NewNodeCreated", {msg: data});
+});
+
+graphRoutes.manager.emitter.on("NodesToCreate", data => {
+    console.log("Received number nodes", data);
+    socket.emit("NodesToCreate", {msg: data});
+});
+
+graphRoutes.manager.emitter.on("EdgeCreated", data => {
+    console.log("Received edge created ", data);
+    socket.emit("NewEdgeCreated", {msg: data});
+});
+
+graphRoutes.manager.emitter.on("EdgesToCreate", data => {
+    console.log("Received number edges", data);
+    socket.emit("EdgesToCreate", {msg: data});
+});
+
+graphRoutes.manager.emitter.on("GraphCompleted", data => {
+    console.log("Received GraphCompleted", data);
+    socket.emit("GraphCompleted", {msg: data});
+});
 
 //Routing
 //Main page
@@ -124,7 +124,7 @@ app.post('/processGetNodeTypes', graphRoutes.getNodeTypes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
+  let err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
@@ -143,7 +143,7 @@ app.use(function(err, req, res, next) {
 module.exports = app;
 
 function normalizePort(val) {
-  var port = parseInt(val, 10);
+  let port = parseInt(val, 10);
 
   if (isNaN(port)) {
     // named pipe
@@ -163,7 +163,7 @@ function onError(error) {
     throw error;
   }
 
-  var bind = typeof port === 'string'
+  let bind = typeof port === 'string'
       ? 'Pipe ' + port
       : 'Port ' + port;
 
@@ -187,9 +187,9 @@ function onError(error) {
  */
 
 function onListening() {
-  var addr = server.address();
+  let addr = server.address();
   console.log("Server = ", addr);
-  var bind = typeof addr === 'string'
+  let bind = typeof addr === 'string'
       ? 'pipe ' + addr
       : 'port ' + addr.port;
   console.log('Listening on ' + bind);

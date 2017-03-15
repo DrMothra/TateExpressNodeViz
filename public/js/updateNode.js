@@ -2,7 +2,7 @@
  * Created by DrTone on 02/02/2017.
  */
 
-var graphNodeNames;
+let graphNodeNames;
 
 function sendData(data, callback) {
     $.ajax({
@@ -20,13 +20,13 @@ function sendData(data, callback) {
 }
 
 function onLinkUpdated(response) {
-    var link = parseInt(response.msg, 10);
+    let link = parseInt(response.msg, 10);
     if(isNaN(link)) {
         console.log("Index invalid");
         return;
     }
 
-    var elem = $('#updated'+link);
+    let elem = $('#updated'+link);
     elem.show();
     setTimeout(function() {
         elem.hide();
@@ -35,12 +35,12 @@ function onLinkUpdated(response) {
 
 function updateLinkInfo(linkID, choice) {
     //Strip out id
-    var id = linkID.slice(-1);
-    var linkData = {
+    let id = linkID.slice(-1);
+    let linkData = {
         link: id,
         choice: choice
     };
-    var graphData = {
+    let graphData = {
         method: "POST",
         data: linkData,
         url: '/processLinks',
@@ -51,12 +51,12 @@ function updateLinkInfo(linkID, choice) {
 
 function getGraphNodeNames() {
     //Populate list of nodes
-    var graphID = $('#graphID').val();
-    var nodeData = {
+    let graphID = $('#graphID').val();
+    let nodeData = {
         graphID: graphID
     };
 
-    var graphData = {
+    let graphData = {
         method: 'post',
         data: nodeData,
         url: '/processGetNodeNames',
@@ -70,8 +70,8 @@ function getGraphNodeNames() {
 }
 
 function onBack() {
-    var graphID = $('#graphID').val();
-    var name = $('#graphName').html();
+    let graphID = $('#graphID').val();
+    let name = $('#graphName').html();
     window.location.href = "/modifyGraph?graphID="+graphID+"&name="+name;
 }
 
@@ -81,7 +81,7 @@ function validateForm() {
         return false;
     }
 
-    var nodeName = $('#node_Name').val();
+    let nodeName = $('#node_Name').val();
     if(nodeName === "") {
         alert("Enter a node name");
         return false;
@@ -106,7 +106,7 @@ $(document).ready(function() {
     //Autocomplete
     getGraphNodeNames();
 
-    var graphID = $('#graphID').val();
+    let graphID = $('#graphID').val();
     $('.getGraphID').val(graphID);
 
     $('#searchForm').on("submit", function() {
