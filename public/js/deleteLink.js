@@ -100,6 +100,9 @@ function getGraphNodeNames() {
 }
 
 function deleteALink() {
+    //Add author info
+    $('#author').val(localStorage.getItem("TateUsername"));
+
     $('#deleteLinkForm').ajaxSubmit({
 
         error: function() {

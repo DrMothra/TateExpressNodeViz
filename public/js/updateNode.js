@@ -38,8 +38,10 @@ function updateLinkInfo(linkID, choice) {
     let id = linkID.slice(-1);
     let linkData = {
         link: id,
-        choice: choice
+        choice: choice,
+        author: localStorage.getItem("TateUsername")
     };
+
     let graphData = {
         method: "POST",
         data: linkData,

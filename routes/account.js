@@ -1,7 +1,7 @@
 /**
  * Created by DrTone on 14/02/2017.
  */
-
+"use strict";
 //Database
 let dbase = require('../model/databaseManager');
 

@@ -88,6 +88,7 @@ function addNewNode() {
     //Send new node info
     //Add author info
     $('#author').val(localStorage.getItem("TateUsername"));
+
     $('#addNodeForm').ajaxSubmit({
 
         error: function() {

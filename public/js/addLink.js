@@ -137,6 +137,9 @@ function validateForm() {
 
 function addNewLink() {
     //Send new node info
+    //Add author info
+    $('#author').val(localStorage.getItem("TateUsername"));
+
     $('#addLinkForm').ajaxSubmit({
 
         error: function() {

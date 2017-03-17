@@ -103,8 +103,9 @@ let graphManager = (function() {
                     "<div class='col-md-2'>" + graphInfo.name + "</div>" +
                     "<div class='col-md-3'>" + graphLink + graphInfo.graphID + "</a></div>" +
                     "<div class='col-md-1'>" + graphInfo.author + "</div>" +
-                    "<div class='col-md-2'> <button type='button' class='btn btn-primary' data-toggle='tooltip' data-placement='top' title='Copy graph to your account'>Create View</button>" +
-                        "<button type='button' class='btn btn-primary modifyTate' data-toggle='tooltip' data-placement='top' title='Modify this graph'>Modify</button></div>" +
+                    "<div class='col-md-2'> <button type='button' class='btn btn-primary copyTate' data-toggle='tooltip' data-placement='top' title='Copy graph to your account'>Create View</button>" +
+                        "<button type='button' class='btn btn-primary modifyTate' data-toggle='tooltip' data-placement='top' title='Modify this graph'>Modify</button>" +
+                        "<button type='button' class='btn btn-primary timeLineTate' data-toggle='tooltip' data-placement='top' title='See graph timeline'>TimeLine</button></div>" +
                     "</div>");
             } else {
                 yourGraphList.push(graphInfo);
@@ -113,12 +114,13 @@ let graphManager = (function() {
                     "<div class='col-md-2'>" + graphInfo.name + "</div>" +
                     "<div class='col-md-3'>" + graphLink + graphInfo.graphID + "</a></div>" +
                     "<div class='col-md-2'><button type='button' class='btn btn-primary modifyYours' data-toggle='tooltip' data-placement='top' title='Modify this graph'>Modify</button>" +
-                        "<button type='button' class='btn btn-primary delete' data-toggle='tooltip' data-placement='top' title='Delete this graph'>Delete</button></div>" +
+                        "<button type='button' class='btn btn-primary delete' data-toggle='tooltip' data-placement='top' title='Delete this graph'>Delete</button>" +
+                        "<button type='button' class='btn btn-primary timeLineYours' data-toggle='tooltip' data-placement='top' title='See graph timeline'>TimeLine</button></div>" +
                     "</div>");
             }
         }
         //Set ids for buttons
-        $('#graphList button').attr("id", (index, old)=> {
+        $('#graphList .copyTate').attr("id", (index, old)=> {
             return 'copyGraph' + index;
         });
 
@@ -182,8 +184,10 @@ let graphManager = (function() {
             let graphInfo = {
                 name: name,
                 subtitle: "TateCartographyProject",
-                description: 'Author="'+userName+'"' + description
+                description: 'Author="'+userName+'"' + description,
+                author: localStorage.getItem("TateUsername")
             };
+
             let graphData = {method: "POST",
                         data: graphInfo,
                         url: '/processGenerateNewGraphID',
@@ -194,6 +198,8 @@ let graphManager = (function() {
 
         createGraph: ()=> {
             //Submit data file
+            $('#author').val(localStorage.getItem("TateUsername"));
+
             $('#uploadForm').ajaxSubmit({
 
                 error: ()=> {

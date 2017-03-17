@@ -1,7 +1,7 @@
 /**
  * Created by atg on 16/01/2017.
  */
-
+"use strict";
 let parser = require("../model/parser");
 
 let manager = exports.manager = require("../model/dataManager");
@@ -33,6 +33,9 @@ exports.generateNewGraphID = (req, res, next) => {
         console.log("Graph id = ", result.properties.id);
         currentGraphID = result.properties.id;
         res.send( {msg: currentGraphID} );
+        //Update database
+        req.body.graphID = currentGraphID;
+        dbase.newGraphID(req.body);
     });
 };
 
@@ -68,6 +71,9 @@ exports.createGraph = (req, res, next) => {
     dataManager.setGraphID(currentGraphID);
     dataManager.createNodesAndEdges( () => {
         console.log("Graph created");
+        //Update database
+        req.body.graphID = currentGraphID;
+        dbase.createGraph(req.body);
     });
 
     res.send( {msg: "Generating graph..."} );
@@ -172,7 +178,7 @@ exports.searchGraph = (req, res, next) => {
                 return;
             }
             let i, nodeNames = [], nodeLinks = [], linkData;
-            let edge, numEdges, toNodes = [], currentNode;
+            let edge, numEdges, toNodes = [], currentNode, nodeData;
             for(i=0; i<numNodes; ++i) {
                 currentNode = results.nodes[i];
                 currentNodeID = currentNode.id;
@@ -269,9 +275,18 @@ exports.processLinks = (req, res, next) => {
             res.send( {msg: 'OK'} );
             return;
         }
-        graphCommons.update_graph(currentGraphID, signals, () => {
+        graphCommons.update_graph(currentGraphID, signals, response => {
             console.log("Updated choice ", index);
             res.send( {msg: index} );
+            //Update database
+            let responseData = response.graph.signals[0];
+            req.body.graphID = currentGraphID;
+            req.body.fromNodeID = responseData.from;
+            req.body.toNodeID = responseData.to;
+            req.body.linkID = responseData.id;
+            req.body.weight = choice === 1 ? "Agree (" : "Disagree (";
+            req.body.weight += weight + ")";
+            dbase.updateNode(req.body);
         })
     });
 };
@@ -314,9 +329,14 @@ exports.addNewLink = (req, res, next) => {
     ]};
 
     graphCommons.graphs(currentGraphID, graph => {
-        graphCommons.update_graph(currentGraphID, signals, function() {
+        graphCommons.update_graph(currentGraphID, signals, response => {
             console.log("Added new link");
             res.send( {msg: 'OK'} );
+            //Update database
+            req.body.fromNodeID = response.graph.signals[0].from;
+            req.body.toNodeID = response.graph.signals[0].to;
+            req.body.linkID = response.graph.signals[0].id;
+            dbase.addLink(req.body);
         })
     })
 };
@@ -335,6 +355,7 @@ exports.deleteNode = (req, res, next) => {
         graphCommons.update_graph(currentGraphID, signals, function() {
             console.log("Deleted node");
             res.send( {msg: 'OK'} );
+            dbase.deleteNode(req.body);
         })
     })
 };
@@ -374,9 +395,11 @@ exports.deleteLink = (req, res, next) => {
                             "name": linkName
                         }
                     ]};
-                    graphCommons.update_graph(currentGraphID, signals, () => {
+                    graphCommons.update_graph(currentGraphID, signals, response => {
                         console.log("Deleted link");
                         res.send( {msg: 'OK'} );
+                        req.body.linkID = edgeID;
+                        dbase.deleteLink(req.body);
                     });
                 }
             });

@@ -1,14 +1,13 @@
 /**
  * Created by atg on 03/03/2017.
  */
-
+"use strict";
 //All database handling
 let Client = require('mariasql');
 
 //Get correct database
 let dbase = process.env.DATABASE_ENV || 'UNI';
-//DEBUG
-dbase = 'HOME';
+
 let c;
 if(dbase === 'UNI') {
     c = new Client({
@@ -95,6 +94,88 @@ exports.addNode = editInfo => {
     let time = Date.now();
     c.query('insert into edits (author, time, graphID, type, fromNodeID) values (:author, :time, :graphID, "AddNode", :nodeID)',
         { author: editInfo.author, time: time, graphID: editInfo.graphID, nodeID: editInfo.nodeID },
+        function(err, rows) {
+            if(err) {
+                throw err;
+            }
+        });
+
+    c.end();
+};
+
+exports.deleteNode = editInfo => {
+    //Get database values
+    let time = Date.now();
+    c.query('insert into edits (author, time, graphID, type, fromNodeID) values (:author, :time, :graphID, "DeleteNode", :nodeID)',
+        { author: editInfo.author, time: time, graphID: editInfo.graphID, nodeID: editInfo.nodeID },
+        function(err, rows) {
+            if(err) {
+                throw err;
+            }
+        });
+
+    c.end();
+};
+
+exports.addLink = editInfo => {
+    //Get database values
+    let time = Date.now();
+    c.query('insert into edits (author, time, graphID, type, fromNodeID, toNodeID, linkID) values (:author, :time, :graphID, "AddLink", :fromNodeID, :toNodeID, :linkID)',
+        { author: editInfo.author, time: time, graphID: editInfo.graphID, fromNodeID: editInfo.fromNodeID, toNodeID: editInfo.toNodeID, linkID: editInfo.linkID },
+        function(err, rows) {
+            if(err) {
+                throw err;
+            }
+        });
+
+    c.end();
+};
+
+exports.updateNode = editInfo => {
+    //Get database values
+    let time = Date.now();
+    c.query('insert into edits (author, time, graphID, type, fromNodeID, toNodeID, linkID, weight) values (:author, :time, :graphID, "UpdateNode", :fromNodeID, :toNodeID, :linkID, :weight)',
+        { author: editInfo.author, time: time, graphID: editInfo.graphID, fromNodeID: editInfo.fromNodeID, toNodeID: editInfo.toNodeID, linkID: editInfo.linkID, weight: editInfo.weight },
+        function(err, rows) {
+            if(err) {
+                throw err;
+            }
+        });
+
+    c.end();
+};
+
+exports.deleteLink = editInfo => {
+    //Get database values
+    let time = Date.now();
+    c.query('insert into edits (author, time, graphID, type, linkID) values (:author, :time, :graphID, "DeleteLink", :linkID)',
+        { author: editInfo.author, time: time, graphID: editInfo.graphID, linkID: editInfo.linkID },
+        function(err, rows) {
+            if(err) {
+                throw err;
+            }
+        });
+
+    c.end();
+};
+
+exports.createGraph = editInfo => {
+    let time = Date.now();
+    c.query('insert into edits (author, time, graphID, type) values (:author, :time, :graphID, "CreateGraph")',
+        { author: editInfo.author, time: time, graphID: editInfo.graphID },
+        function(err, rows) {
+            if(err) {
+                throw err;
+            }
+        });
+
+    c.end();
+};
+
+exports.newGraphID = editInfo => {
+    let time = Date.now();
+    c.query('insert into edits (author, time, graphID, type) values (:author, :time, :graphID, "NewGraphID")',
+        { author: editInfo.author, time: time, graphID: editInfo.graphID },
         function(err, rows) {
             if(err) {
                 throw err;
