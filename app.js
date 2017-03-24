@@ -92,12 +92,14 @@ app.post('/deleteNode', nodeLinkRoutes.deleteNode);
 app.post('/addLink', nodeLinkRoutes.addLink);
 app.post('/deleteLink', nodeLinkRoutes.deleteLink);
 app.get('/modifyGraph', nodeLinkRoutes.modifyGraph);
+app.get('/timeLineGraph', nodeLinkRoutes.timeLineGraph);
 app.get('/showGraphs', nodeLinkRoutes.showGraphs);
 
 //All graph-related functionality
 app.post("/processGenerateNewGraphID", graphRoutes.generateNewGraphID);
 app.post("/processCreateGraph", graphRoutes.createGraph);
 app.post("/processCopyGraph", graphRoutes.copyGraph);
+app.post("/processGetGraphEdits", graphRoutes.getGraphEdits);
 
 //Used for finding link info
 app.post("/processSearchGraph", graphRoutes.searchGraph);

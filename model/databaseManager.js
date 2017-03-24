@@ -184,3 +184,7 @@ exports.newGraphID = editInfo => {
 
     c.end();
 };
+
+exports.getGraphEdits = (graphInfo, callback) => {
+
+};

@@ -473,3 +473,10 @@ exports.modifyGraph = (req, res, next) => {
         res.render('modify', { graphID: currentGraphID, graphName: graphName} );
     });
 };
+
+exports.getGraphEdits = (req, res, next) => {
+    //Get all edits done to this graph
+    dbase.getGraphEdits(req.body, edits => {
+        res.send( {msg: edits} );
+    });
+};

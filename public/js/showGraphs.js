@@ -79,6 +79,14 @@ let graphManager = (function() {
         }
     }
 
+    function onTimeLine(id, type) {
+        //Get graph id
+        let graphID = id.slice(-1);
+        let graphInfo = type.indexOf("timeLineTate") < 0 ? yourGraphList[graphID] : mainGraphList[graphID];
+
+        window.location.href = "/timeLineGraph?graphID="+graphInfo.graphID+"&name="+graphInfo.name;
+    }
+
     function onGraphsFound(response) {
         let i, graphInfo, numGraphs = response.msg.length;
         let currentUserName = localStorage.getItem("TateUsername");
@@ -132,6 +140,14 @@ let graphManager = (function() {
             return 'modGraphYours' + index;
         });
 
+        $('#graphList .timeLineTate').attr("id", (index, old) => {
+            return 'timeLineTate' + index;
+        });
+
+        $('#yourGraphList .timeLineYours').attr("id", (index, old) => {
+            return 'timeLineYours' + index;
+        });
+
         $('#yourGraphList .delete').attr("id", (index, old)=> {
             return 'deleteGraph' + index;
         });
@@ -146,6 +162,10 @@ let graphManager = (function() {
 
         $("[id^='copyGraph']").on("click", function() {
             onCopyGraph(this.id);
+        });
+
+        $("[id^='timeLine']").on("click", function() {
+           onTimeLine(this.id, this.className);
         });
     }
 

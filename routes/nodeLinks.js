@@ -29,3 +29,7 @@ exports.modifyGraph = function(req, res, next) {
 exports.showGraphs = function(req, res, next) {
     res.render('showGraphs');
 };
+
+exports.timeLineGraph = function(req, res, next) {
+    res.render('timeLineGraph');
+};
