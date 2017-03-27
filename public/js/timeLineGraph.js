@@ -11,7 +11,6 @@ function sendData(data, callback) {
         url: data.url,
         dataType: data.dataType
     }).done((response)=> {
-        //DEBUG
         console.log("Data sent");
         if(callback !== undefined) {
             callback(response);
@@ -34,9 +33,27 @@ function getGraphEdits() {
 
     sendData(graphData, response => {
         //DEBUG
-        console.log("Edits received");
+        console.log("Edits received", response);
         //Populate table of edits
+        let edits = response.msg;
+        let numEdits = edits.length;
+        //DEBUG
+        console.log("Num edits =", numEdits);
 
+        if(numEdits === 0) {
+            $('#graphErrorStatus').html(" There are no edits for this graph");
+            return;
+        }
+        let attributes = ["author", "time", "type"];
+        let numAttributes = attributes.length;
+        let table = document.getElementById("editsTable"), row, key, editData, i, j;
+        for(i=0; i<numEdits; ++i) {
+            row = table.insertRow(i+1);
+            editData = edits[i];
+            for(j=0; j<numAttributes; ++j) {
+                row.insertCell(-1).innerHTML = editData[attributes[j]];
+            }
+        }
     });
 }
 

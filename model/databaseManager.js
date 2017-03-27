@@ -186,5 +186,17 @@ exports.newGraphID = editInfo => {
 };
 
 exports.getGraphEdits = (graphInfo, callback) => {
+    //Get data associated with this graph
+    c.query('select * from edits where graphID = :graphID',
+        { graphID: graphInfo.graphID },
+        function(err, rows) {
+            if(err) {
+                throw err;
+            }
+            if(callback) {
+                callback(rows);
+            }
+        });
 
+    c.end();
 };
