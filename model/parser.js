@@ -9,13 +9,13 @@
 //  Updated by Christian Dallago on 2016-04-16
 // 
 
-var isDecimal_re     = /^\s*(\+|-)?((\d+([,\.]\d+)?)|([,\.]\d+))\s*$/;
+let isDecimal_re     = /^\s*(\+|-)?((\d+([,\.]\d+)?)|([,\.]\d+))\s*$/;
 
 //---------------------------------------
 // UTILS
 //---------------------------------------
 
-var isNumber = function(string) {
+let isNumber = function(string) {
     /*
     
     }if( (string === null) || isNaN( new Number(string) ) ) {
@@ -29,20 +29,20 @@ var isNumber = function(string) {
 //---------------------------------------
 // ERROR LOGGING
 //---------------------------------------
-var errorLog = [];
+let errorLog = [];
 
-var resetLog = function() {
+let resetLog = function() {
     errorLog = [];
 };
 
-var log = function(l) {
+let log = function(l) {
     errorLog.push(l);
 };
 
-var getLog = function() {
-    var out = "";
+let getLog = function() {
+    let out = "";
     if (errorLog.length > 0) {
-        for (var i=0; i < errorLog.length; i++) {
+        for (let i=0; i < errorLog.length; i++) {
             out += ("!!"+errorLog[i] + "!!\n");
         }
         out += "\n";
@@ -61,13 +61,13 @@ var getLog = function() {
 // This will parse a delimited string into an array of
 // arrays. The default delimiter is the comma, but this
 // can be overriden in the second argument.
-var CSVToArray = function( strData, strDelimiter ){
+let CSVToArray = function( strData, strDelimiter ){
     // Check to see if the delimiter is defined. If not,
     // then default to comma.
     strDelimiter = (strDelimiter || ",");
 
     // Create a regular expression to parse the CSV values.
-    var objPattern = new RegExp(
+    let objPattern = new RegExp(
         (
             // Delimiters.
             "(\\" + strDelimiter + "|\\r?\\n|\\r|^)" +
@@ -84,11 +84,11 @@ var CSVToArray = function( strData, strDelimiter ){
 
     // Create an array to hold our data. Give the array
     // a default empty first row.
-    var arrData = [[]];
+    let arrData = [[]];
 
     // Create an array to hold our individual pattern
     // matching groups.
-    var arrMatches = null;
+    let arrMatches = null;
 
 
     // Keep looping over the regular expression matches
@@ -96,7 +96,7 @@ var CSVToArray = function( strData, strDelimiter ){
     while (arrMatches = objPattern.exec( strData )){
 
         // Get the delimiter that was found.
-        var strMatchedDelimiter = arrMatches[ 1 ];
+        let strMatchedDelimiter = arrMatches[ 1 ];
 
         // Check to see if the given delimiter has a length
         // (is not the start of string) and if it matches
@@ -121,7 +121,7 @@ var CSVToArray = function( strData, strDelimiter ){
 
             // We found a quoted value. When we capture
             // this value, unescape any double quotes.
-            var strMatchedValue = arrMatches[ 2 ].replace(
+            let strMatchedValue = arrMatches[ 2 ].replace(
                 new RegExp( "\"\"", "g" ),
                 "\""
             );
@@ -129,7 +129,7 @@ var CSVToArray = function( strData, strDelimiter ){
         } else {
 
             // We found a non-quoted value.
-            var strMatchedValue = arrMatches[ 3 ];
+            let strMatchedValue = arrMatches[ 3 ];
 
         }
 
@@ -144,33 +144,33 @@ var CSVToArray = function( strData, strDelimiter ){
 };
 
 exports.convertToJSON = function(csvData) {
-    var parseOutput = parse(csvData, true , "auto", false, false);
+    let parseOutput = parse(csvData, true , "auto", false, false);
 
-    var dataGrid = parseOutput.dataGrid;
-    var headerNames = parseOutput.headerNames;
-    var headerTypes = parseOutput.headerTypes;
-    var errors = parseOutput.errors;
+    let dataGrid = parseOutput.dataGrid;
+    let headerNames = parseOutput.headerNames;
+    let headerTypes = parseOutput.headerTypes;
+    let errors = parseOutput.errors;
 
     return dataGridRenderer(dataGrid, headerNames, headerTypes, "  ", "\n");
 };
 
 function dataGridRenderer(dataGrid, headerNames, headerTypes, indent, newLine) {
     //inits...
-    var commentLine = "//";
-    var commentLineEnd = "";
-    var outputText = "[";
-    var numRows = dataGrid.length;
-    var numColumns = headerNames.length;
+    let commentLine = "//";
+    let commentLineEnd = "";
+    let outputText = "[";
+    let numRows = dataGrid.length;
+    let numColumns = headerNames.length;
 
     //begin render loop
-    for (var i=0; i < numRows; i++) {
-        var row = dataGrid[i];
+    for (let i=0; i < numRows; i++) {
+        let row = dataGrid[i];
         outputText += "{";
-        for (var j=0; j < numColumns; j++) {
+        for (let j=0; j < numColumns; j++) {
             if ((headerTypes[j] == "int")||(headerTypes[j] == "float")) {
-                var rowOutput = row[j] || "null";
+                let rowOutput = row[j] || "null";
             } else {
-                var rowOutput = '"' + ( row[j] || "" ) + '"';
+                let rowOutput = '"' + ( row[j] || "" ) + '"';
             }
 
             outputText += ('"'+headerNames[j].replace(/\./g,"_") +'"' + ":" + rowOutput );
@@ -188,26 +188,26 @@ function dataGridRenderer(dataGrid, headerNames, headerTypes, indent, newLine) {
     //---------------------------------------
     // PARSE
     //---------------------------------------
-    //var parseOutput = CSVParser.parse(this.inputText, this.headersProvided, this.delimiter, this.downcaseHeaders, this.upcaseHeaders);
+    //let parseOutput = CSVParser.parse(this.inputText, this.headersProvided, this.delimiter, this.downcaseHeaders, this.upcaseHeaders);
 
 function parse(input, headersIncluded, delimiterType, downcaseHeaders, upcaseHeaders, decimalSign) {
 
-        var dataArray = [];
+        let dataArray = [];
 
-        var errors = [];
+        let errors = [];
 
         //test for delimiter
         //count the number of commas
-        var RE = new RegExp("[^,]", "gi");
-        var numCommas = input.replace(RE, "").length;
+        let RE = new RegExp("[^,]", "gi");
+        let numCommas = input.replace(RE, "").length;
 
         //count the number of tabs
         RE = new RegExp("[^\t]", "gi");
-        var numTabs = input.replace(RE, "").length;
+        let numTabs = input.replace(RE, "").length;
 
-        var rowDelimiter = "\n";
+        let rowDelimiter = "\n";
         //set delimiter
-        var columnDelimiter = ",";
+        let columnDelimiter = ",";
         if (numTabs > numCommas) {
             columnDelimiter = "\t"
         }
@@ -225,9 +225,9 @@ function parse(input, headersIncluded, delimiterType, downcaseHeaders, upcaseHea
         RE = new RegExp(rowDelimiter + "+$", "gi");
         input = input.replace(RE, "");
 
-        // var arr = input.split(rowDelimiter);
+        // let arr = input.split(rowDelimiter);
         //
-        // for (var i=0; i < arr.length; i++) {
+        // for (let i=0; i < arr.length; i++) {
         //   dataArray.push(arr[i].split(columnDelimiter));
         // };
 
@@ -236,8 +236,8 @@ function parse(input, headersIncluded, delimiterType, downcaseHeaders, upcaseHea
         dataArray = CSVToArray(input, columnDelimiter);
 
         //escape out any tabs or returns or new lines
-        for (var i = dataArray.length - 1; i >= 0; i--){
-            for (var j = dataArray[i].length - 1; j >= 0; j--){
+        for (let i = dataArray.length - 1; i >= 0; i--){
+            for (let j = dataArray[i].length - 1; j >= 0; j--){
                 dataArray[i][j] = dataArray[i][j].replace("\t", "\\t");
                 dataArray[i][j] = dataArray[i][j].replace("\n", "\\n");
                 dataArray[i][j] = dataArray[i][j].replace("\r", "\\r");
@@ -245,10 +245,10 @@ function parse(input, headersIncluded, delimiterType, downcaseHeaders, upcaseHea
         }
 
 
-        var headerNames = [];
-        var headerTypes = [];
-        var numColumns = dataArray[0].length;
-        var numRows = dataArray.length;
+        let headerNames = [];
+        let headerTypes = [];
+        let numColumns = dataArray[0].length;
+        let numRows = dataArray.length;
         if (headersIncluded) {
 
             //remove header row
@@ -258,7 +258,7 @@ function parse(input, headersIncluded, delimiterType, downcaseHeaders, upcaseHea
         } else { //if no headerNames provided
 
             //create generic property names
-            for (var i=0; i < numColumns; i++) {
+            for (let i=0; i < numColumns; i++) {
                 headerNames.push("val"+String(i));
                 headerTypes.push("");
             }
@@ -267,29 +267,29 @@ function parse(input, headersIncluded, delimiterType, downcaseHeaders, upcaseHea
 
 
         if (upcaseHeaders) {
-            for (var i = headerNames.length - 1; i >= 0; i--){
+            for (let i = headerNames.length - 1; i >= 0; i--){
                 headerNames[i] = headerNames[i].toUpperCase();
             }
         }
         if (downcaseHeaders) {
-            for (var i = headerNames.length - 1; i >= 0; i--){
+            for (let i = headerNames.length - 1; i >= 0; i--){
                 headerNames[i] = headerNames[i].toLowerCase();
             }
         }
 
         //test all the rows for proper number of columns.
-        for (var i=0; i < dataArray.length; i++) {
-            var numValues = dataArray[i].length;
+        for (let i=0; i < dataArray.length; i++) {
+            let numValues = dataArray[i].length;
             if (numValues != numColumns) {log("Error parsing row "+String(i)+". Wrong number of columns.")};
         }
 
         //test columns for number data type
-        var numRowsToTest = dataArray.length;
-        var threshold = 0.9;
-        for (var i=0; i < headerNames.length; i++) {
-            var numFloats = 0;
-            var numInts = 0;
-            for (var r=0; r < numRowsToTest; r++) {
+        let numRowsToTest = dataArray.length;
+        let threshold = 0.9;
+        for (let i=0; i < headerNames.length; i++) {
+            let numFloats = 0;
+            let numInts = 0;
+            for (let r=0; r < numRowsToTest; r++) {
                 if (dataArray[r]) {
                     //replace comma with dot if comma is decimal separator
                     if(decimalSign='comma' && isDecimal_re.test(dataArray[r][i])){
