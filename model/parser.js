@@ -144,17 +144,17 @@ var CSVToArray = function( strData, strDelimiter ){
 };
 
 exports.convertToJSON = function(csvData) {
-    var parseOutput = parser.parse(csvData, true , "auto", false, false);
+    var parseOutput = parse(csvData, true , "auto", false, false);
 
     var dataGrid = parseOutput.dataGrid;
     var headerNames = parseOutput.headerNames;
     var headerTypes = parseOutput.headerTypes;
     var errors = parseOutput.errors;
 
-    return parser.dataGridRenderer(dataGrid, headerNames, headerTypes, "  ", "\n");
+    return dataGridRenderer(dataGrid, headerNames, headerTypes, "  ", "\n");
 };
 
-exports.dataGridRenderer = function(dataGrid, headerNames, headerTypes, indent, newLine) {
+function dataGridRenderer(dataGrid, headerNames, headerTypes, indent, newLine) {
     //inits...
     var commentLine = "//";
     var commentLineEnd = "";
@@ -183,14 +183,14 @@ exports.dataGridRenderer = function(dataGrid, headerNames, headerTypes, indent, 
     outputText += "]";
 
     return outputText;
-};
+}
 
     //---------------------------------------
     // PARSE
     //---------------------------------------
     //var parseOutput = CSVParser.parse(this.inputText, this.headersProvided, this.delimiter, this.downcaseHeaders, this.upcaseHeaders);
 
-exports.parse = function(input, headersIncluded, delimiterType, downcaseHeaders, upcaseHeaders, decimalSign) {
+function parse(input, headersIncluded, delimiterType, downcaseHeaders, upcaseHeaders, decimalSign) {
 
         var dataArray = [];
 
@@ -318,4 +318,4 @@ exports.parse = function(input, headersIncluded, delimiterType, downcaseHeaders,
 
         return {'dataGrid':dataArray, 'headerNames':headerNames, 'headerTypes':headerTypes, 'errors':getLog()}
 
-    };
+    }
