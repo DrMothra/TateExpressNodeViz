@@ -64,6 +64,7 @@ let graphManager = (function() {
         if(delGraph) {
             let graphID = id.slice(-1);
             let graphInfo = yourGraphList[graphID];
+            graphInfo.userName = localStorage.getItem("TateUsername");
 
             let graphData = {
                 method: "POST",

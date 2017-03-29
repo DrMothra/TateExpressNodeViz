@@ -89,6 +89,28 @@ exports.addUser = function(fullName, userName) {
     c.end();
 };
 
+exports.copyGraph = editInfo => {
+    let time = Date.now();
+    c.query('insert into edits (author, time, graphID, type, fromNodeID) values (:author, :time, :graphID, "CopyGraph", :nodeID)',
+        { author: editInfo.userName, time: time, graphID: editInfo.graphID, nodeID: editInfo.fromNodeID },
+        function(err, rows) {
+            if(err) {
+                throw err;
+            }
+        });
+};
+
+exports.deleteGraph = editInfo => {
+    let time = Date.now();
+    c.query('insert into edits (author, time, graphID, type) values (:author, :time, :graphID, "DeleteGraph")',
+        { author: editInfo.userName, time: time, graphID: editInfo.graphID },
+        function(err, rows) {
+            if(err) {
+                throw err;
+            }
+        });
+};
+
 exports.addNode = editInfo => {
     //Get database values
     let time = Date.now();

@@ -66,7 +66,7 @@ exports.createGraph = (req, res, next) => {
 
     //Have data - create graph
     dataManager.init(graphCommons);
-    dataManager.setStatus(dataManager.status.CREATE);
+    dataManager.setStatus(dataManager.GRAPH_STATUS.CREATE);
     dataManager.setFileData(fileData);
     dataManager.setGraphID(currentGraphID);
     dataManager.createNodesAndEdges( () => {
@@ -114,6 +114,9 @@ exports.copyGraph = (req, res, next) => {
                 dataManager.setNumberEdgesToCreate(graph.edges.length);
                 dataManager.copyGraphEdges(graph.nodes, () => {
                     console.log("All edges created");
+                    //Update database
+                    req.body.fromNodeID = result.properties.id;
+                    dbase.copyGraph(req.body);
                 })
             });
         });
@@ -456,6 +459,8 @@ exports.deleteGraph = (req, res, next) => {
     //Delete graph
     graphCommons.delete_graph(req.body.graphID, response => {
         res.send( {msg: "Graph deleted"});
+        //Update database
+        dbase.deleteGraph(req.body);
     });
 };
 

@@ -10,7 +10,6 @@ var status = {
     CREATE: 0,
     COPY: 1
 };
-exports.status = status;
 
 exports.dataManager = function(graphID, vizData, res) {
     //Links
@@ -26,6 +25,7 @@ exports.dataManager = function(graphID, vizData, res) {
         "Exhibited at" : []
     };
 
+    this.GRAPH_STATUS = status;
     //Types - just artists for now
     var artists = [];
 
@@ -71,7 +71,7 @@ exports.dataManager = function(graphID, vizData, res) {
         this.nodeTypes = [];
         this.edgeTypes = [];
         this.graphComplete = false;
-        this.status = status.CREATE;
+        this.status = this.GRAPH_STATUS.CREATE;
     };
 
     this.setFileData = function(file) {
@@ -257,7 +257,7 @@ exports.dataManager = function(graphID, vizData, res) {
                     //DEBUG
                     console.log("All nodes created");
                     //
-                    if(_this.status === status.CREATE) {
+                    if(_this.status === _this.GRAPH_STATUS.CREATE) {
                         _this.createEdges();
                     } else {
                         _this.onNodeCreateComplete();
@@ -346,14 +346,14 @@ exports.dataManager = function(graphID, vizData, res) {
                     clearInterval(_this.edgeRequestTimer);
                     _this.graphComplete = true;
                     exports.emitter.emit("GraphCompleted", "Graph Completed");
-                    _this.onEdgeCreateComplete();
+                    _this.onCompleted();
                 }
             })
         }
     };
 
     this.createNodesAndEdges = function(completedCallback) {
-        this.onCompleted = completedCallback;
+        this.onCompleted = completedCallback || this.onEdgeCreateComplete;
         this.preSort();
         this.sortLinks();
         this.sortArtists();
