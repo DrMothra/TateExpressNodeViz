@@ -251,6 +251,7 @@ exports.processLinks = (req, res, next) => {
 
         //DEBUG
         console.log("Edge data = ", currentEdgeData[index]);
+        let toNode = currentGraph.get_node(currentEdgeData[index].to);
         let weight = parseInt(currentEdgeData[index].weight, 10);
         console.log("Weight = ", weight);
 
@@ -282,8 +283,8 @@ exports.processLinks = (req, res, next) => {
             let responseData = response.graph.signals[0];
             req.body.graphID = currentGraphID;
             req.body.fromNodeID = responseData.from;
-            req.body.toNodeID = responseData.to;
-            req.body.linkID = responseData.id;
+            req.body.toNodeID = toNode.name;
+            req.body.linkNodeID = currentEdgeData[index].name;
             req.body.weight = choice === 1 ? "Agree (" : "Disagree (";
             req.body.weight += weight + ")";
             dbase.updateNode(req.body);
@@ -333,9 +334,6 @@ exports.addNewLink = (req, res, next) => {
             console.log("Added new link");
             res.send( {msg: 'OK'} );
             //Update database
-            req.body.fromNodeID = response.graph.signals[0].from;
-            req.body.toNodeID = response.graph.signals[0].to;
-            req.body.linkID = response.graph.signals[0].id;
             dbase.addLink(req.body);
         })
     })

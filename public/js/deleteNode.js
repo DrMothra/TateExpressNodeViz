@@ -32,6 +32,7 @@ function deleteNode() {
     var nodeData = {
         graphID: graphID,
         nodeID: currentNode.id,
+        name: currentNode.name,
         author: localStorage.getItem("TateUsername")
     };
 

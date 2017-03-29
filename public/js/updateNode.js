@@ -39,6 +39,7 @@ function updateLinkInfo(linkID, choice) {
     let linkData = {
         link: id,
         choice: choice,
+        name: $('#node_Name').val(),
         author: localStorage.getItem("TateUsername")
     };
 
