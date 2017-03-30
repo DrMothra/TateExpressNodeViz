@@ -194,8 +194,11 @@ exports.dataManager = function(graphID, vizData, res) {
 
     this.createNodes = function() {
         var i, dataItem;
-        //DEBUG
-        console.log("Create nodes");
+        //Start node timer running
+        this.nodeRequestTimer = setInterval(() => {
+            this.createGraphNode();
+        }, this.nodeRequestTime);
+
         for(i=0; i<this.numItems; ++i) {
             dataItem = this.data[i];
             if(dataItem["Type of node"]) {
@@ -213,34 +216,6 @@ exports.dataManager = function(graphID, vizData, res) {
         signal.signals[0].name = name;
         signal.signals[0].description = description;
         this.nodeQueue.push(signal);
-        var _this = this;
-        this.nodeRequestTimer = setInterval(function() {
-            _this.createGraphNode();
-        }, this.nodeRequestTime);
-    };
-
-    this.copyGraphNodes = function(nodes, dataType, onCompletion) {
-        //Create nodes according to type
-        this.onNodeCreateComplete = onCompletion !== undefined ? onCompletion : this.onNodeCreateComplete;
-        switch(dataType) {
-            case 'json':
-                var i, currentNode, numNodes = nodes.length;
-                if(numNodes === 0) {
-                    this.onNodeCreateComplete();
-                    break;
-                }
-                for(i=0; i<numNodes; ++i) {
-                    currentNode = nodes[i];
-                    this.queueGraphNodeRequest(currentNode.type, currentNode.name, currentNode.description);
-                }
-                break;
-
-            case 'csv':
-                break;
-
-            default:
-                break;
-        }
     };
 
     this.createGraphNode = function() {
@@ -266,6 +241,30 @@ exports.dataManager = function(graphID, vizData, res) {
             });
         }
 
+    };
+
+    this.copyGraphNodes = function(nodes, dataType, onCompletion) {
+        //Create nodes according to type
+        this.onNodeCreateComplete = onCompletion !== undefined ? onCompletion : this.onNodeCreateComplete;
+        switch(dataType) {
+            case 'json':
+                var i, currentNode, numNodes = nodes.length;
+                if(numNodes === 0) {
+                    this.onNodeCreateComplete();
+                    break;
+                }
+                for(i=0; i<numNodes; ++i) {
+                    currentNode = nodes[i];
+                    this.queueGraphNodeRequest(currentNode.type, currentNode.name, currentNode.description);
+                }
+                break;
+
+            case 'csv':
+                break;
+
+            default:
+                break;
+        }
     };
 
     this.copyGraphEdges = function(nodes, onCompletion) {
@@ -296,8 +295,17 @@ exports.dataManager = function(graphID, vizData, res) {
 
     this.createEdges = function() {
         var i, j, k, dataItem, linkInfo, numLinks, edges=0;
+        //Start edge timer
+        this.edgeRequestTimer = setInterval(() => {
+            this.createEdge();
+        }, this.edgeRequestTime);
+
         for (i = 0; i < this.numItems; ++i) {
             dataItem = this.data[i];
+            //DEBUG
+            if(dataItem["Node short name"].indexOf("Hayward Gallery") >= 0 ) {
+               let test = 0;
+            }
             for(j=0; j<numLinkTypes; ++j) {
                 linkInfo = this.getLinkInfo(dataItem, linkTypes[j]);
                 if(linkInfo !== null) {
@@ -325,10 +333,6 @@ exports.dataManager = function(graphID, vizData, res) {
         signal.signals[0].to_name = toName;
         signal.signals[0].name = edgeName;
         this.edgeQueue.push(signal);
-        var _this = this;
-        this.edgeRequestTimer = setInterval(function () {
-            _this.createEdge();
-        }, this.edgeRequestTime);
     };
 
     this.createEdge = function() {
@@ -379,7 +383,10 @@ exports.dataManager = function(graphID, vizData, res) {
         var numEntries = entries.length;
         for(i=0; i<numEntries; ++i) {
             type = this.getType(entries[i]);
-            if(!type) return null;
+            if(!type) {
+                console.log("No type for ", entries[i]);
+                continue;
+            }
             link = {
                 "name": entries[i],
                 "type": type
