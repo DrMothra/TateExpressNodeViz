@@ -88,6 +88,14 @@ let graphManager = (function() {
         window.location.href = "/timeLineGraph?graphID="+graphInfo.graphID+"&name="+graphInfo.name;
     }
 
+    function onMergeGraph(id) {
+        //Get graph id
+        let graphID = id.slice(-1);
+        let graphInfo = yourGraphList[graphID];
+
+        window.location.href = "/mergeGraphs?graphID="+graphInfo.graphID+"&name="+graphInfo.name;
+    }
+
     function onGraphsFound(response) {
         let i, graphInfo, numGraphs = response.msg.length;
         let currentUserName = localStorage.getItem("TateUsername");
@@ -113,8 +121,7 @@ let graphManager = (function() {
                     "<div class='col-md-3'>" + graphLink + graphInfo.graphID + "</a></div>" +
                     "<div class='col-md-1'>" + graphInfo.author + "</div>" +
                     "<div class='col-md-2'> <button type='button' class='btn btn-primary modifyTate' data-toggle='tooltip' data-placement='top' title='Modify this graph'>Modify</button>" +
-                        "<button type='button' class='btn btn-primary timeLineTate' data-toggle='tooltip' data-placement='top' title='See graph timeline'>TimeLine</button>" +
-                        "<button type='button' class='btn btn-primary mergeTate' data-toggle='tooltip' data-placement='top' title='Merge selected graphs'>Merge</button></div>" +
+                        "<button type='button' class='btn btn-primary timeLineTate' data-toggle='tooltip' data-placement='top' title='See graph timeline'>TimeLine</button></div>" +
                     "</div>");
             } else {
                 yourGraphList.push(graphInfo);
@@ -154,6 +161,10 @@ let graphManager = (function() {
             return 'deleteGraph' + index;
         });
 
+        $('#yourGraphList .mergeYours').attr("id", (index, old) => {
+            return 'mergeGraph' + index;
+        });
+
         $("[id^='modGraph']").on("click", function() {
             onModifyGraph(this.id, this.className);
         });
@@ -168,6 +179,10 @@ let graphManager = (function() {
 
         $("[id^='timeLine']").on("click", function() {
            onTimeLine(this.id, this.className);
+        });
+
+        $("[id^='mergeGraph']").on("click", function() {
+            onMergeGraph(this.id);
         });
     }
 

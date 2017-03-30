@@ -33,3 +33,7 @@ exports.showGraphs = function(req, res, next) {
 exports.timeLineGraph = function(req, res, next) {
     res.render('timeLineGraph');
 };
+
+exports.mergeGraphs = function(req, res, next) {
+    res.render('mergeGraphs');
+};
