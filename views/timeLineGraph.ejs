@@ -18,26 +18,39 @@
 
     <div id="graphDetails" class="title columnTitle">
         <p>Graph Name</p>
-        <span id="graphName"></span><span id="graphErrorStatus"></span>
+        <p id="graphName"><span id="graphErrorStatus"></span></p>
     </div>
 
-    <div id="edits">
-        <table id="editsTable" class="table table-bordered">
-            <thead>
-                <tr>
-                    <th>Author</th>
-                    <th>Time</th>
-                    <th>Action</th>
-                    <th>Node</th>
-                    <th>Node</th>
-                    <th>Type</th>
-                    <th>Response</th>
-                </tr>
-            </thead>
-            <tbody>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-10">
+                <table id="editsTable" class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Author</th>
+                        <th>Time</th>
+                        <th>Action</th>
+                        <th>Node</th>
+                        <th>Node</th>
+                        <th>Type</th>
+                        <th>Response</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
 
-            </tbody>
-        </table>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
     </div>
+
+    <form method="get" action="/showGraphs">
+        <div class="form-group title">
+            <button type="submit" class="btn btn-primary">Home</button>
+        </div>
+    </form>
+
 </body>
 </html>

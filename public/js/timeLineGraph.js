@@ -44,15 +44,17 @@ function getGraphEdits() {
             $('#graphErrorStatus').html(" There are no edits for this graph");
             return;
         }
-        let attributes = ["author", "time", "type"];
+        let attributes = ["author", "time", "type", "fromNodeID", "toNodeID", "linkNodeID", "weight"];
         let numAttributes = attributes.length;
-        let table = document.getElementById("editsTable"), row, key, editData, i, j;
+        let table = document.getElementById("editsTable"), row, editData, i, j;
+        let viewButton;
         for(i=0; i<numEdits; ++i) {
             row = table.insertRow(i+1);
             editData = edits[i];
             for(j=0; j<numAttributes; ++j) {
                 row.insertCell(-1).innerHTML = editData[attributes[j]];
             }
+            row.insertCell(-1).innerHTML = "<button type='button' class='btn btn-primary'>Create View</button>";
         }
     });
 }
