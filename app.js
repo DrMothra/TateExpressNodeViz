@@ -94,6 +94,7 @@ app.post('/deleteLink', nodeLinkRoutes.deleteLink);
 app.get('/modifyGraph', nodeLinkRoutes.modifyGraph);
 app.get('/timeLineGraph', nodeLinkRoutes.timeLineGraph);
 app.get('/showGraphs', nodeLinkRoutes.showGraphs);
+app.get('/showAuthorGraphs', nodeLinkRoutes.showAuthorGraphs);
 app.get('/mergeGraphs', nodeLinkRoutes.mergeGraphs);
 
 //All graph-related functionality

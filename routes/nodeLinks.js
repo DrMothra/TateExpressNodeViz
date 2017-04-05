@@ -30,6 +30,10 @@ exports.showGraphs = function(req, res, next) {
     res.render('showGraphs');
 };
 
+exports.showAuthorGraphs = function(req, res, next) {
+    res.render('showAuthorGraphs');
+};
+
 exports.timeLineGraph = function(req, res, next) {
     res.render('timeLineGraph');
 };

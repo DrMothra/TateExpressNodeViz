@@ -5,12 +5,8 @@
 
       <!-- build:js js/tateExpressViz.min.js -->
       <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
-      <script type="text/javascript" src="js/jquery.form.js"></script>
       <script type="text/javascript" src="js/bootstrap.min.js"></script>
-      <script type="text/javascript" src="js/socket.io.js"></script>
-      <script type="text/javascript" src="js/socketManager.js?v=0.2"></script>
-      <script type="text/javascript" src="js/loginManager.js"></script>
-      <script type="text/javascript" src="js/showGraphs.js"></script>
+      <script type="text/javascript" src="js/showAuthorGraphs.js"></script>
       <!-- endbuild -->
 
       <!-- build:css css/tatestyles.min.css-->
@@ -26,14 +22,15 @@
     </div>
 
     <div class="title">
-        <h2>Current Tate Perspectives</h2>
+        <h2>Author Perspectives</h2>
         <p>
-            The following perspectives are available to view: -
+            The following perspectives belong to <span id="authorName"></span>
         </p>
+
         <div id="graphList" class="container-fluid infoContent">
             <div class="row columnTitle">
                 <div class="col-md-3">
-                    <p>Username</p>
+                    <p>Maps</p>
                 </div>
                 <div class="col-md-3">
                     <p>Action</p>
@@ -49,10 +46,6 @@
         <p>
             Examine your own perspectives from the options below.
         </p>
-    </div>
-
-    <div class="title">
-        <button type="button" class="btn btn-primary">Show My Views</button>
     </div>
 
     <div id="instructions" class="infoPanel">

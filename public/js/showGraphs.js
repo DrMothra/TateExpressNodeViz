@@ -6,6 +6,7 @@ let graphManager = (function() {
     let currentGraphID = undefined;
     let processing = false;
     let mainGraphList = [];
+    let authors = [];
     let yourGraphList = [];
 
     function sendData(data, callback) {
@@ -23,77 +24,20 @@ let graphManager = (function() {
         })
     }
 
-    function onGraphCreated(response) {
-        $('#graphID').html(response.msg);
-    }
-
-    function onModifyGraph(id, type) {
-        //Get graph id
-        let graphID = id.slice(-1);
-        console.log("ID = ", graphID);
-        let graphInfo = type.indexOf("modifyTate") < 0 ? yourGraphList[graphID] : mainGraphList[graphID];
-
-        window.location.href = "/modifyGraph?graphID="+graphInfo.graphID+"&name="+graphInfo.name;
-    }
-
-    function onCopyGraph(id) {
-        //Get graph id
-        let graphID = id.slice(-1);
-        console.log("ID = ", graphID);
-
-        let graphInfo = mainGraphList[graphID];
-        graphInfo.userName = localStorage.getItem("TateUsername");
-
-        let graphData = {
-            method: "POST",
-            data: graphInfo,
-            url: '/processCopyGraph',
-            dataType: 'JSON'};
-
-        sendData(graphData, onGraphCopied);
-        $('#graphStatus').html("Copying...");
-    }
-
-    function onGraphCopied() {
-        //Refresh page
-        //window.location.reload(true);
-    }
-
-    function onDeleteGraph(id) {
-        let delGraph = confirm("Are you sure you want to delete this graph?");
-        if(delGraph) {
-            let graphID = id.slice(-1);
-            let graphInfo = yourGraphList[graphID];
-            graphInfo.userName = localStorage.getItem("TateUsername");
-
-            let graphData = {
-                method: "POST",
-                data: graphInfo,
-                url: '/processDeleteGraph',
-                dataType: 'JSON'
-            };
-
-            sendData(graphData, ()=> {
-                //Refresh graph status
-                window.location.reload(true);
-            });
+    function onShowViews(id) {
+        //Get author id
+        let authorID = id.slice(-1);
+        authorID = parseInt(authorID, 10);
+        if(isNaN(authorID)) {
+            alert("Invalid author selected");
+            return;
         }
-    }
 
-    function onTimeLine(id, type) {
-        //Get graph id
-        let graphID = id.slice(-1);
-        let graphInfo = type.indexOf("timeLineTate") < 0 ? yourGraphList[graphID] : mainGraphList[graphID];
+        let currentAuthor = authors[authorID];
+        //DEBUG
+        console.log("Author = ", currentAuthor);
 
-        window.location.href = "/timeLineGraph?graphID="+graphInfo.graphID+"&name="+graphInfo.name;
-    }
-
-    function onMergeGraph(id) {
-        //Get graph id
-        let graphID = id.slice(-1);
-        let graphInfo = yourGraphList[graphID];
-
-        window.location.href = "/mergeGraphs?graphID="+graphInfo.graphID+"&name="+graphInfo.name;
+        window.location.href = "/showAuthorGraphs?authorName="+currentAuthor;
     }
 
     function onGraphsFound(response) {
@@ -109,80 +53,34 @@ let graphManager = (function() {
 
         //General graphs
         let graphElem;
-        let graphLink;
+        //Get number of authors
+        let currentAuthor;
         for(i=0; i<numGraphs; ++i) {
             graphInfo = response.msg[i];
-            graphLink = "<a href='https://graphcommons.com/graphs/" + graphInfo.graphID + "' target='_blank'>";
+            currentAuthor = graphInfo.author;
+            if(authors.indexOf(currentAuthor) < 0 && currentAuthor!== currentUserName) {
+                authors.push(currentAuthor);
+            }
+        }
+        let numAuthors = authors.length;
+        for(i=0; i<numAuthors; ++i) {
+            currentAuthor = authors[i];
             graphElem = $('#graphList');
-            if(graphInfo.author !== currentUserName) {
-                mainGraphList.push(graphInfo);
+            if(currentAuthor !== currentUserName) {
+                mainGraphList.push(currentAuthor);
                 graphElem.append("<div class='row graphInfo'>" +
-                    "<div class='col-md-2'>" + graphInfo.name + "</div>" +
-                    "<div class='col-md-3'>" + graphLink + graphInfo.graphID + "</a></div>" +
-                    "<div class='col-md-1'>" + graphInfo.author + "</div>" +
-                    "<div class='col-md-2'> <button type='button' class='btn btn-primary modifyTate' data-toggle='tooltip' data-placement='top' title='Modify this graph'>Modify</button>" +
-                        "<button type='button' class='btn btn-primary timeLineTate' data-toggle='tooltip' data-placement='top' title='See graph timeline'>TimeLine</button></div>" +
-                    "</div>");
-            } else {
-                yourGraphList.push(graphInfo);
-                graphElem = $('#yourGraphList');
-                graphElem.append("<div class='row graphInfo'>" +
-                    "<div class='col-md-2'>" + graphInfo.name + "</div>" +
-                    "<div class='col-md-3'>" + graphLink + graphInfo.graphID + "</a></div>" +
-                    "<div class='col-md-3'><button type='button' class='btn btn-primary modifyYours' data-toggle='tooltip' data-placement='top' title='Modify this graph'>Modify</button>" +
-                        "<button type='button' class='btn btn-primary timeLineYours' data-toggle='tooltip' data-placement='top' title='See graph timeline'>TimeLine</button>" +
-                        "<button type='button' class='btn btn-primary mergeYours' data-toggle='tooltip' data-placement='top' title='Merge selected graphs'>Merge</button>" +
-                        "<button type='button' class='btn btn-primary delete' data-toggle='tooltip' data-placement='top' title='Delete this graph'>Delete</button></div>" +
+                    "<div class='col-md-3'>" + currentAuthor + "</div>" +
+                    "<div class='col-md-2'> <button type='button' class='btn btn-primary showViews' data-toggle='tooltip' data-placement='top' title='Show authors maps'>Show Views</button></div>" +
                     "</div>");
             }
         }
         //Set ids for buttons
-        $('#graphList .copyTate').attr("id", (index, old)=> {
-            return 'copyGraph' + index;
+        $('.showViews').attr("id", index => {
+            return 'showViews' + index;
         });
 
-        $('#graphList .modifyTate').attr("id", (index, old)=> {
-            return 'modGraphTate' + index;
-        });
-
-        $('#yourGraphList .modifyYours').attr("id", (index, old)=> {
-            return 'modGraphYours' + index;
-        });
-
-        $('#graphList .timeLineTate').attr("id", (index, old) => {
-            return 'timeLineTate' + index;
-        });
-
-        $('#yourGraphList .timeLineYours').attr("id", (index, old) => {
-            return 'timeLineYours' + index;
-        });
-
-        $('#yourGraphList .delete').attr("id", (index, old)=> {
-            return 'deleteGraph' + index;
-        });
-
-        $('#yourGraphList .mergeYours').attr("id", (index, old) => {
-            return 'mergeGraph' + index;
-        });
-
-        $("[id^='modGraph']").on("click", function() {
-            onModifyGraph(this.id, this.className);
-        });
-
-        $("[id^='deleteGraph']").on("click", function() {
-            onDeleteGraph(this.id);
-        });
-
-        $("[id^='copyGraph']").on("click", function() {
-            onCopyGraph(this.id);
-        });
-
-        $("[id^='timeLine']").on("click", function() {
-           onTimeLine(this.id, this.className);
-        });
-
-        $("[id^='mergeGraph']").on("click", function() {
-            onMergeGraph(this.id);
+        $("[id^='showViews']").on("click", function() {
+            onShowViews(this.id);
         });
     }
 
@@ -285,16 +183,4 @@ $(document).ready(()=> {
 
     //GUI callbacks
     graphManager.getGraphs();
-
-    $("#createID").on("click", ()=> {
-        graphManager.createNewGraphID();
-    });
-
-    $('#createGraph').on("click", ()=> {
-        graphManager.createGraph();
-    });
-
-    $('#refreshGraphs').on("click", ()=> {
-        window.location.reload(true);
-    });
 });
