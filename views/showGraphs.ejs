@@ -21,108 +21,34 @@
 
   </head>
   <body>
-    <h1>Tate Cartography Visualisation</h1>
-
-    <div>
-        <button id="refreshGraphs" type="button" class="btn btn-primary title">Refresh Graphs</button>
+    <div class="title">
+        <h1>Tate Cartography Visualisation</h1>
     </div>
 
-    <div id="currentGraphs" class="title">
-        <h2>Current Tate Graphs</h2>
-        <div id="graphList" class="container-fluid">
+    <div class="title">
+        <h2>Current Tate Perspectives</h2>
+        <p>
+            The following perspectives are available to view: -
+        </p>
+        <div id="graphList" class="container-fluid infoContent">
             <div class="row columnTitle">
-                <div class="col-md-2">
-                    <p>Graph Name</p>
+                <div class="col-md-3">
+                    <p>Username</p>
                 </div>
                 <div class="col-md-3">
-                    <p>Graph ID</p>
-                </div>
-                <div class="col-md-1">
-                    <p>Author</p>
-                </div>
-                <div class="col-md-1">
                     <p>Action</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <div id="yourGraphs" class="title">
-        <h2>Your Graphs</h2>
-        <div id="yourGraphList" class="container-fluid">
-            <div class="row columnTitle">
-                <div class="col-md-2">
-                    <p>Graph Name</p>
-                </div>
-                <div class="col-md-3">
-                    <p>Graph ID</p>
-                </div>
-                <div class="col-md-1">
-                    <p>Action</p>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="createGraphID" class="title">
-        <h2>Create Graph</h2>
-        <form class="form-horizontal">
-            <div class="form-group">
-                <label for="graphName" class="col-md-1 control-label">Graph Name</label>
-                <div class="col-md-5">
-                    <input type="text" class="form-control" id="graphName">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="graphDescription" class="col-md-1 control-label">Description</label>
-                <div class="col-md-5">
-                    <input type="text" class="form-control" id="graphDescription">
-                </div>
-            </div>
-        </form>
-        <button type="button" id="createID" class="btn btn-primary">New Graph</button>
-        <p><br>Graph ID: <span id="graphID">Not generated</span></p>
-    </div>
-
-    <div id="generateGraph" class="title">
-        <h2>Generate Graph</h2>
-        <form ref='uploadForm' id="uploadForm" method="post" action="/processCreateGraph" enctype="multipart/form-data">
-            <input type="file" name="vizFile">
-            <input type="text" class="noDisplay" name="author" id="author">
-        </form>
-        <br>
-        <button type="button" class="btn btn-primary" id="createGraph">Generate graph</button>
-    </div>
-
-    <div id="graphProperties" class="title">
-        <h3>Graph Status : <span id="graphStatus" class="label label-success"></span></h3>
-        <div id="properties" class="container-fluid">
-            <div class="row">
-                <div class="col-md-3 col-md-offset-1">
-                    <p>Nodes to create : <span id="nodesToCreate"></span></p>
-                </div>
-                <div class="col-md-3">
-                    <p>Created :  <span class="label label-primary">Nodes <span id="nodesCreated" class="badge"></span></span></p>
-                </div>
-                <div class="col-md-5">
-                    &nbsp
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3 col-md-offset-1">
-                    <p>Edges to create : <span id="edgesToCreate"></span></p>
-                </div>
-                <div class="col-md-3">
-                    <p>Created : <span class="label label-primary">Edges <span id="edgesCreated" class="badge"></span></span> </p>
-                </div>
-                <div class="col-md-5">
-                    &nbsp
-                </div>
-            </div>
-        </div>
-        <div id="status">
-
-        </div>
+    <div class="title">
+        <p>
+            Select an action from the list above to view the relevant perspective.
+        </p>
+        <p>
+            Examine your own perspectives from the options below.
+        </p>
     </div>
 
     <div id="instructions" class="infoPanel">
