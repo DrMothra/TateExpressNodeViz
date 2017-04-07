@@ -102,55 +102,15 @@ let graphManager = (function() {
             sendData(graphData, onGraphsFound);
         },
 
-        createNewGraphID: ()=> {
-            //Ensure we have graph name
-            let name = $('#graphName').val();
-            if(!name) {
-                alert("Enter a graph name");
-                return;
-            }
-            let description = $('#graphdescription').val();
-            if(description === undefined) description = "";
+        showMyViews: ()=> {
+            //Get current user's graphs
             let userName = localStorage.getItem("TateUsername");
-            if(userName === undefined) {
-                alert("You must be logged in!");
+            if(!userName) {
+                alert("Please log in to see your views!");
                 return;
             }
-            let graphInfo = {
-                name: name,
-                subtitle: "TateCartographyProject",
-                description: 'Author="'+userName+'"' + description,
-                author: localStorage.getItem("TateUsername")
-            };
 
-            let graphData = {method: "POST",
-                        data: graphInfo,
-                        url: '/processGenerateNewGraphID',
-                        dataType: 'JSON'};
-
-            sendData(graphData, onGraphCreated);
-        },
-
-        createGraph: ()=> {
-            //Submit data file
-            $('#author').val(localStorage.getItem("TateUsername"));
-
-            $('#uploadForm').ajaxSubmit({
-
-                error: ()=> {
-                    console.log("error");
-                },
-
-                success: response => {
-                    console.log("Received ", response);
-                    $('#graphStatus').html(" " + response.msg);
-                }
-            });
-        },
-
-        graphCompleted: ()=> {
-            //Refresh graph status
-            window.location.reload(true);
+            window.location.href = "/showMyViews?authorName="+userName;
         }
     }
 })();
@@ -158,29 +118,18 @@ let graphManager = (function() {
 $(document).ready(()=> {
 
     //Check that logged in
+    /*
     if(!LoginManager.userLoggedIn()) {
         alert("Please log in before continuing!");
         window.location.href = "/";
         return;
     }
-    //Socket io
-    if(socketManager === undefined) {
-        socketManager = new SocketManager();
-        socketManager.connect("http://localhost", 3000);
-        let messages = [
-            {msg: "NodesToCreate", element: "nodesToCreate"},
-            {msg: "NewNodeCreated", element: "nodesCreated"},
-            {msg: "EdgesToCreate", element: "edgesToCreate"},
-            {msg: "NewEdgeCreated", element: "edgesCreated"},
-            {msg: "GraphCompleted", element: "graphStatus", onReceived: graphManager.graphCompleted }
-        ];
-        let i, numMessages = messages.length, msg;
-        for(i=0; i<numMessages; ++i) {
-            msg = messages[i];
-            socketManager.listen(messages[i]);
-        }
-    }
+    */
 
     //GUI callbacks
     graphManager.getGraphs();
+
+    $('#myViews').on("click", () => {
+        graphManager.showMyViews();
+    });
 });

@@ -302,10 +302,6 @@ exports.dataManager = function(graphID, vizData, res) {
 
         for (i = 0; i < this.numItems; ++i) {
             dataItem = this.data[i];
-            //DEBUG
-            if(dataItem["Node short name"].indexOf("Hayward Gallery") >= 0 ) {
-               let test = 0;
-            }
             for(j=0; j<numLinkTypes; ++j) {
                 linkInfo = this.getLinkInfo(dataItem, linkTypes[j]);
                 if(linkInfo !== null) {

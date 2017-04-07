@@ -6,7 +6,7 @@
       <!-- build:js js/tateExpressViz.min.js -->
       <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
       <script type="text/javascript" src="js/bootstrap.min.js"></script>
-      <script type="text/javascript" src="js/showGraphs.js"></script>
+      <script type="text/javascript" src="js/showMyViews.js"></script>
       <!-- endbuild -->
 
       <!-- build:css css/tatestyles.min.css-->
@@ -22,14 +22,15 @@
     </div>
 
     <div class="title">
-        <h2>Current Tate Perspectives</h2>
+        <h2>Your Perspectives</h2>
         <p>
-            The following perspectives are available to view: -
+            You currently have <span id="mapStatus">the following perspectives: -</span>
         </p>
-        <div id="graphList" class="container-fluid infoContent">
+
+        <div id="mapList" class="container-fluid infoContent">
             <div class="row columnTitle">
                 <div class="col-md-3">
-                    <p>Username</p>
+                    <p>Maps</p>
                 </div>
                 <div class="col-md-3">
                     <p>Action</p>
@@ -38,18 +39,27 @@
         </div>
     </div>
 
-    <div class="title">
+    <div class="title infoContent">
         <p>
-            Select an action from the list above to view the relevant perspective.
+            Click on the map name to see the visualisation.
         </p>
         <p>
-            Examine your own perspectives from the options below.
+            Select an action from the list above to modify the relevant view.
         </p>
+        <p>
+            If you'd like to create a new map or merge exising ones, then explore the options below.
+        </p>
+        <div>
+            <button type="button" class="btn btn-primary">Create</button>
+            <button type="button" class="btn btn-primary">Merge</button>
+        </div>
     </div>
 
-    <div class="title">
-        <button id="myViews" type="button" class="btn btn-primary">Show My Views</button>
-    </div>
+    <form method="get" action="/showGraphs">
+        <div class="form-group title">
+            <button type="submit" class="btn btn-primary">Home</button>
+        </div>
+    </form>
 
     <div id="instructions" class="infoPanel">
         <a href="tateInstructionsShow.html" target="_blank"><img src="images/info.png"></a>

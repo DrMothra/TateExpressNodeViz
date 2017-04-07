@@ -113,7 +113,7 @@ exports.deleteGraph = editInfo => {
 
 exports.addNode = editInfo => {
     //Get database values
-    let time = Date.now();
+    let time = new Date().toUTCString();
     c.query('insert into edits (author, time, graphID, type, fromNodeID) values (:author, :time, :graphID, "AddNode", :nodeID)',
         { author: editInfo.author, time: time, graphID: editInfo.graphID, nodeID: editInfo.addNodeName },
         function(err, rows) {
