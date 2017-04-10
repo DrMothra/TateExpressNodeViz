@@ -4,85 +4,28 @@
 
 var graphNodeNames, graphNodeTypes, graphLinkTypes;
 
-function sendData(data, callback) {
-    $.ajax({
-        type: data.method,
-        data: data.data,
-        url: data.url,
-        dataType: data.dataType
-    }).done(function(response) {
-        //DEBUG
-        console.log("Data sent");
-        if(callback !== undefined) {
-            callback(response);
-        }
-    })
-}
-
-function getGraphNodeNames() {
+function onGetNodeNames(response) {
     //Populate list of nodes
-    var graphID = $('#graphID').val();
-    var nodeData = {
-        graphID: graphID
-    };
-
-    var graphData = {
-        method: 'post',
-        data: nodeData,
-        url: '/processGetNodeNames',
-        dataType: 'JSON'
-    };
-
-    sendData(graphData, function(response) {
-        graphNodeNames = response.msg;
-        $('#fromNodeName').typeahead( {source: graphNodeNames} );
-        $('#toNodeName').typeahead( {source: graphNodeNames} );
-    });
+    graphNodeNames = response.msg;
+    $('#fromNodeName').typeahead( {source: graphNodeNames} );
+    $('#toNodeName').typeahead( {source: graphNodeNames} );
 }
 
-function getGraphNodeTypes() {
+function onGetNodeTypes(response) {
     //Populate list of types
-    var graphID = $('#graphID').val();
-    var linkData = {
-        graphID: graphID
-    };
-
-    var graphData = {
-        method: 'post',
-        data: linkData,
-        url: '/processGetNodeTypes',
-        dataType: 'JSON'
-    };
-
-    sendData(graphData, function(response) {
-        graphNodeTypes = response.msg;
-        $('#fromNodeType').typeahead( {source: graphNodeTypes} );
-        $('#toNodeType').typeahead( {source: graphNodeTypes} );
-    })
+    graphNodeTypes = response.msg;
+    $('#fromNodeType').typeahead( {source: graphNodeTypes} );
+    $('#toNodeType').typeahead( {source: graphNodeTypes} );
 }
 
-function getGraphLinkTypes() {
-    var graphID = $('#graphID').val();
-    var linkData = {
-        graphID: graphID
-    };
-
-    var graphData = {
-        method: 'post',
-        data: linkData,
-        url: '/processGetLinkTypes',
-        dataType: 'JSON'
-    };
-
-    sendData(graphData, function(response) {
-        graphLinkTypes = response.msg;
-        $('#linkType').typeahead( {source: graphLinkTypes} );
-    })
+function onGetLinkTypes(response) {
+    graphLinkTypes = response.msg;
+    $('#linkType').typeahead( {source: graphLinkTypes} );
 }
 
 function validateForm() {
-    if($("#graphID").val() === "") {
-        alert("Enter a graph ID");
+    if($("#mapID").val() === "") {
+        alert("Enter a map ID");
         return false;
     }
 
@@ -154,17 +97,23 @@ function addNewLink() {
 }
 
 function onBack() {
-    var graphID = $('#graphID').val();
-    var name = $('#graphName').html();
-    window.location.href = "/modifyGraph?graphID="+graphID+"&name="+name;
+    var mapID = $('#mapID').val();
+    var name = $('#mapName').html();
+    window.location.href = "/modifyMap?mapID="+mapID+"&name="+name;
 }
 
 $(document).ready(function() {
-
     //Autocomplete
-    getGraphNodeNames();
-    getGraphNodeTypes();
-    getGraphLinkTypes();
+    let mapID = $('#mapID').val();
+    if(!mapID) {
+        alert("No map ID specified!");
+        return;
+    }
+
+    let mapManager = new MapManager();
+    mapManager.getGraphNodeNames(mapID, onGetNodeNames);
+    mapManager.getGraphNodeTypes(mapID, onGetNodeTypes);
+    mapManager.getGraphLinkTypes(mapID, onGetLinkTypes);
 
     $('#addNewLink').on("click", function() {
         if(!validateForm()) return;

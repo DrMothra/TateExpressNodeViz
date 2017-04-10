@@ -4,24 +4,9 @@
 
 var graphNodeNames, graphLinkTypes;
 
-function sendData(data, callback) {
-    $.ajax({
-        type: data.method,
-        data: data.data,
-        url: data.url,
-        dataType: data.dataType
-    }).done(function(response) {
-        //DEBUG
-        console.log("Data sent");
-        if(callback !== undefined) {
-            callback(response);
-        }
-    })
-}
-
 function validateForm() {
-    if($("#graphID").val() === "") {
-        alert("Enter a graph ID");
+    if($("#mapID").val() === "") {
+        alert("Enter a map ID");
         return false;
     }
 
@@ -58,45 +43,17 @@ function validateForm() {
     return true;
 }
 
-function getGraphLinkTypes() {
+function onGetLinkTypes(response) {
     //Populate list of types
-    var graphID = $('#graphID').val();
-    var linkData = {
-        graphID: graphID
-    };
-
-    var graphData = {
-        method: 'post',
-        data: linkData,
-        url: '/processGetLinkTypes',
-        dataType: 'JSON'
-    };
-
-    sendData(graphData, function(response) {
-        graphLinkTypes = response.msg;
-        $('#linkName').typeahead( {source: graphLinkTypes} );
-    })
+    graphLinkTypes = response.msg;
+    $('#linkName').typeahead( {source: graphLinkTypes} );
 }
 
-function getGraphNodeNames() {
+function onGetNodeNames(response) {
     //Populate list of nodes
-    var graphID = $('#graphID').val();
-    var nodeData = {
-        graphID: graphID
-    };
-
-    var graphData = {
-        method: 'post',
-        data: nodeData,
-        url: '/processGetNodeNames',
-        dataType: 'JSON'
-    };
-
-    sendData(graphData, function(response) {
-        graphNodeNames = response.msg;
-        $('#node_FromName').typeahead( {source: graphNodeNames} );
-        $('#node_ToName').typeahead( {source: graphNodeNames} );
-    });
+    graphNodeNames = response.msg;
+    $('#node_FromName').typeahead( {source: graphNodeNames} );
+    $('#node_ToName').typeahead( {source: graphNodeNames} );
 }
 
 function deleteALink() {
@@ -117,15 +74,21 @@ function deleteALink() {
 }
 
 function onBack() {
-    var graphID = $('#graphID').val();
-    var name = $('#graphName').html();
-    window.location.href = "/modifyGraph?graphID="+graphID+"&name="+name;
+    var mapID = $('#mapID').val();
+    var name = $('#mapName').html();
+    window.location.href = "/modifyMap?mapID="+mapID+"&name="+name;
 }
 
 $(document).ready(function() {
     //Autocomplete
-    getGraphNodeNames();
-    getGraphLinkTypes();
+    let mapID = $('#mapID').val();
+    if(!mapID) {
+        alert("No map ID specified!");
+        return;
+    }
+    let mapManager = new MapManager();
+    mapManager.getGraphNodeNames(mapID, onGetNodeNames);
+    mapManager.getGraphLinkTypes(mapID, onGetLinkTypes);
 
     $('#linkDelete').on("click", function() {
         if(!validateForm()) return;

@@ -138,7 +138,7 @@ exports.getNodeNames = (req, res, next) => {
 
 exports.getLinkTypes = (req, res, next) => {
     //Get list of edge types in graph
-    currentGraphID = req.body.graphID;
+    currentGraphID = req.body.mapID;
     graphCommons.graphs(currentGraphID, function(graph) {
         let i, typeNames = [], numTypes = graph.properties.edgeTypes.length;
         for(i=0; i<numTypes; ++i) {
@@ -151,7 +151,7 @@ exports.getLinkTypes = (req, res, next) => {
 
 exports.getNodeTypes =  (req, res, next) => {
     //Get list of node types in graph
-    currentGraphID = req.body.graphID;
+    currentGraphID = req.body.mapID;
     graphCommons.graphs(currentGraphID, function(graph) {
         let i, typeNames = [], numTypes = graph.properties.nodeTypes.length;
         for(i=0; i<numTypes; ++i) {
@@ -296,7 +296,7 @@ exports.processLinks = (req, res, next) => {
 };
 
 exports.addNewNode = (req, res, next) => {
-    currentGraphID = req.body.graphID;
+    currentGraphID = req.body.mapID;
 
     let signals = { "signals" : [
         {
@@ -319,7 +319,7 @@ exports.addNewNode = (req, res, next) => {
 };
 
 exports.addNewLink = (req, res, next) => {
-    currentGraphID = req.body.graphID;
+    currentGraphID = req.body.mapID;
 
     let signals = { "signals" : [
         {
@@ -362,7 +362,7 @@ exports.deleteNode = (req, res, next) => {
 };
 
 exports.deleteLink = (req, res, next) => {
-    currentGraphID = req.body.graphID;
+    currentGraphID = req.body.mapID;
 
     let i, fromID, toID, nodeData, edgeData, edgeID, linkName = req.body.linkName;
     graphCommons.graphs(currentGraphID, graph => {

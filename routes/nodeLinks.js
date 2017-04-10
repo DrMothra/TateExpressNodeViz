@@ -7,19 +7,19 @@ exports.update = function(req, res, next) {
 };
 
 exports.addNode = function(req, res, next) {
-    res.render('addNode', { graphID: req.body.addNodeGraphID, graphName: req.body.addNodeGraphName} );
+    res.render('addNode', { mapID: req.body.addNodeMapID, mapName: req.body.addNodeMapName} );
 };
 
 exports.deleteNode = function(req, res, next) {
-    res.render('deleteNode', { graphID: req.body.deleteNodeGraphID, graphName: req.body.deleteNodeGraphName, node_Name: null, node: null, nodeData: []} );
+    res.render('deleteNode', { mapID: req.body.deleteNodeMapID, mapName: req.body.deleteNodeMapName, node_Name: null, node: null, nodeData: []} );
 };
 
 exports.addLink = function(req, res, next) {
-    res.render('addLink', { graphID: req.body.addLinkGraphID, graphName: req.body.addLinkGraphName} );
+    res.render('addLink', { mapID: req.body.addLinkMapID, mapName: req.body.addLinkMapName} );
 };
 
 exports.deleteLink = function(req, res, next) {
-    res.render('deleteLink', { graphID: req.body.deleteLinkGraphID, graphName: req.body.deleteLinkGraphName } );
+    res.render('deleteLink', { mapID: req.body.deleteLinkMapID, mapName: req.body.deleteLinkMapName } );
 };
 
 exports.modifyMap = function(req, res, next) {

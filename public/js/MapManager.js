@@ -56,6 +56,24 @@ class MapManager {
         this.getMapData(mapData, callback);
     }
 
+    deleteNode(mapID, nodeID, nodeName, callback) {
+        let nodeData = {
+            mapID: mapID,
+            nodeID: nodeID,
+            name: nodeName,
+            author: localStorage.getItem("TateUsername")
+        };
+
+        let mapData = {
+            method: 'post',
+            data: nodeData,
+            url: '/processDeleteNode',
+            dataType: 'JSON'
+        };
+
+        this.getMapData(mapData, callback);
+    }
+
     getGraphNodeNames(mapID, callback) {
         if(!mapID) {
             console.log("No map id supplied!");
@@ -70,6 +88,46 @@ class MapManager {
             method: 'post',
             data: nodeData,
             url: '/processGetNodeNames',
+            dataType: 'JSON'
+        };
+
+        this.getMapData(mapData, callback);
+    }
+
+    getGraphNodeTypes(mapID, callback) {
+        if(!mapID) {
+            console.log("No map id supplied!");
+            return;
+        }
+
+        let nodeData = {
+            mapID: mapID
+        };
+
+        let mapData = {
+            method: 'post',
+            data: nodeData,
+            url: '/processGetNodeTypes',
+            dataType: 'JSON'
+        };
+
+        this.getMapData(mapData, callback);
+    }
+
+    getGraphLinkTypes(mapID, callback) {
+        if(!mapID) {
+            console.log("No map id supplied!");
+            return;
+        }
+
+        let nodeData = {
+            mapID: mapID
+        };
+
+        let mapData = {
+            method: 'post',
+            data: nodeData,
+            url: '/processGetLinkTypes',
             dataType: 'JSON'
         };
 

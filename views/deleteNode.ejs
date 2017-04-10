@@ -8,6 +8,7 @@
     <script type="text/javascript" src="js/jquery.form.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/bootstrap3-typeahead.min.js"></script>
+    <script type="text/javascript" src="js/MapManager.js"></script>
     <script type="text/javascript" src="js/deleteNode.js"></script>
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -16,7 +17,9 @@
 
 </head>
 <body>
-    <h1>Tate Node Visualiser</h1>
+    <div class="title">
+        <h1>Tate Node Visualiser</h1>
+    </div>
 
     <div id="instructions" class="infoPanel">
         <a href="tateInstructionsDeleteNode.html" target="_blank"><img src="images/info.png"></a>
@@ -24,12 +27,12 @@
 
     <div id="deleteNode" class="title">
         <h2>Delete Node</h2>
-        <h3>Graph - <span id="graphName"><%= graphName %></span></h3>
-        <form id="searchForm" class="form-horizontal" action="/processFindNodes" method = "post" autocomplete="off">
+        <h3>Map - <span id="mapName"><%= mapName %></span></h3>
+        <form id="findNodesForm" class="form-horizontal" action="/processFindNodes" method = "post" autocomplete="off">
             <div class="form-group">
-                <label for="graphID" class="col-md-1 control-label">Graph ID</label>
+                <label for="mapID" class="col-md-1 control-label">Map ID</label>
                 <div class="col-md-5">
-                    <input type="text" class="form-control" name="graphID" id="graphID" value="<%= graphID %>">
+                    <input type="text" class="form-control" name="mapID" id="mapID" value="<%= mapID %>">
                 </div>
             </div>
             <div class="form-group">
@@ -53,12 +56,12 @@
         <button id="nodeDelete" type="button" class="btn btn-primary">Delete</button>
     </div>
 
-    <div>
-        <p id="addStatus" class="label label-success"></p>
+    <div class="feedback">
+        <span id="addStatus" class="label label-success"></span>
     </div>
 
     <div class="title">
-        <button id="backToModify" type="submit" class="btn btn-primary">Modify Graph</button>
+        <button id="backToModify" type="submit" class="btn btn-primary">Modify Map</button>
     </div>
     <form method="get" action="/showGraphs">
         <div class="form-group title">

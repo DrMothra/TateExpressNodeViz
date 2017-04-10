@@ -2,66 +2,17 @@
  * Created by atg on 01/02/2017.
  */
 
-let graphNodeNames, graphNodeTypes;
+let graphNodeTypes;
 
-function sendData(data, callback) {
-    $.ajax({
-        type: data.method,
-        data: data.data,
-        url: data.url,
-        dataType: data.dataType
-    }).done(function(response) {
-        //DEBUG
-        console.log("Data sent");
-        if(callback !== undefined) {
-            callback(response);
-        }
-    })
-}
-
-function getGraphNodeNames() {
-    //Populate list of nodes
-    let graphID = $('#graphID').val();
-    let nodeData = {
-        graphID: graphID
-    };
-
-    let graphData = {
-        method: 'post',
-        data: nodeData,
-        url: '/processGetNodeNames',
-        dataType: 'JSON'
-    };
-
-    sendData(graphData, function(response) {
-        graphNodeNames = response.msg;
-        $('#addNodeName').typeahead( {source: graphNodeNames} );
-    });
-}
-
-function getGraphNodeTypes() {
+function onGetNodeTypes(response) {
     //Populate list of types
-    let graphID = $('#graphID').val();
-    let linkData = {
-        graphID: graphID
-    };
-
-    let graphData = {
-        method: 'post',
-        data: linkData,
-        url: '/processGetNodeTypes',
-        dataType: 'JSON'
-    };
-
-    sendData(graphData, function(response) {
-        graphNodeTypes = response.msg;
-        $('#addNodeType').typeahead( {source: graphNodeTypes} );
-    })
+    graphNodeTypes = response.msg;
+    $('#addNodeType').typeahead( {source: graphNodeTypes} );
 }
 
 function validateForm() {
-    if($("#graphID").val() === "") {
-        alert("Enter a graph ID");
+    if($("#mapID").val() === "") {
+        alert("Enter a map ID");
         return false;
     }
 
@@ -103,15 +54,15 @@ function addNewNode() {
 }
 
 function onBack() {
-    let graphID = $('#graphID').val();
-    let name = $('#graphName').html();
-    window.location.href = "/modifyGraph?graphID="+graphID+"&name="+name;
+    let mapID = $('#mapID').val();
+    let name = $('#mapName').html();
+    window.location.href = "/modifyMap?mapID="+mapID+"&name="+name;
 }
 
 $(document).ready(function() {
-    //Autocomplete actions
-    //getGraphNodeNames();
-    getGraphNodeTypes();
+    let mapManager = new MapManager();
+    let mapID = $('#mapID').val();
+    mapManager.getGraphNodeTypes(mapID, onGetNodeTypes);
 
     $('#addNewNode').on("click", function() {
         if(!validateForm()) return;

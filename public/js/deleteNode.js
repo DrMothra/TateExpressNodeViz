@@ -2,7 +2,8 @@
  * Created by DrTone on 23/02/2017.
  */
 
-var graphNodeNames, nodeData, currentNode;
+let graphNodeNames, nodeData, currentNode;
+let mapManager;
 
 function sendData(data, callback) {
     $.ajax({
@@ -27,25 +28,12 @@ function onDeleteNode(id) {
     console.log("Node = ", currentNode.name);
 }
 
+function onNodeDeleted() {
+    $('#addStatus').html("Node deleted");
+}
+
 function deleteNode() {
-    var graphID = $('#graphID').val();
-    var nodeData = {
-        graphID: graphID,
-        nodeID: currentNode.id,
-        name: currentNode.name,
-        author: localStorage.getItem("TateUsername")
-    };
-
-    var graphData = {
-        method: 'post',
-        data: nodeData,
-        url: '/processDeleteNode',
-        dataType: 'JSON'
-    };
-
-    sendData(graphData, function(response) {
-        $('#addStatus').html("Node deleted");
-    })
+    mapManager.deleteNode(mapID, currentNode.id, currentNode.name, onNodeDeleted);
 }
 
 function onFindNodes() {
@@ -54,7 +42,7 @@ function onFindNodes() {
         //Clear any previous search
         var elem = $('#nodeList');
         elem.empty();
-        $('#searchForm').ajaxSubmit({
+        $('#findNodesForm').ajaxSubmit({
 
             error: function() {
                 console.log("Error");
@@ -90,8 +78,8 @@ function onFindNodes() {
 }
 
 function validateForm() {
-    if($('#graphID').val() === "") {
-        alert("Enter a graph ID");
+    if($('#mapID').val() === "") {
+        alert("Enter a map ID");
         return false;
     }
 
@@ -108,36 +96,27 @@ function validateForm() {
     return true;
 }
 
-function getGraphNodeNames() {
+function onGetNodeNames(response) {
     //Populate list of nodes
-    var graphID = $('#graphID').val();
-    var nodeData = {
-        graphID: graphID
-    };
-
-    var graphData = {
-        method: 'post',
-        data: nodeData,
-        url: '/processGetNodeNames',
-        dataType: 'JSON'
-    };
-
-    sendData(graphData, function(response) {
-        graphNodeNames = response.msg;
-        $('#node_Name').typeahead( {source: graphNodeNames} );
-    });
+    graphNodeNames = response.msg;
+    $('#node_Name').typeahead( {source: graphNodeNames} );
 }
 
 function onBack() {
-    var graphID = $('#graphID').val();
-    var name = $('#graphName').html();
-    window.location.href = "/modifyGraph?graphID="+graphID+"&name="+name;
+    var mapID = $('#mapID').val();
+    var name = $('#mapName').html();
+    window.location.href = "/modifyMap?mapID="+mapID+"&name="+name;
 }
 
 $(document).ready(function() {
-
     //Autocomplete
-    getGraphNodeNames();
+    let mapID = $('#mapID').val();
+    if(!mapID) {
+        alert("No map ID specified!");
+    }
+
+    mapManager = new MapManager();
+    mapManager.getGraphNodeNames(mapID, onGetNodeNames);
 
     $('#find').on("click", function() {
         onFindNodes();

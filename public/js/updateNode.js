@@ -24,9 +24,9 @@ function onGetNodeNames(response) {
 }
 
 function onBack() {
-    let graphID = $('#graphID').val();
-    let name = $('#graphName').html();
-    window.location.href = "/modifyGraph?graphID="+graphID+"&name="+name;
+    let mapID = $('#mapID').val();
+    let name = $('#mapName').html();
+    window.location.href = "/modifyMap?mapID="+mapID+"&name="+name;
 }
 
 function validateForm() {

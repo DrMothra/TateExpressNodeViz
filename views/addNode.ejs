@@ -7,6 +7,7 @@
       <script type="text/javascript" src="js/jquery.form.js"></script>
       <script type="text/javascript" src="js/bootstrap.min.js"></script>
       <script type="text/javascript" src="js/bootstrap3-typeahead.min.js"></script>
+      <script type="text/javascript" src="js/MapManager.js"></script>
       <script type="text/javascript" src="js/addNode.js"></script>
 
       <link rel="stylesheet" href="css/bootstrap.min.css">
@@ -15,20 +16,22 @@
 
   </head>
   <body>
-    <h1>Tate Node Visualiser</h1>
+    <div class="title">
+        <h1>Tate Node Visualiser</h1>
+    </div>
 
     <div id="instructions" class="infoPanel">
         <a href="tateInstructionsAdd.html" target="_blank"><img src="images/info.png"></a>
     </div>
 
-    <div id="addNode" class="title">
+    <div id="addNode" class="title infoContent">
         <h2>Add Node</h2>
-        <h3>Graph - <span id="graphName"><%= graphName %></span></h3>
+        <h3>Map - <span id="mapName"><%= mapName %></span></h3>
         <form id="addNodeForm" class="form-horizontal" action="/processAddNewNode" method="post" autocomplete="off">
             <div class="form-group">
-                <label for="graphID" class="col-md-1 control-label">Graph ID</label>
+                <label for="mapID" class="col-md-1 control-label">Map ID</label>
                 <div class="col-md-5">
-                    <input type="text" class="form-control" name="graphID" id="graphID" value="<%= graphID %>">
+                    <input type="text" class="form-control" name="mapID" id="mapID" value="<%= mapID %>">
                     <input type="text" class="noDisplay" name="author" id="author">
                 </div>
             </div>
@@ -45,21 +48,28 @@
                     </div>
             </div>
         </form>
+        <p>
+            Enter a node name and a type (it can be a completely new type) and click the Add button.
+        </p>
         <button id="addNewNode" type="button" class="btn btn-primary">Add</button>
     </div>
-    <div>
-        <p id="addStatus" class="label label-success"></p>
+    <div class="title feedback">
+        <span id="addStatus" class="label label-success"></span>
     </div>
 
 
-    <div class="title">
-        <button id="backToModify" type="submit" class="btn btn-primary">Modify Graph</button>
-    </div>
-    <form method="get" action="/showGraphs">
-        <div class="form-group title">
-            <button id="home" type="submit" class="btn btn-primary">Home</button>
+    <div class="infoContent">
+        <div class="title">
+            <button id="backToModify" type="submit" class="btn btn-primary">Modify Map</button>
         </div>
-    </form>
+
+        <form method="get" action="/showGraphs">
+            <div class="form-group title">
+                <button id="home" type="submit" class="btn btn-primary">Home</button>
+            </div>
+        </form>
+    </div>
+
   </body>
 </html>
 
