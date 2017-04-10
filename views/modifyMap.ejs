@@ -6,7 +6,7 @@
         <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
         <script type="text/javascript" src="js/loginManager.js"></script>
-        <script type="text/javascript" src="js/modifyGraph.js"></script>
+        <script type="text/javascript" src="js/modifyMap.js"></script>
 
         <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="css/bootstrap-theme.min.css">
@@ -14,12 +14,17 @@
 
     </head>
     <body>
-        <h1>Tate Cartography Visualisation</h1>
+        <div class="title">
+            <h1>Tate Cartography Visualisation</h1>
+        </div>
 
-        <div id="modifyGraph" class="title">
-            <h2>Modify Graph</h2>
-            <p>Graph ID : <span id="graphID"></span></p>
-            <p>Name : <span id="graphName"></span></p>
+        <div id="modifyMap" class="title">
+            <h2>Modify Map</h2>
+            <p>Map Name : <span id="mapName"></span></p>
+            <p>
+                Select from one of the options below to modify the map.
+            </p>
+            <br>
         </div>
 
         <div id="options" class="container-fluid">
@@ -27,8 +32,8 @@
                 <div class="col-md-1">
                     <form method="post" action="/updateNode">
                         <div id="updateNode" class="form-group">
-                            <input type="text" name="updateNodeGraphID" class="getGraphID noDisplay">
-                            <input type="text" name="updateNodeGraphName" class="getGraphName noDisplay">
+                            <input type="text" name="updateNodeMapID" class="getMapID noDisplay">
+                            <input type="text" name="updateNodeMapName" class="getMapName noDisplay">
                             <button id="update" type="submit" class="btn btn-primary">Update Node</button>
                         </div>
                     </form>
@@ -36,8 +41,8 @@
                 <div class="col-md-1">
                     <form method="post" action="/addNode">
                         <div id="addNode" class="form-group">
-                            <input type="text" name="addNodeGraphID" class="getGraphID noDisplay">
-                            <input type="text" name="addNodeGraphName" class="getGraphName noDisplay">
+                            <input type="text" name="addNodeGraphID" class="getMapID noDisplay">
+                            <input type="text" name="addNodeGraphName" class="getMapName noDisplay">
                             <button id="nodeAdd" type="submit" class="btn btn-primary">Add Node</button>
                         </div>
                     </form>
@@ -45,8 +50,8 @@
                 <div class="col-md-1">
                     <form method="post" action="/addLink">
                         <div id="addLink" class="form-group">
-                            <input type="text" name="addLinkGraphID" class="getGraphID noDisplay">
-                            <input type="text" name="addLinkGraphName" class="getGraphName noDisplay">
+                            <input type="text" name="addLinkGraphID" class="getMapID noDisplay">
+                            <input type="text" name="addLinkGraphName" class="getMapName noDisplay">
                             <button id="linkAdd" type="submit" class="btn btn-primary">Add Link</button>
                         </div>
                     </form>
@@ -54,8 +59,8 @@
                 <div class="col-md-1">
                     <form method="post" action="/deleteNode">
                         <div id="deleteNode" class="form-group">
-                            <input type="text" name="deleteNodeGraphID" class="getGraphID noDisplay">
-                            <input type="text" name="deleteNodeGraphName" class="getGraphName noDisplay">
+                            <input type="text" name="deleteNodeGraphID" class="getMapID noDisplay">
+                            <input type="text" name="deleteNodeGraphName" class="getMapName noDisplay">
                             <button id="nodeDelete" type="submit" class="btn btn-primary">Delete Node</button>
                         </div>
                     </form>
@@ -63,14 +68,15 @@
                 <div class="col-md-1">
                     <form method="post" action="/deleteLink">
                         <div id="deleteLink" class="form-group">
-                            <input type="text" name="deleteLinkGraphID" class="getGraphID noDisplay">
-                            <input type="text" name="deleteLinkGraphName" class="getGraphName noDisplay">
+                            <input type="text" name="deleteLinkGraphID" class="getMapID noDisplay">
+                            <input type="text" name="deleteLinkGraphName" class="getMapName noDisplay">
                             <button id="linkDelete" type="submit" class="btn btn-primary">Delete Link</button>
                         </div>
                     </form>
                 </div>
             </div>
 
+            <br>
             <form method="get" action="/showGraphs">
                 <div class="form-group">
                     <button id="home" type="submit" class="btn btn-primary">Home</button>

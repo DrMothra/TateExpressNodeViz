@@ -4,21 +4,6 @@
 
 let graphNodeNames;
 
-function sendData(data, callback) {
-    $.ajax({
-        type: data.method,
-        data: data.data,
-        url: data.url,
-        dataType: data.dataType
-    }).done(function(response) {
-        //DEBUG
-        console.log("Data sent");
-        if(callback !== undefined) {
-            callback(response);
-        }
-    })
-}
-
 function onLinkUpdated(response) {
     let link = parseInt(response.msg, 10);
     if(isNaN(link)) {
@@ -33,43 +18,9 @@ function onLinkUpdated(response) {
     }, 3000);
 }
 
-function updateLinkInfo(linkID, choice) {
-    //Strip out id
-    let id = linkID.slice(-1);
-    let linkData = {
-        link: id,
-        choice: choice,
-        name: $('#node_Name').val(),
-        author: localStorage.getItem("TateUsername")
-    };
-
-    let graphData = {
-        method: "POST",
-        data: linkData,
-        url: '/processLinks',
-        dataType: 'JSON'
-    };
-    sendData(graphData, onLinkUpdated);
-}
-
-function getGraphNodeNames() {
-    //Populate list of nodes
-    let graphID = $('#graphID').val();
-    let nodeData = {
-        graphID: graphID
-    };
-
-    let graphData = {
-        method: 'post',
-        data: nodeData,
-        url: '/processGetNodeNames',
-        dataType: 'JSON'
-    };
-
-    sendData(graphData, function(response) {
-        graphNodeNames = response.msg;
-        $('#node_Name').typeahead( {source: graphNodeNames} );
-    });
+function onGetNodeNames(response) {
+    graphNodeNames = response.msg;
+    $('#node_Name').typeahead( {source: graphNodeNames} );
 }
 
 function onBack() {
@@ -79,8 +30,8 @@ function onBack() {
 }
 
 function validateForm() {
-    if($('#graphID').val() === "") {
-        alert("Enter a graph ID");
+    if($('#mapID').val() === "") {
+        alert("Enter a map ID");
         return false;
     }
 
@@ -89,8 +40,8 @@ function validateForm() {
         alert("Enter a node name");
         return false;
     }
-    if(graphNodeData.indexOf(nodeName) < 0) {
-        alert("Node not in graph!");
+    if(graphNodeNames.indexOf(nodeName) < 0) {
+        alert("Node not in map!");
         return false;
     }
 
@@ -106,22 +57,24 @@ $(document).ready(function() {
         return;
     }
 
-    //Autocomplete
-    getGraphNodeNames();
+    let mapID = $('#mapID').val();
+    let mapManager = new MapManager();
+    mapManager.getGraphNodeNames(mapID, onGetNodeNames);
 
-    let graphID = $('#graphID').val();
-    $('.getGraphID').val(graphID);
 
-    $('#searchForm').on("submit", function() {
+    $('.getMapID').val(mapID);
+
+    $('#getLinksForm').on("submit", function() {
         return validateForm();
     });
 
+    let nodeName = $('#node_Name').val();
     $("[id*='yesLink']").on("click", function() {
-        updateLinkInfo(this.id, 1);
+        mapManager.updateLinkInfo(this.id, nodeName, 1, onLinkUpdated);
     });
 
     $("[id*='noLink']").on("click", function() {
-        updateLinkInfo(this.id, 0);
+        mapManager.updateLinkInfo(this.id, nodeName, 0, onLinkUpdated);
     });
 
     $("#backToModify").on("click", function () {

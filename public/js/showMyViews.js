@@ -3,20 +3,19 @@
  */
 
 let author;
+let mapManager;
 
-function sendData(data, callback) {
-    $.ajax({
-        type: data.method,
-        data: data.data,
-        url: data.url,
-        dataType: data.dataType
-    }).done((response)=> {
-        //DEBUG
-        console.log("Data sent");
-        if(callback !== undefined) {
-            callback(response);
-        }
-    })
+function onModifyViews(id) {
+    //Get map id
+    let mapID = id.slice(-1);
+    if(isNaN(mapID)) {
+        alert("Invalid map selected!");
+        return;
+    }
+
+    let mapInfo = mapManager.getMapInfo(mapID);
+
+    window.location.href = "/modifyMap?mapID="+mapInfo.graphID+"&name="+mapInfo.name;
 }
 
 function onMapsFound(response) {
@@ -33,6 +32,7 @@ function onMapsFound(response) {
         mapLink = "<a href='https://graphcommons.com/graphs/" + mapInfo.graphID + "' target='_blank'>";
         currentAuthor = mapInfo.author;
         if(currentAuthor === author) {
+            mapManager.addMap(mapInfo);
             mapElem.append("<div class='row graphInfo'>" +
                 "<div class='col-md-3'>" + mapLink + mapInfo.name + "</a></div>" +
                 "<div class='col-md-2'> <button type='button' class='btn btn-primary modifyView' data-toggle='tooltip' data-placement='top' title='Modify this map'>Modify View</button>" +
@@ -40,19 +40,14 @@ function onMapsFound(response) {
                 "</div>");
         }
     }
-}
 
-function getMaps() {
-    //Get all graphs in account
-    let searchInfo = {
-        query: "TateCartographyProject"
-    };
-    let mapData = {method: "POST",
-        data: searchInfo,
-        url: '/processSearchCommons',
-        dataType: 'JSON'};
+    $('.modifyView').attr("id", index => {
+        return 'modifyViews' + index;
+    });
 
-    sendData(mapData, onMapsFound);
+    $("[id^='modifyViews']").on("click", function() {
+        onModifyViews(this.id);
+    });
 }
 
 $(document).ready(()=> {
@@ -68,5 +63,6 @@ $(document).ready(()=> {
 
     $('#authorName').html(author);
 
-    getMaps();
+    mapManager = new MapManager();
+    mapManager.getMaps(onMapsFound);
 });

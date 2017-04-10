@@ -91,7 +91,7 @@ app.post('/addNode', nodeLinkRoutes.addNode);
 app.post('/deleteNode', nodeLinkRoutes.deleteNode);
 app.post('/addLink', nodeLinkRoutes.addLink);
 app.post('/deleteLink', nodeLinkRoutes.deleteLink);
-app.get('/modifyGraph', nodeLinkRoutes.modifyGraph);
+app.get('/modifyMap', nodeLinkRoutes.modifyMap);
 app.get('/timeLineGraph', nodeLinkRoutes.timeLineGraph);
 app.get('/showGraphs', nodeLinkRoutes.showGraphs);
 app.get('/showAuthorGraphs', nodeLinkRoutes.showAuthorGraphs);

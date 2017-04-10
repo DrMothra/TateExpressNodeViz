@@ -125,7 +125,7 @@ exports.copyGraph = (req, res, next) => {
 
 exports.getNodeNames = (req, res, next) => {
     //Get list of node names in graph
-    currentGraphID = req.body.graphID;
+    currentGraphID = req.body.mapID;
     graphCommons.graphs(currentGraphID, graph => {
         let i, nodeNames = [], numNodes = graph.nodes.length;
         for(i=0; i<numNodes; ++i) {
@@ -164,7 +164,7 @@ exports.getNodeTypes =  (req, res, next) => {
 
 exports.searchGraph = (req, res, next) => {
     //Search graph for required node
-    currentGraphID = req.body.graphID;
+    currentGraphID = req.body.mapID;
 
     graphCommons.graphs(currentGraphID, graph => {
         currentGraph = graph;
@@ -177,7 +177,7 @@ exports.searchGraph = (req, res, next) => {
             //console.log(results);
             let numNodes = results.nodes.length;
             if(numNodes === 0) {
-                res.render("update", { graphID: currentGraphID, node_Name: req.body.nodeValue, nodes: ["No nodes found"], linkData: []} );
+                res.render("update", { mapID: currentGraphID, node_Name: req.body.nodeValue, nodes: ["No nodes found"], linkData: []} );
                 return;
             }
             let i, nodeNames = [], nodeLinks = [], linkData;
@@ -205,7 +205,7 @@ exports.searchGraph = (req, res, next) => {
                 }
             }
 
-            res.render("updateNode", { graphID: currentGraphID, graphName: graph.properties.name, node_Name: req.body.nodeValue, nodes: nodeNames, linkData: nodeLinks} );
+            res.render("updateNode", { mapID: currentGraphID, mapName: graph.properties.name, node_Name: req.body.nodeValue, nodes: nodeNames, linkData: nodeLinks} );
         });
     });
 };
@@ -284,7 +284,7 @@ exports.processLinks = (req, res, next) => {
             res.send( {msg: index} );
             //Update database
             let responseData = response.graph.signals[0];
-            req.body.graphID = currentGraphID;
+            req.body.mapID = currentGraphID;
             req.body.fromNodeID = responseData.from;
             req.body.toNodeID = toNode.name;
             req.body.linkNodeID = currentEdgeData[index].name;

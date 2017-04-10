@@ -24,6 +24,58 @@ class MapManager {
         this.getMapData(graphData, onFound);
     }
 
+    addMap(mapInfo) {
+        this.mapList.push(mapInfo);
+    }
+
+    getMapInfo(index) {
+        return this.mapList[index];
+    }
+
+    updateLinkInfo(index, name, choice, callback) {
+        index = index.slice(-1);
+        if(isNaN(index)) {
+            console.log("Invalid link index!");
+            return;
+        }
+
+        let linkData = {
+            link: index,
+            choice: choice,
+            name: name,
+            author: this.currentAuthor
+        };
+
+        let mapData = {
+            method: "POST",
+            data: linkData,
+            url: '/processLinks',
+            dataType: 'JSON'
+        };
+
+        this.getMapData(mapData, callback);
+    }
+
+    getGraphNodeNames(mapID, callback) {
+        if(!mapID) {
+            console.log("No map id supplied!");
+            return;
+        }
+
+        let nodeData = {
+            mapID: mapID
+        };
+
+        let mapData = {
+            method: 'post',
+            data: nodeData,
+            url: '/processGetNodeNames',
+            dataType: 'JSON'
+        };
+
+        this.getMapData(mapData, callback);
+    }
+
     getMapData(data, callback) {
         $.ajax({
             type: data.method,

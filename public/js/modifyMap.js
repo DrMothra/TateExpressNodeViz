@@ -13,20 +13,19 @@ $(document).ready(function() {
 
     //Fill in url query params
     var params = new URLSearchParams(window.location.search);
-    var graphID = params.get('graphID');
-    var graphName = params.get('name');
+    var mapID = params.get('mapID');
+    var mapName = params.get('name');
 
     //Ensure we have graph
-    if(!graphID || !graphName) {
-        alert("Select a graph to modify from the Home page!");
+    if(!mapID || !mapName) {
+        alert("Select a map to modify from the Home page!");
         window.location.href = "/showGraphs";
         return;
     }
 
-    $('#graphID').html(graphID);
-    $('#graphName').html(graphName);
+    $('#mapName').html(mapName);
 
-    $('.getGraphID').val(graphID);
-    $('.getGraphName').val(graphName);
+    $('.getMapID').val(mapID);
+    $('.getMapName').val(mapName);
 });
 
