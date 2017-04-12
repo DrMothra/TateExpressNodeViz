@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <title>Tate Node Visualiser</title>
+
+      <!-- build:js js/tateExpressViz.min.js -->
+      <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+      <script type="text/javascript" src="js/MapManager.js"></script>
+      <script type="text/javascript" src="js/bootstrap.min.js"></script>
+      <script type="text/javascript" src="js/showGraphs.js"></script>
+      <!-- endbuild -->
+
+      <!-- build:css css/tatestyles.min.css-->
+      <link rel="stylesheet" href="css/bootstrap.min.css">
+      <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+      <link rel='stylesheet' href="css/tateExpressStyles.css">
+      <!-- endbuild -->
+
+  </head>
+  <body>
+    <div class="title">
+        <h1>Tate Cartography Visualisation</h1>
+    </div>
+
+    <div class="title">
+        <h2>Create New View</h2>
+        <p>
+            You can create a new view from a csv (comma separated values) file.<br>
+            Give your map a name and an optional description and then load in your file.
+        </p>
+    </div>
+
+    <div class="title">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label for="graphName" class="col-md-1 control-label">Map Name</label>
+                <div class="col-md-5">
+                    <input type="text" class="form-control" id="graphName">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="graphDescription" class="col-md-1 control-label">Description</label>
+                <div class="col-md-5">
+                    <input type="text" class="form-control" id="graphDescription">
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="title">
+        <form ref='uploadForm' id="uploadForm" method="post" action="/processCreateGraph" enctype="multipart/form-data">
+            <input type="file" name="vizFile">
+            <input type="text" class="noDisplay" name="author" id="author">
+        </form>
+        <button type="button" class="btn btn-primary" id="createGraph">Create view</button>
+    </div>
+
+    <div id="instructions" class="infoPanel">
+        <a href="tateInstructionsShow.html" target="_blank"><img src="images/info.png"></a>
+    </div>
+
+  </body>
+</html>

@@ -65,4 +65,8 @@ $(document).ready(()=> {
 
     mapManager = new MapManager();
     mapManager.getMaps(onMapsFound);
+
+    $('#createView').on("click", ()=> {
+        window.location.href = "/createView";
+    });
 });

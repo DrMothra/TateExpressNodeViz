@@ -6,6 +6,10 @@ exports.update = function(req, res, next) {
     res.render('updateNode', { mapID: req.body.updateNodeMapID, mapName: req.body.updateNodeMapName, node_Name: null, nodes: [], linkData: []});
 };
 
+exports.createView = function(req, res, next) {
+    res.render('createView');
+};
+
 exports.addNode = function(req, res, next) {
     res.render('addNode', { mapID: req.body.addNodeMapID, mapName: req.body.addNodeMapName} );
 };
