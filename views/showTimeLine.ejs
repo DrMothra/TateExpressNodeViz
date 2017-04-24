@@ -6,7 +6,8 @@
 
     <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/timeLineGraph.js"></script>
+    <script type="text/javascript" src="js/MapManager.js"></script>
+    <script type="text/javascript" src="js/showTimeLine.js"></script>
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-theme.min.css">
@@ -14,11 +15,20 @@
     
 </head>
 <body>
-    <h1>Tate Cartography Visualisation</h1>
+    <div class="indent">
+        <h1>Tate Cartography Visualisation</h1>
+    </div>
 
-    <div id="graphDetails" class="title columnTitle">
-        <p>Graph Name</p>
-        <p id="graphName"><span id="graphErrorStatus"></span></p>
+    <div class="indent">
+        <h2>Map Timeline</h2>
+        <p>
+            The following table lists all the changes that have been made to this map since it was created.<br>
+            You can create a new perspective from any point in its history by clicking on the Create View button.
+        </p>
+    </div>
+
+    <div class="title columnTitle">
+        <p id="mapName"></p>
     </div>
 
     <div class="container-fluid">
@@ -46,11 +56,10 @@
         </div>
     </div>
 
-    <form method="get" action="/showGraphs">
-        <div class="form-group title">
-            <button type="submit" class="btn btn-primary">Home</button>
-        </div>
-    </form>
+    <div class="indent">
+        <button id="myViews" type="button" class="btn btn-primary">My Views</button>
+    </div>
+
 
 </body>
 </html>

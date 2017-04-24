@@ -92,7 +92,7 @@ app.post('/deleteNode', nodeLinkRoutes.deleteNode);
 app.post('/addLink', nodeLinkRoutes.addLink);
 app.post('/deleteLink', nodeLinkRoutes.deleteLink);
 app.get('/modifyMap', nodeLinkRoutes.modifyMap);
-app.get('/timeLineGraph', nodeLinkRoutes.timeLineGraph);
+app.get('/showTimeLine', nodeLinkRoutes.showTimeLine);
 app.get('/showGraphs', nodeLinkRoutes.showGraphs);
 app.get('/showAuthorGraphs', nodeLinkRoutes.showAuthorGraphs);
 app.get('/showMyViews', nodeLinkRoutes.showMyViews);
@@ -103,7 +103,7 @@ app.get('/createView', nodeLinkRoutes.createView);
 app.post("/processGenerateNewGraphID", graphRoutes.generateNewGraphID);
 app.post("/processCreateGraph", graphRoutes.createGraph);
 app.post("/processCopyGraph", graphRoutes.copyGraph);
-app.post("/processGetGraphEdits", graphRoutes.getGraphEdits);
+app.post("/processGetMapEdits", graphRoutes.getMapEdits);
 
 //Used for finding link info
 app.post("/processSearchGraph", graphRoutes.searchGraph);

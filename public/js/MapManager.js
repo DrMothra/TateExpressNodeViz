@@ -140,6 +140,26 @@ class MapManager {
         this.getMapData(mapData, callback);
     }
 
+    getEdits(mapID, callback) {
+        if(!mapID) {
+            console.log("No map id!");
+            return;
+        }
+
+        let mapInfo = {
+            mapID: mapID
+        };
+
+        let mapData = {
+            method: "POST",
+            data: mapInfo,
+            url: '/processGetMapEdits',
+            dataType: 'JSON'
+        };
+
+        this.getMapData(mapData, callback);
+    }
+
     sendUpdates(msg, callback) {
         if(!this.socketConnected) {
             this.socket = io.connect();

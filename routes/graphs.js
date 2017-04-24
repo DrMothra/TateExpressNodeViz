@@ -487,7 +487,7 @@ exports.modifyGraph = (req, res, next) => {
     });
 };
 
-exports.getGraphEdits = (req, res, next) => {
+exports.getMapEdits = (req, res, next) => {
     //Get all edits done to this graph
     dbase.getGraphEdits(req.body, edits => {
         res.send( {msg: edits} );

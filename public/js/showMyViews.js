@@ -18,6 +18,19 @@ function onModifyViews(id) {
     window.location.href = "/modifyMap?mapID="+mapInfo.graphID+"&name="+mapInfo.name;
 }
 
+function onShowTimeLine(id) {
+    //Get map id
+    let mapID = id.slice(-1);
+    if(isNaN(mapID)) {
+        alert("Invalid map selected!");
+        return;
+    }
+
+    let mapInfo = mapManager.getMapInfo(mapID);
+
+    window.location.href = "/showTimeLine?mapID=" + mapInfo.graphID + "&name=" + mapInfo.name;
+}
+
 function onMapsFound(response) {
     //List all maps via user
     let numMaps = response.msg.length;

@@ -42,8 +42,8 @@ exports.showMyViews = (req, res, next) => {
     res.render('showMyViews');
 };
 
-exports.timeLineGraph = function(req, res, next) {
-    res.render('timeLineGraph');
+exports.showTimeLine = function(req, res, next) {
+    res.render('showTimeLine');
 };
 
 exports.mergeGraphs = function(req, res, next) {
