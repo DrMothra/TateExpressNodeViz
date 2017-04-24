@@ -61,14 +61,14 @@ graphRoutes.manager.emitter.on("NodesToCreate", data => {
     socket.emit("NodesToCreate", {msg: data});
 });
 
-graphRoutes.manager.emitter.on("EdgeCreated", data => {
-    console.log("Received edge created ", data);
-    socket.emit("NewEdgeCreated", {msg: data});
+graphRoutes.manager.emitter.on("LinkCreated", data => {
+    console.log("Received link created ", data);
+    socket.emit("NewLinkCreated", {msg: data});
 });
 
-graphRoutes.manager.emitter.on("EdgesToCreate", data => {
-    console.log("Received number edges", data);
-    socket.emit("EdgesToCreate", {msg: data});
+graphRoutes.manager.emitter.on("LinksToCreate", data => {
+    console.log("Received number links", data);
+    socket.emit("LinksToCreate", {msg: data});
 });
 
 graphRoutes.manager.emitter.on("GraphCompleted", data => {

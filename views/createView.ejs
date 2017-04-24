@@ -5,9 +5,11 @@
 
       <!-- build:js js/tateExpressViz.min.js -->
       <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+      <script type="text/javascript" src="js/jquery.form.js"></script>
+      <script type="text/javascript" src="js/socket.io.js"></script>
       <script type="text/javascript" src="js/MapManager.js"></script>
       <script type="text/javascript" src="js/bootstrap.min.js"></script>
-      <script type="text/javascript" src="js/showGraphs.js"></script>
+      <script type="text/javascript" src="js/createView.js"></script>
       <!-- endbuild -->
 
       <!-- build:css css/tatestyles.min.css-->
@@ -30,29 +32,64 @@
         </p>
     </div>
 
-    <div class="title">
-        <form class="form-horizontal">
+    <div class="title viewOptions">
+        <form class="form-horizontal" ref='uploadForm' id="uploadForm" method="post" action="/processCreateGraph" enctype="multipart/form-data">
             <div class="form-group">
-                <label for="graphName" class="col-md-1 control-label">Map Name</label>
+                <label for="mapName" class="col-md-1 control-label">Map Name</label>
                 <div class="col-md-5">
-                    <input type="text" class="form-control" id="graphName">
+                    <input type="text" class="form-control" name="mapName" id="mapName">
                 </div>
             </div>
             <div class="form-group">
-                <label for="graphDescription" class="col-md-1 control-label">Description</label>
+                <label for="mapDescription" class="col-md-1 control-label">Description</label>
                 <div class="col-md-5">
-                    <input type="text" class="form-control" id="graphDescription">
+                    <input type="text" class="form-control" name="mapDescription" id="mapDescription">
                 </div>
             </div>
-        </form>
-    </div>
-
-    <div class="title">
-        <form ref='uploadForm' id="uploadForm" method="post" action="/processCreateGraph" enctype="multipart/form-data">
             <input type="file" name="vizFile">
             <input type="text" class="noDisplay" name="author" id="author">
         </form>
-        <button type="button" class="btn btn-primary" id="createGraph">Create view</button>
+        <button type="button" class="btn btn-primary" id="createView">Create view</button>
+    </div>
+
+    <div class="title">
+        <h3>View Status : <span id="mapStatus" class="label label-success"></span></h3>
+        <div class="container-fluid viewProperties">
+            <div class="row">
+                <div class="col-md-3 col-md-offset-1">
+                    <p>Nodes to create : <span id="nodesToCreate"></span></p>
+                </div>
+                <div class="col-md-3">
+                    <p>Created :  <span class="label label-primary">Nodes <span id="nodesCreated" class="badge"></span></span></p>
+                </div>
+                <div class="col-md-5">
+                    &nbsp
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3 col-md-offset-1">
+                    <p>Links to create : <span id="linksToCreate"></span></p>
+                </div>
+                <div class="col-md-3">
+                    <p>Created : <span class="label label-primary">Edges <span id="linksCreated" class="badge"></span></span> </p>
+                </div>
+                <div class="col-md-5">
+                    &nbsp
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="mapCompleted" class="title noDisplay">
+        <p>
+            Your new view has been created!<br>
+            You can see this in your list of views if you click the button below.<br>
+            You can also create more views if you like.
+        </p>
+    </div>
+
+    <div class="indent">
+        <button id="myViews" type="button" class="btn btn-primary">My Views</button>
     </div>
 
     <div id="instructions" class="infoPanel">

@@ -9,6 +9,8 @@ class MapManager {
         this.mapList = [];
         this.authors = [];
         this.currentAuthor = localStorage.getItem("TateUsername");
+        this.socketConnected = false;
+        this.updateMessages = [];
     }
 
     getMaps(onFound) {
@@ -22,6 +24,10 @@ class MapManager {
             dataType: 'JSON'};
 
         this.getMapData(graphData, onFound);
+    }
+
+    createView(mapInfo) {
+
     }
 
     addMap(mapInfo) {
@@ -132,6 +138,21 @@ class MapManager {
         };
 
         this.getMapData(mapData, callback);
+    }
+
+    sendUpdates(msg, callback) {
+        if(!this.socketConnected) {
+            this.socket = io.connect();
+            this.socketConnected = true;
+        }
+        this.updateMessages.push(msg);
+        this.socket.on(msg, data=> {
+            if(callback) {
+                callback(data.msg);
+            } else {
+                console.log("Received", msg);
+            }
+        });
     }
 
     getMapData(data, callback) {

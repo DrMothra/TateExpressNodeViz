@@ -26,6 +26,9 @@
 .title {
     margin: 0 1%;
 }
+.indent {
+    margin: 0 1%;
+}
 .contentContainer {
     margin-left: 9.25%;
 }
@@ -46,4 +49,16 @@
 }
 .feedback span {
     font-size: 0.9vw;
+}
+.viewOptions button {
+    margin: 1% 1% 1% 0;
+}
+.viewProperties p {
+    font-size: 1.1vw;
+}
+#mapCompleted {
+    margin-top: 2%;
+}
+#mapCompleted p {
+    font-size: 1.0vw;
 }

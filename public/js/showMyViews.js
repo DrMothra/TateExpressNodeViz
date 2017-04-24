@@ -48,6 +48,14 @@ function onMapsFound(response) {
     $("[id^='modifyViews']").on("click", function() {
         onModifyViews(this.id);
     });
+
+    $('.timeLine').attr("id", index => {
+        return 'timeLine' + index;
+    });
+
+    $("[id^='timeLine']").on("click", function() {
+        onShowTimeLine(this.id);
+    });
 }
 
 $(document).ready(()=> {

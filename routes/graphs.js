@@ -40,40 +40,50 @@ exports.generateNewGraphID = (req, res, next) => {
 };
 
 exports.createGraph = (req, res, next) => {
+    let graphData = {
+        "name": req.body.mapName,
+        "description": req.body.mapDescription,
+        "subtitle": "TateCartographyProject",
+        "status": 0
+    };
 
-    let fileName = req.files.vizFile.name;
-    let fileData = req.files.vizFile.data;
-    fileData = fileData.toString();
-    let ext = fileName.slice(-4);
+    graphCommons.new_graph(graphData, result => {
+        console.log("New map id created");
+        currentGraphID = result.properties.id;
+        let fileName = req.files.vizFile.name;
+        let fileData = req.files.vizFile.data;
+        fileData = fileData.toString();
+        let ext = fileName.slice(-4);
 
-    switch(ext) {
-        case ".csv":
-            fileData = parser.convertToJSON(fileData);
-            fileData = JSON.parse(fileData);
-            break;
+        switch(ext) {
+            case ".csv":
+                fileData = parser.convertToJSON(fileData);
+                fileData = JSON.parse(fileData);
+                break;
 
-        case "json":
-            fileData = JSON.parse(fileData);
-            break;
+            case "json":
+                fileData = JSON.parse(fileData);
+                break;
 
-        default:
-            console.log("Unknown file type!");
-            break;
-    }
+            default:
+                console.log("Unknown file type!");
+                break;
+        }
 
-    //DEBUG
-    console.log("File name = ", fileName);
+        //DEBUG
+        console.log("File name = ", fileName);
 
-    //Have data - create graph
-    dataManager.init(graphCommons);
-    dataManager.setStatus(dataManager.GRAPH_STATUS.CREATE);
-    dataManager.setFileData(fileData);
-    dataManager.setGraphID(currentGraphID);
-    dataManager.createNodesAndEdges( () => {
-        console.log("Graph created");
-        //Update database
-        req.body.graphID = currentGraphID;
-        dbase.createGraph(req.body);
+        //Have data - create graph
+        dataManager.init(graphCommons);
+        dataManager.setStatus(dataManager.GRAPH_STATUS.CREATE);
+        dataManager.setFileData(fileData);
+        dataManager.setGraphID(currentGraphID);
+        dataManager.createNodesAndEdges( () => {
+            console.log("Graph created");
+            //Update database
+            req.body.graphID = currentGraphID;
+            dbase.createGraph(req.body);
+        });
     });
 
     res.send( {msg: "Generating graph..."} );
