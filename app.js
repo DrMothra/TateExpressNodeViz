@@ -98,6 +98,7 @@ app.get('/showAuthorGraphs', nodeLinkRoutes.showAuthorGraphs);
 app.get('/showMyViews', nodeLinkRoutes.showMyViews);
 app.get('/mergeGraphs', nodeLinkRoutes.mergeGraphs);
 app.get('/createView', nodeLinkRoutes.createView);
+app.get('/createViewFrom', nodeLinkRoutes.createViewFrom);
 
 //All graph-related functionality
 app.post("/processGenerateNewGraphID", graphRoutes.generateNewGraphID);

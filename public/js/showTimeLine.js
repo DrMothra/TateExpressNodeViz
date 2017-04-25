@@ -2,9 +2,19 @@
  * Created by atg on 24/03/2017.
  */
 
+let edits;
+function onCreateView(id) {
+    let edit = id.match(/\d/g);
+    edit = edit.join("");
+
+    console.log("Edit = ", edit);
+
+    window.location.href = "/createViewFrom";
+}
+
 function onEditData(editData) {
     //Populate table of edits
-    let edits = editData.msg;
+    edits = editData.msg;
     let numEdits = edits.length;
 
     if(numEdits === 0) {
@@ -20,8 +30,17 @@ function onEditData(editData) {
         for(j=0; j<numAttributes; ++j) {
             row.insertCell(-1).innerHTML = currentEdit[attributes[j]];
         }
-        row.insertCell(-1).innerHTML = "<button type='button' class='btn btn-primary'>Create View</button>";
+        row.insertCell(-1).innerHTML = "<button type='button' class='btn btn-primary createView'>Create View</button>";
     }
+
+    //Add id's to buttons
+    $('.createView').attr("id", index => {
+        return 'createViews' + index;
+    });
+
+    $("[id^='createViews']").on("click", function() {
+        onCreateView(this.id);
+    });
 }
 
 $(document).ready(()=> {

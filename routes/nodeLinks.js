@@ -10,6 +10,10 @@ exports.createView = function(req, res, next) {
     res.render('createView');
 };
 
+exports.createViewFrom = function(req, res, next) {
+    res.render('createViewFrom');
+};
+
 exports.addNode = function(req, res, next) {
     res.render('addNode', { mapID: req.body.addNodeMapID, mapName: req.body.addNodeMapName} );
 };
