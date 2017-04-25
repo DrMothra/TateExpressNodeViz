@@ -115,7 +115,7 @@ exports.addNode = editInfo => {
     //Get database values
     let time = new Date().toUTCString();
     c.query('insert into edits (author, time, graphID, type, fromNodeID) values (:author, :time, :graphID, "AddNode", :nodeID)',
-        { author: editInfo.author, time: time, graphID: editInfo.graphID, nodeID: editInfo.addNodeName },
+        { author: editInfo.author, time: time, graphID: editInfo.mapID, nodeID: editInfo.addNodeName },
         function(err, rows) {
             if(err) {
                 throw err;
@@ -127,9 +127,9 @@ exports.addNode = editInfo => {
 
 exports.deleteNode = editInfo => {
     //Get database values
-    let time = Date.now();
+    let time = new Date().toUTCString();
     c.query('insert into edits (author, time, graphID, type, fromNodeID) values (:author, :time, :graphID, "DeleteNode", :nodeID)',
-        { author: editInfo.author, time: time, graphID: editInfo.graphID, nodeID: editInfo.name },
+        { author: editInfo.author, time: time, graphID: editInfo.mapID, nodeID: editInfo.name },
         function(err, rows) {
             if(err) {
                 throw err;
@@ -141,9 +141,9 @@ exports.deleteNode = editInfo => {
 
 exports.addLink = editInfo => {
     //Get database values
-    let time = Date.now();
+    let time = new Date().toUTCString();
     c.query('insert into edits (author, time, graphID, type, fromNodeID, toNodeID, linkNodeID) values (:author, :time, :graphID, "AddLink", :fromNodeID, :toNodeID, :linkNodeID)',
-        { author: editInfo.author, time: time, graphID: editInfo.graphID, fromNodeID: editInfo.fromName, toNodeID: editInfo.toName, linkNodeID: editInfo.linkType },
+        { author: editInfo.author, time: time, graphID: editInfo.mapID, fromNodeID: editInfo.fromName, toNodeID: editInfo.toName, linkNodeID: editInfo.linkType },
         function(err, rows) {
             if(err) {
                 throw err;
@@ -156,8 +156,8 @@ exports.addLink = editInfo => {
 exports.updateNode = editInfo => {
     //Get database values
     let time = new Date().toUTCString();
-    c.query('insert into edits (author, time, graphID, type, fromNodeID, toNodeID, linkID, weight) values (:author, :time, :graphID, "UpdateNode", :fromNodeID, :toNodeID, :linkNodeID, :weight)',
-        { author: editInfo.author, time: time, graphID: editInfo.mapID, fromNodeID: editInfo.name, toNodeID: editInfo.toNodeID, linkID: editInfo.linkNodeID, weight: editInfo.weight },
+    c.query('insert into edits (author, time, graphID, type, fromNodeID, toNodeID, linkNodeID, weight) values (:author, :time, :graphID, "UpdateNode", :fromNodeID, :toNodeID, :linkNodeID, :weight)',
+        { author: editInfo.author, time: time, graphID: editInfo.mapID, fromNodeID: editInfo.name, toNodeID: editInfo.toNodeID, linkNodeID: editInfo.linkNodeID, weight: editInfo.weight },
         function(err, rows) {
             if(err) {
                 throw err;
@@ -169,9 +169,9 @@ exports.updateNode = editInfo => {
 
 exports.deleteLink = editInfo => {
     //Get database values
-    let time = Date.now();
+    let time = new Date().toUTCString();
     c.query('insert into edits (author, time, graphID, type, fromNodeID, toNodeID, linkNodeID) values (:author, :time, :graphID, "DeleteLink", :fromNodeID, :toNodeID, :linkNodeID)',
-        { author: editInfo.author, time: time, graphID: editInfo.graphID, fromNodeID: editInfo.node_FromName, toNodeID: editInfo.node_ToName, linkNodeID: editInfo.linkName },
+        { author: editInfo.author, time: time, graphID: editInfo.mapID, fromNodeID: editInfo.node_FromName, toNodeID: editInfo.node_ToName, linkNodeID: editInfo.linkName },
         function(err, rows) {
             if(err) {
                 throw err;
@@ -182,7 +182,7 @@ exports.deleteLink = editInfo => {
 };
 
 exports.createGraph = editInfo => {
-    let time = Date.now();
+    let time = new Date().toUTCString();
     c.query('insert into edits (author, time, graphID, type) values (:author, :time, :graphID, "CreateGraph")',
         { author: editInfo.author, time: time, graphID: editInfo.graphID },
         function(err, rows) {
@@ -195,7 +195,7 @@ exports.createGraph = editInfo => {
 };
 
 exports.newGraphID = editInfo => {
-    let time = Date.now();
+    let time = new Date().toUTCString();
     c.query('insert into edits (author, time, graphID, type) values (:author, :time, :graphID, "NewGraphID")',
         { author: editInfo.author, time: time, graphID: editInfo.graphID },
         function(err, rows) {
@@ -210,7 +210,7 @@ exports.newGraphID = editInfo => {
 exports.getGraphEdits = (graphInfo, callback) => {
     //Get data associated with this graph
     c.query('select * from edits where graphID = :graphID',
-        { graphID: graphInfo.graphID },
+        { graphID: graphInfo.mapID },
         function(err, rows) {
             if(err) {
                 throw err;

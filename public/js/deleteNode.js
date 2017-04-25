@@ -33,6 +33,11 @@ function onNodeDeleted() {
 }
 
 function deleteNode() {
+    let mapID = $('#mapID').val();
+    if(!mapID) {
+        alert("No map ID specified!");
+        return;
+    }
     mapManager.deleteNode(mapID, currentNode.id, currentNode.name, onNodeDeleted);
 }
 

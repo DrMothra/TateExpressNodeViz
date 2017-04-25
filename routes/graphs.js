@@ -222,7 +222,7 @@ exports.searchGraph = (req, res, next) => {
 
 exports.findNodes = (req, res, next) => {
     //Search graph for required node
-    currentGraphID = req.body.graphID;
+    currentGraphID = req.body.mapID;
     let nodeName = req.body.nodeValue;
 
     graphCommons.graphs(currentGraphID, graph => {
@@ -353,7 +353,7 @@ exports.addNewLink = (req, res, next) => {
 };
 
 exports.deleteNode = (req, res, next) => {
-    currentGraphID = req.body.graphID;
+    currentGraphID = req.body.mapID;
 
     let signals = { "signals" : [
         {
