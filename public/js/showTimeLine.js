@@ -2,14 +2,14 @@
  * Created by atg on 24/03/2017.
  */
 
-let edits;
+let edits, mapID;
 function onCreateView(id) {
     let edit = id.match(/\d/g);
     edit = edit.join("");
 
     console.log("Edit = ", edit);
 
-    window.location.href = "/createViewFrom";
+    window.location.href = "/createViewFrom?mapID=" + mapID;
 }
 
 function onEditData(editData) {
@@ -46,7 +46,7 @@ function onEditData(editData) {
 $(document).ready(()=> {
     //Fill in url query params
     let params = new URLSearchParams(window.location.search);
-    let mapID = params.get('mapID');
+    mapID = params.get('mapID');
     let mapName = params.get('name');
 
     //Ensure we have graph

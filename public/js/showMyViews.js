@@ -90,4 +90,8 @@ $(document).ready(()=> {
     $('#createView').on("click", ()=> {
         window.location.href = "/createView";
     });
+
+    $('#mergeViews').on("click", ()=> {
+        window.location.href = "/mergeViews";
+    });
 });

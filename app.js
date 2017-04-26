@@ -96,7 +96,7 @@ app.get('/showTimeLine', nodeLinkRoutes.showTimeLine);
 app.get('/showGraphs', nodeLinkRoutes.showGraphs);
 app.get('/showAuthorGraphs', nodeLinkRoutes.showAuthorGraphs);
 app.get('/showMyViews', nodeLinkRoutes.showMyViews);
-app.get('/mergeGraphs', nodeLinkRoutes.mergeGraphs);
+app.get('/mergeViews', nodeLinkRoutes.mergeViews);
 app.get('/createView', nodeLinkRoutes.createView);
 app.get('/createViewFrom', nodeLinkRoutes.createViewFrom);
 

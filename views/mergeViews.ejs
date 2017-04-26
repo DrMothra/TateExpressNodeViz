@@ -6,7 +6,7 @@
       <!-- build:js js/tateExpressViz.min.js -->
       <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
       <script type="text/javascript" src="js/bootstrap.min.js"></script>
-      <script type="text/javascript" src="js/mergeGraphs.js"></script>
+      <script type="text/javascript" src="js/mergeViews.js"></script>
       <!-- endbuild -->
 
       <!-- build:css css/tatestyles.min.css-->
@@ -17,32 +17,25 @@
 
   </head>
   <body>
-    <h1>Tate Cartography Visualisation</h1>
-
-    <div class="title merge">
-        <h2>Merge Graphs</h2>
-        <p>Graph Name : <span id="graphName"></span></p>
+    <div class="indent">
+        <h1>Tate Cartography Visualisation</h1>
     </div>
 
     <div class="title merge">
-        <p>Select the graphs to merge with yours :-</p>
-    </div>
-
-    <div id="graphList" class="container-fluid">
-
-    </div>
-
-    <div class="title">
+        <h2>Merge Views</h2>
         <p>
-            <button type="button" class="btn btn-primary">Merge</button>
+            Select the map that you would like these views to be merged into.<br>
+            You can merge them into a new map or into an existing one of your own.
+        </p>
+        <p>
+            If you want to create a new map then fill in the details below.<br>
+            If you want to merge into a view of your own then select the map from the list of
+            your views.<br>
+            Then click the Next button.
         </p>
     </div>
 
-    <form method="get" action="/showGraphs">
-        <div class="form-group title">
-            <button type="submit" class="btn btn-primary">Home</button>
-        </div>
-    </form>
+
 
   </body>
 </html>

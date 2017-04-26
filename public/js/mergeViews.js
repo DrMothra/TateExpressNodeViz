@@ -49,21 +49,6 @@ function getGraphs() {
 
 
 $(document).ready( ()=> {
-    //Fill in url query params
-    let params = new URLSearchParams(window.location.search);
-    let graphName = params.get('name');
-
-    //Ensure we have graph
-    if(!graphName) {
-        alert("Select a graph to modify from the Home page!");
-        window.location.href = "/showGraphs";
-        return;
-    }
-
-    $('#graphName').html(graphName);
-
-    //Get graphs to merge
-    getGraphs();
 
 });
 

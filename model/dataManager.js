@@ -55,10 +55,10 @@ exports.dataManager = function(graphID, vizData, res) {
     };
 
     this.nodeQueue = [];
-    this.nodeRequestTime = 200;
+    this.nodeRequestTime = 10;
     this.canCreateNode = true;
     this.edgeQueue = [];
-    this.edgeRequestTime = 200;
+    this.edgeRequestTime = 10;
     this.canCreateEdge = true;
 
     //Init
@@ -210,7 +210,7 @@ exports.dataManager = function(graphID, vizData, res) {
     this.queueGraphNodeRequest = function(type, name, description) {
         //Create queue of node requests
         //DEBUG
-        console.log("Queued node request");
+        //console.log("Queued node request");
         var signal = JSON.parse(JSON.stringify(signalNode));
         signal.signals[0].type = type;
         signal.signals[0].name = name;
@@ -224,7 +224,9 @@ exports.dataManager = function(graphID, vizData, res) {
             this.canCreateNode = false;
             var signalNode = this.nodeQueue.pop();
             this.graphCommons.update_graph(this.graph_id, signalNode, function() {
-                console.log("Node ", ++_this.nodesCreated, signalNode.signals[0].name, " created");
+                ++_this.nodesCreated;
+                //DEBUG
+                //console.log("Node ", _this.nodesCreated, signalNode.signals[0].name, " created");
                 exports.emitter.emit("NodeCreated", _this.nodesCreated);
                 _this.canCreateNode = true;
                 if(--_this.nodesToCreate === 0) {
@@ -321,7 +323,7 @@ exports.dataManager = function(graphID, vizData, res) {
     this.queueGraphEdgeRequest = function(fromType, fromName, toType, toName, edgeName) {
         //Create edge
         //DEBUG
-        console.log("Queued edge request");
+        //console.log("Queued edge request");
         var signal = JSON.parse(JSON.stringify(signalEdge));
         signal.signals[0].from_type = fromType;
         signal.signals[0].from_name = fromName;
@@ -337,7 +339,8 @@ exports.dataManager = function(graphID, vizData, res) {
             this.canCreateEdge = false;
             var edgeNode = this.edgeQueue.pop();
             this.graphCommons.update_graph(this.graph_id, edgeNode, function() {
-                console.log("Edge ", _this.edgesCreated, edgeNode.signals[0].name, " created");
+                //DEBUG
+                //console.log("Edge ", _this.edgesCreated, edgeNode.signals[0].name, " created");
                 ++_this.edgesCreated;
                 exports.emitter.emit("LinkCreated", _this.edgesCreated);
                 _this.canCreateEdge = true;

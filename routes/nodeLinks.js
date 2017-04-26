@@ -50,6 +50,6 @@ exports.showTimeLine = function(req, res, next) {
     res.render('showTimeLine');
 };
 
-exports.mergeGraphs = function(req, res, next) {
-    res.render('mergeGraphs');
+exports.mergeViews = function(req, res, next) {
+    res.render('mergeViews');
 };
