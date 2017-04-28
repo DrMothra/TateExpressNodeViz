@@ -487,9 +487,34 @@ exports.modifyGraph = (req, res, next) => {
     });
 };
 
+exports.rollBack = (req, res, next) => {
+    //Roll back commands
+    dbase.getGraphEdits(req.body, edits => {
+        let i, numEdits = edits.length;
+        for(i=req.body.editID; i<numEdits; ++i) {
+            undoAction(edits[i]);
+        }
+
+    });
+};
+
 exports.getMapEdits = (req, res, next) => {
     //Get all edits done to this graph
     dbase.getGraphEdits(req.body, edits => {
         res.send( {msg: edits} );
     });
 };
+
+function undoAction(editInfo) {
+    //Get inverse action and execute
+    let req = {};
+    req.body = {};
+    switch(editInfo.type) {
+        case "AddNode" :
+            exports.deleteNode(req, null, null);
+            break;
+
+        default:
+            break;
+    }
+}

@@ -2,20 +2,21 @@
  * Created by atg on 24/03/2017.
  */
 
-let edits, mapID;
-function onCreateView(id) {
+let edits, mapID, mapName;
+function onCreateView(id, mapName, mapID) {
     let edit = id.match(/\d/g);
     edit = edit.join("");
 
     console.log("Edit = ", edit);
 
-    window.location.href = "/createViewFrom?mapID=" + mapID;
+    window.location.href = "/createViewFrom?mapName=" + mapName + "&mapID=" + mapID + "&editID=" + edit;
 }
 
 function onEditData(editData) {
     //Populate table of edits
     edits = editData.msg;
     let numEdits = edits.length;
+    let mapName = $('#mapName').html();
 
     if(numEdits === 0) {
         $('#mapName').html($('#mapName').val() + " There are no edits for this graph");
@@ -39,7 +40,7 @@ function onEditData(editData) {
     });
 
     $("[id^='createViews']").on("click", function() {
-        onCreateView(this.id);
+        onCreateView(this.id, mapName, mapID);
     });
 }
 
@@ -59,7 +60,7 @@ $(document).ready(()=> {
     let mapManager = new MapManager();
     mapManager.getEdits(mapID, onEditData);
 
-    $('#myViews').on("click", ()=> {
+    $('#myViews').on("click", () => {
         window.location.href = "/showMyViews?authorName=" + localStorage.getItem("TateUsername");
     });
 

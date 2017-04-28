@@ -5,6 +5,7 @@
 
       <!-- build:js js/tateExpressViz.min.js -->
       <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+      <script type="text/javascript" src="js/jquery.form.js"></script>
       <script type="text/javascript" src="js/MapManager.js"></script>
       <script type="text/javascript" src="js/bootstrap.min.js"></script>
       <script type="text/javascript" src="js/createViewFrom.js"></script>
@@ -24,6 +25,7 @@
 
     <div class="title">
         <h2>Create View From Existing Map</h2>
+        <h3>Current Map - <span id="mapName"></span></h3>
         <p>
             You have chosen to create a new view from an existing map.<br>
             Enter a name for this view below and an optional description.
@@ -31,11 +33,13 @@
     </div>
 
     <div class="title viewOptions">
-        <form class="form-horizontal" ref='newViewForm' id="newViewForm" method="post" action="/processCopyGraph" enctype="multipart/form-data">
+        <form class="form-horizontal" ref='newViewForm' id="newViewForm" method="post" action="/processRollBack" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="mapName" class="col-md-1 control-label">Map Name</label>
                 <div class="col-md-5">
                     <input type="text" class="form-control" name="mapName" id="mapName">
+                    <input type="text" class="noDisplay" name="mapID" id="mapID">
+                    <input type="text" class="noDisplay" name="editID" id="editID">
                 </div>
             </div>
             <div class="form-group">

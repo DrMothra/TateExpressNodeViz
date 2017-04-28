@@ -105,6 +105,8 @@ app.post("/processGenerateNewGraphID", graphRoutes.generateNewGraphID);
 app.post("/processCreateGraph", graphRoutes.createGraph);
 app.post("/processCopyGraph", graphRoutes.copyGraph);
 app.post("/processGetMapEdits", graphRoutes.getMapEdits);
+//DEBUG
+app.post("/processRollBack", graphRoutes.rollBack);
 
 //Used for finding link info
 app.post("/processSearchGraph", graphRoutes.searchGraph);
