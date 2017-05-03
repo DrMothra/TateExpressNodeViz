@@ -295,9 +295,10 @@ exports.processLinks = (req, res, next) => {
             //Update database
             let responseData = response.graph.signals[0];
             req.body.mapID = currentGraphID;
-            req.body.fromNodeID = responseData.from;
-            req.body.toNodeID = toNode.name;
-            req.body.linkNodeID = currentEdgeData[index].name;
+            req.body.fromNodeName = responseData.from;
+            req.body.fromNodeID =
+            req.body.toNodeName = toNode.name;
+            req.body.linkNodeName = currentEdgeData[index].name;
             req.body.weight = choice === 1 ? "Agree (" : "Disagree (";
             req.body.weight += weight + ")";
             dbase.updateNode(req.body);

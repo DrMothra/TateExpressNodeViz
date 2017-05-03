@@ -156,8 +156,8 @@ exports.addLink = editInfo => {
 exports.updateNode = editInfo => {
     //Get database values
     let time = new Date().toUTCString();
-    c.query('insert into edits (author, time, graphID, type, fromNodeID, toNodeID, linkNodeID, weight) values (:author, :time, :graphID, "UpdateNode", :fromNodeID, :toNodeID, :linkNodeID, :weight)',
-        { author: editInfo.author, time: time, graphID: editInfo.mapID, fromNodeID: editInfo.name, toNodeID: editInfo.toNodeID, linkNodeID: editInfo.linkNodeID, weight: editInfo.weight },
+    c.query('insert into edits (author, time, graphID, type, fromNodeName, fromNodeID, toNodeName, toNodeID, linkNodeName, linkNodeID, weight) values (:author, :time, :graphID, "UpdateNode", :fromNodeName, :fromNodeID, :toNodeName, :toNodeID, :linkNodeName, :linkNodeID, :weight)',
+        { author: editInfo.author, time: time, graphID: editInfo.mapID, fromNodeName: editInfo.name, fromNodeID: editInfo.fromNodeID, toNodeName: editInfo.toNodeName, toNodeID: editInfo.toNodeID, linkNodeName: editInfo.linkNodeName, linkNodeID: editInfo.linkNodeID, weight: editInfo.weight },
         function(err, rows) {
             if(err) {
                 throw err;
