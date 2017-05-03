@@ -22,7 +22,7 @@ function onEditData(editData) {
         $('#mapName').html($('#mapName').val() + " There are no edits for this graph");
         return;
     }
-    let attributes = ["author", "time", "type", "fromNodeID", "toNodeID", "linkNodeID", "weight"];
+    let attributes = ["author", "time", "type", "fromNodeName", "toNodeName", "linkNodeName", "weight"];
     let numAttributes = attributes.length;
     let table = document.getElementById("editsTable"), row, currentEdit, i, j;
     for(i=0; i<numEdits; ++i) {

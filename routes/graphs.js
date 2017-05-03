@@ -347,6 +347,10 @@ exports.addNewLink = (req, res, next) => {
             console.log("Added new link");
             res.send( {msg: 'OK'} );
             //Update database
+            let signal = response.graph.signals[0];
+            req.body.fromNodeID = signal.from;
+            req.body.toNodeID = signal.to;
+            req.body.linkNodeID = signal.id;
             dbase.addLink(req.body);
         })
     })
@@ -363,9 +367,10 @@ exports.deleteNode = (req, res, next) => {
     ]};
 
     graphCommons.graphs(currentGraphID, graph => {
-        graphCommons.update_graph(currentGraphID, signals, function() {
+        graphCommons.update_graph(currentGraphID, signals, response => {
             console.log("Deleted node");
             res.send( {msg: 'OK'} );
+            req.body.nodeID = response.graph.signals[0].id;
             dbase.deleteNode(req.body);
         })
     })
@@ -409,7 +414,10 @@ exports.deleteLink = (req, res, next) => {
                     graphCommons.update_graph(currentGraphID, signals, response => {
                         console.log("Deleted link");
                         res.send( {msg: 'OK'} );
-                        req.body.linkID = edgeID;
+                        let signal = response.graph.signals[0];
+                        req.body.fromNodeID = signal.from;
+                        req.body.toNodeID = signal.to;
+                        req.body.linkNodeID = signal.id;
                         dbase.deleteLink(req.body);
                     });
                 }
@@ -489,12 +497,15 @@ exports.modifyGraph = (req, res, next) => {
 
 exports.rollBack = (req, res, next) => {
     //Roll back commands
-    dbase.getGraphEdits(req.body, edits => {
-        let i, numEdits = edits.length;
-        for(i=req.body.editID; i<numEdits; ++i) {
-            undoAction(edits[i]);
-        }
-
+    //Get current graph
+    let currentMapID = req.body.mapID;
+    graphCommons.graphs(currentMapID, graph => {
+        dbase.getGraphEdits(req.body, edits => {
+            let i, numEdits = edits.length;
+            for(i=req.body.editID; i<numEdits; ++i) {
+                undoAction(graph, edits[i]);
+            }
+        });
     });
 };
 
@@ -505,13 +516,27 @@ exports.getMapEdits = (req, res, next) => {
     });
 };
 
-function undoAction(editInfo) {
+function undoAction(graph, editInfo) {
     //Get inverse action and execute
-    let req = {};
-    req.body = {};
     switch(editInfo.type) {
         case "AddNode" :
-            exports.deleteNode(req, null, null);
+            //Delete this node
+            let i, numNodes = graph.nodes.length, found=false;
+            for(i=0; i<numNodes; ++i) {
+                if(graph.nodes[i].name === editInfo.fromNodeID) {
+                    found=true;
+                    break;
+                }
+            }
+            if(found) {
+                graph.nodes.splice(i, 1);
+            }
+            break;
+
+        case "AddLink" :
+            //Remove this link
+            //Get id's of to/from nodes
+
             break;
 
         default:
