@@ -98,19 +98,22 @@ exports.copyGraph = (req, res, next) => {
     //Get data for this graph
     currentGraphID = req.body.graphID;
     let userName = req.body.userName;
+    copyMap(req.body, true);
+    res.send( {msg: "Graph copied"} );
+};
 
-    graphCommons.graphs(currentGraphID, graph => {
+function copyMap(mapInfo, verbose) {
+    graphCommons.graphs(mapInfo.mapID, graph => {
         //New graph with existing data
         let graphData = {
-            "name": req.body.name,
-            "description": 'Author="'+userName+'"',
+            "name": mapInfo.name,
+            "description": 'Author="'+mapInfo.author+'"',
             "subtitle": "TateCartographyProject",
             "status": 0
         };
         graphCommons.new_graph(graphData, result => {
             //DEBUG
             console.log("New copied graph created");
-            res.send( {msg: "Graph copied"} );
             //Create all nodes from original
             let numNodes = graph.nodes.length;
             dataManager.init(graphCommons);
@@ -119,14 +122,15 @@ exports.copyGraph = (req, res, next) => {
             dataManager.setCurrentGraph(graph);
             dataManager.copyTypes();
             dataManager.setNumberNodesToCreate(numNodes);
+            dataManager.setVerbose(verbose);
             dataManager.copyGraphNodes(graph.nodes, 'json', () => {
                 console.log("All nodes created");
                 dataManager.setNumberEdgesToCreate(graph.edges.length);
                 dataManager.copyGraphEdges(graph.nodes, () => {
                     console.log("All edges created");
                     //Update database
-                    req.body.fromNodeID = result.properties.id;
-                    dbase.copyGraph(req.body);
+                    mapInfo.fromNodeID = result.properties.id;
+                    dbase.copyGraph(mapInfo);
                 })
             });
         });
@@ -503,11 +507,19 @@ exports.rollBack = (req, res, next) => {
     graphCommons.graphs(currentMapID, graph => {
         dbase.getGraphEdits(req.body, edits => {
             let i, numEdits = edits.length;
-            for(i=req.body.editID; i<numEdits; ++i) {
+            for(i=numEdits-1; i>req.body.editID; --i) {
                 undoAction(graph, edits[i]);
             }
+            //Make copy of updated map
+            let mapInfo = {};
+            mapInfo.mapID = currentMapID;
+            mapInfo.name = req.body.mapName;
+            mapInfo.userName = req.body.author;
+            copyMap(mapInfo, false);
         });
     });
+
+    res.send( {msg: "Creating view"} );
 };
 
 exports.getMapEdits = (req, res, next) => {
@@ -519,10 +531,11 @@ exports.getMapEdits = (req, res, next) => {
 
 function undoAction(graph, editInfo) {
     //Get inverse action and execute
+    let i, found = false;
     switch(editInfo.type) {
         case "AddNode" :
             //Delete this node
-            let i, numNodes = graph.nodes.length, found=false;
+            let numNodes = graph.nodes.length;
             for(i=0; i<numNodes; ++i) {
                 if(graph.nodes[i].name === editInfo.fromNodeID) {
                     found=true;
@@ -537,7 +550,20 @@ function undoAction(graph, editInfo) {
         case "AddLink" :
             //Remove this link
             //Get id's of to/from nodes
-
+            let numLinks = graph.edges.length;
+            let currentLink;
+            for(i=0; i<numLinks; ++i) {
+                currentLink = graph.edges[i];
+                if(currentLink.name === editInfo.linkNodeName) {
+                    if(currentLink.from === editInfo.fromNodeID && currentLink.to === editInfo.toNodeID) {
+                        found=true;
+                        break;
+                    }
+                }
+            }
+            if(found) {
+                graph.edges.splice(i, 1);
+            }
             break;
 
         default:

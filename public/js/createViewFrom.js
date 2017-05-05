@@ -4,15 +4,8 @@
 
 
 function validateForm(mapID) {
-
-    let mapDescription = $('#mapDescription').val();
-    if(mapDescription === undefined) {
-        mapDescription = "";
-    }
-
     let author = localStorage.getItem("TateUsername");
-    mapDescription = 'Author"' + author + '"' + mapDescription;
-    $('#mapDescription').val(mapDescription);
+    $('#author').val(author);
     $('#mapID').val(mapID);
 
     $('#newViewForm').ajaxSubmit({

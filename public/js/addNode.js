@@ -27,10 +27,6 @@ function validateForm() {
         alert("Enter a node type");
         return false;
     }
-    if(graphNodeTypes.indexOf(nodeType) < 0) {
-        alert("Enter a valid type");
-        return false;
-    }
 
     return true;
 }

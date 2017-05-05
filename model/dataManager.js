@@ -60,6 +60,7 @@ exports.dataManager = function(graphID, vizData, res) {
     this.edgeQueue = [];
     this.edgeRequestTime = 10;
     this.canCreateEdge = true;
+    this.verbose = false;
 
     //Init
     this.init = function(gc) {
@@ -89,6 +90,10 @@ exports.dataManager = function(graphID, vizData, res) {
 
     this.setStatus = function(status) {
         this.status = status;
+    };
+
+    this.setVerbose = function(verbose) {
+        this.verbose = verbose;
     };
 
     this.copyTypes = function() {
@@ -145,12 +150,16 @@ exports.dataManager = function(graphID, vizData, res) {
         }
         //DEBUG
         console.log("Need to create ", this.nodesToCreate, " nodes");
-        exports.emitter.emit("NodesToCreate", this.nodesToCreate);
+        if(this.verbose) {
+            exports.emitter.emit("NodesToCreate", this.nodesToCreate);
+        }
     };
 
     this.setNumberNodesToCreate = function(numNodes) {
         this.nodesToCreate = numNodes;
-        exports.emitter.emit("NodesToCreate", this.nodesToCreate);
+        if(this.verbose) {
+            exports.emitter.emit("NodesToCreate", this.nodesToCreate);
+        }
     };
 
     this.onNodeCreateComplete = function() {
@@ -159,7 +168,9 @@ exports.dataManager = function(graphID, vizData, res) {
 
     this.setNumberEdgesToCreate = function(numEdges) {
         this.edgesToCreate = numEdges;
-        exports.emitter.emit("LinksToCreate", this.edgesToCreate);
+        if(this.verbose) {
+            exports.emitter.emit("LinksToCreate", this.edgesToCreate);
+        }
     };
 
     this.onEdgeCreateComplete = function() {
@@ -209,13 +220,13 @@ exports.dataManager = function(graphID, vizData, res) {
 
     this.queueGraphNodeRequest = function(type, name, description) {
         //Create queue of node requests
-        //DEBUG
-        //console.log("Queued node request");
         var signal = JSON.parse(JSON.stringify(signalNode));
         signal.signals[0].type = type;
         signal.signals[0].name = name;
         signal.signals[0].description = description;
         this.nodeQueue.push(signal);
+        //DEBUG
+        console.log("Queued node request");
     };
 
     this.createGraphNode = function() {
@@ -226,8 +237,10 @@ exports.dataManager = function(graphID, vizData, res) {
             this.graphCommons.update_graph(this.graph_id, signalNode, function() {
                 ++_this.nodesCreated;
                 //DEBUG
-                //console.log("Node ", _this.nodesCreated, signalNode.signals[0].name, " created");
-                exports.emitter.emit("NodeCreated", _this.nodesCreated);
+                console.log("Node ", _this.nodesCreated, signalNode.signals[0].name, " created");
+                if(_this.verbose) {
+                    exports.emitter.emit("NodeCreated", _this.nodesCreated);
+                }
                 _this.canCreateNode = true;
                 if(--_this.nodesToCreate === 0) {
                     clearInterval(_this.nodeRequestTimer);
@@ -255,6 +268,11 @@ exports.dataManager = function(graphID, vizData, res) {
                     this.onNodeCreateComplete();
                     break;
                 }
+                //Start node timer running
+                this.nodeRequestTimer = setInterval(() => {
+                    this.createGraphNode();
+                }, this.nodeRequestTime);
+
                 for(i=0; i<numNodes; ++i) {
                     currentNode = nodes[i];
                     this.queueGraphNodeRequest(currentNode.type, currentNode.name, currentNode.description);
@@ -271,6 +289,11 @@ exports.dataManager = function(graphID, vizData, res) {
 
     this.copyGraphEdges = function(nodes, onCompletion) {
         this.onEdgeCreateComplete = onCompletion !== undefined ? onCompletion : this.onEdgeCreateComplete;
+
+        this.edgeRequestTimer = setInterval(() => {
+            this.createEdge();
+        }, this.edgeRequestTime);
+
         //Get edge information from this node
         var i, currentNode, toNode, edgesFrom, edge, numEdges = 0, numNodes = nodes.length;
         for(i=0; i<numNodes; ++i) {
@@ -290,7 +313,9 @@ exports.dataManager = function(graphID, vizData, res) {
         this.edgesToCreate = numEdges;
         if(numEdges === 0) {
             this.graphComplete = true;
-            exports.emitter.emit("GraphCompleted", "Graph Completed");
+            if(this.verbose) {
+                exports.emitter.emit("GraphCompleted", "Graph Completed");
+            }
             this.onEdgeCreateComplete();
         }
     };
@@ -317,7 +342,9 @@ exports.dataManager = function(graphID, vizData, res) {
         this.edgesToCreate = edges;
         //DEBUG
         console.log("Need to create ", this.edgesToCreate, " edges");
-        exports.emitter.emit("LinksToCreate", this.edgesToCreate);
+        if(this.verbose) {
+            exports.emitter.emit("LinksToCreate", this.edgesToCreate);
+        }
     };
 
     this.queueGraphEdgeRequest = function(fromType, fromName, toType, toName, edgeName) {
@@ -342,14 +369,18 @@ exports.dataManager = function(graphID, vizData, res) {
                 //DEBUG
                 //console.log("Edge ", _this.edgesCreated, edgeNode.signals[0].name, " created");
                 ++_this.edgesCreated;
-                exports.emitter.emit("LinkCreated", _this.edgesCreated);
+                if(_this.verbose) {
+                    exports.emitter.emit("LinkCreated", _this.edgesCreated);
+                }
                 _this.canCreateEdge = true;
                 if(_this.edgesCreated === _this.edgesToCreate) {
                     console.log("All edges created");
                     clearInterval(_this.edgeRequestTimer);
                     _this.graphComplete = true;
-                    exports.emitter.emit("GraphCompleted", "Graph Completed");
-                    _this.onCompleted();
+                    if(_this.verbose) {
+                        exports.emitter.emit("GraphCompleted", "Graph Completed");
+                    }
+                    _this.onEdgeCreateComplete();
                 }
             })
         }
