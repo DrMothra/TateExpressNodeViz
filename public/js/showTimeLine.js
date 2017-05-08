@@ -61,7 +61,7 @@ $(document).ready(()=> {
     mapManager.getEdits(mapID, onEditData);
 
     $('#myViews').on("click", () => {
-        window.location.href = "/showMyViews?authorName=" + localStorage.getItem("TateUsername");
+        window.location.href = "/showViews?authorName=" + localStorage.getItem("TateUsername");
     });
 
     $('#mapName').html(mapName);

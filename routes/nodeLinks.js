@@ -42,8 +42,8 @@ exports.showAuthorGraphs = function(req, res, next) {
     res.render('showAuthorGraphs');
 };
 
-exports.showMyViews = (req, res, next) => {
-    res.render('showMyViews');
+exports.showViews = function(req, res, next) {
+    res.render('showViews');
 };
 
 exports.showTimeLine = function(req, res, next) {

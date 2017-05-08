@@ -7,7 +7,7 @@
       <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
       <script type="text/javascript" src="js/MapManager.js"></script>
       <script type="text/javascript" src="js/bootstrap.min.js"></script>
-      <script type="text/javascript" src="js/showMyViews.js"></script>
+      <script type="text/javascript" src="js/showViews.js"></script>
       <!-- endbuild -->
 
       <!-- build:css css/tatestyles.min.css-->
@@ -18,15 +18,12 @@
 
   </head>
   <body>
-    <div class="title">
+    <div class="indent">
         <h1>Tate Cartography Visualisation</h1>
     </div>
 
-    <div class="title">
-        <h2>Your Perspectives</h2>
-        <p>
-            You currently have <span id="mapStatus">the following perspectives: -</span>
-        </p>
+    <div class="indent">
+        <h2>Perspectives for <span id="authorName"></span></h2>
 
         <div id="mapList" class="container-fluid infoContent">
             <div class="row columnTitle">
@@ -40,7 +37,7 @@
         </div>
     </div>
 
-    <div class="title infoContent">
+    <div class="indent infoContent">
         <p>
             Click on the map name to see the visualisation (this will open in a new window).
         </p>

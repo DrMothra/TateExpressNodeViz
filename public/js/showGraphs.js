@@ -1,6 +1,10 @@
 /**
  * Created by DrTone on 15/12/2016.
  */
+function onShowViews(author) {
+    //Show author views
+    window.location.href = "/showViews?authorName="+author;
+}
 
 function onMapsFound(response) {
     let i, graphInfo, numGraphs = response.msg.length;
@@ -41,7 +45,8 @@ function onMapsFound(response) {
     });
 
     $("[id^='showViews']").on("click", function() {
-        onShowViews(this.id);
+        let id = this.id.match(/\d/g);
+        onShowViews(authors[id]);
     });
 }
 
@@ -53,7 +58,7 @@ function showMyViews() {
         return;
     }
 
-    window.location.href = "/showMyViews?authorName="+userName;
+    window.location.href = "/showViews?authorName="+userName;
 }
 
 $(document).ready(()=> {
