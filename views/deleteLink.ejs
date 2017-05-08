@@ -17,7 +17,7 @@
 
 </head>
 <body>
-    <div class="title">
+    <div class="indent">
         <h1>Tate Node Visualiser</h1>
     </div>
 
@@ -25,14 +25,13 @@
         <a href="tateInstructionsDeleteLink.html" target="_blank"><img src="images/info.png"></a>
     </div>
 
-    <div id="deleteLink" class="title">
+    <div id="deleteLink" class="indent">
         <h2>Delete Link</h2>
-        <h3>Map - <span id="mapName"><%= mapName %></span></h3>
+        <h3>Map Name - <span id="mapName"><%= mapName %></span></h3>
         <form id="deleteLinkForm" class="form-horizontal" action="/processDeleteLink" method = "post" autocomplete="off">
             <div class="form-group">
-                <label for="mapID" class="col-md-1 control-label">Graph ID</label>
                 <div class="col-md-5">
-                    <input type="text" class="form-control" name="mapID" id="mapID" value="<%= mapID %>">
+                    <input type="text" class="form-control noDisplay" name="mapID" id="mapID" value="<%= mapID %>">
                     <input type="text" class="noDisplay" name="author" id="author">
                 </div>
             </div>
@@ -57,7 +56,7 @@
         </form>
     </div>
 
-    <div id="nodes" class="title">
+    <div id="nodes" class="indent options">
         <button id="linkDelete" type="button" class="btn btn-primary">Delete</button>
     </div>
 
@@ -65,13 +64,15 @@
         <p id="addStatus" class="label label-success"></p>
     </div>
 
-    <div class="title">
+    <div class="indent options">
         <button id="backToModify" type="submit" class="btn btn-primary">Modify Map</button>
+
+        <form method="get" action="/showGraphs">
+            <div class="form-group">
+                <button id="home" type="submit" class="btn btn-primary">All Views</button>
+            </div>
+        </form>
     </div>
-    <form method="get" action="/showGraphs">
-        <div class="form-group title">
-            <button id="home" type="submit" class="btn btn-primary">Home</button>
-        </div>
-    </form>
+
 </body>
 </html>

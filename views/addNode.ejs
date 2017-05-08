@@ -16,7 +16,7 @@
 
   </head>
   <body>
-    <div class="title">
+    <div class="indent">
         <h1>Tate Node Visualiser</h1>
     </div>
 
@@ -24,14 +24,13 @@
         <a href="tateInstructionsAdd.html" target="_blank"><img src="images/info.png"></a>
     </div>
 
-    <div id="addNode" class="title infoContent">
+    <div id="addNode" class="indent options">
         <h2>Add Node</h2>
-        <h3>Map - <span id="mapName"><%= mapName %></span></h3>
+        <h3>Map Name - <span id="mapName"><%= mapName %></span></h3>
         <form id="addNodeForm" class="form-horizontal" action="/processAddNewNode" method="post" autocomplete="off">
             <div class="form-group">
-                <label for="mapID" class="col-md-1 control-label">Map ID</label>
                 <div class="col-md-5">
-                    <input type="text" class="form-control" name="mapID" id="mapID" value="<%= mapID %>">
+                    <input type="text" class="form-control noDisplay" name="mapID" id="mapID" value="<%= mapID %>">
                     <input type="text" class="noDisplay" name="author" id="author">
                 </div>
             </div>
@@ -53,19 +52,17 @@
         </p>
         <button id="addNewNode" type="button" class="btn btn-primary">Add</button>
     </div>
-    <div class="title feedback">
+    <div class="indent feedback">
         <span id="addStatus" class="label label-success"></span>
     </div>
 
 
-    <div class="infoContent">
-        <div class="title">
-            <button id="backToModify" type="submit" class="btn btn-primary">Modify Map</button>
-        </div>
+    <div class="indent options">
+        <button id="backToModify" type="submit" class="btn btn-primary">Modify Map</button>
 
         <form method="get" action="/showGraphs">
-            <div class="form-group title">
-                <button id="home" type="submit" class="btn btn-primary">Home</button>
+            <div class="form-group">
+                <button id="home" type="submit" class="btn btn-primary">All Views</button>
             </div>
         </form>
     </div>

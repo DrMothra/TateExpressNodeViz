@@ -16,7 +16,7 @@
 
 </head>
 <body>
-    <div class="title">
+    <div class="indent">
         <h1>Tate Node Visualiser</h1>
     </div>
 
@@ -24,14 +24,13 @@
         <a href="tateInstructionsUpdate.html" target="_blank"><img src="images/info.png"></a>
     </div>
 
-    <div id="updateNode" class="title">
+    <div id="updateNode" class="indent">
         <h2>Update Node</h2>
-        <h3>Map - <span id="mapName"><%= mapName %></span></h3>
+        <h3>Map Name - <span id="mapName"><%= mapName %></span></h3>
         <form id="getLinksForm" class="form-horizontal" action="/processSearchGraph" method = "post" autocomplete="off">
             <div class="form-group">
-                <label for="mapID" class="col-md-1 control-label">Map ID</label>
                 <div class="col-md-5">
-                    <input type="text" class="form-control" name="mapID" id="mapID" value="<%= mapID %>">
+                    <input type="text" class="form-control noDisplay" name="mapID" id="mapID" value="<%= mapID %>">
                 </div>
             </div>
             <div class="form-group">
@@ -42,13 +41,17 @@
             </div>
             <p>
                 Enter a node name in the box above, click the Get Links button and you'll see all the links that come from this node.<br>
-                You map then update the link information.
+                You can then update the link information.
+            </p>
+            <p>
+                You can update aas many nodes as you like by typing a different name in the Node Name box and hitting the
+                Get Links button again.
             </p>
             <button id="search" type="submit" class="btn btn-primary">Get Links</button>
         </form>
     </div>
 
-    <div id="links" class="title">
+    <div id="links" class="indent">
         <h2>Links</h2>
         <div class="container-fluid infoContent">
         <% for(var j=0; j<nodes.length; ++j) { %>
@@ -77,14 +80,15 @@
         </div>
     </div>
 
-    <div class="title">
-        <button id="backToModify" type="submit" class="btn btn-primary">Modify Graph</button>
+    <div class="indent options">
+        <button id="backToModify" type="submit" class="btn btn-primary">Modify Map</button>
+
+        <form method="get" action="/showGraphs">
+            <div class="form-group">
+                <button id="back" type="submit" class="btn btn-primary">All Views</button>
+            </div>
+        </form>
     </div>
-    <br>
-    <form method="get" action="/showGraphs">
-        <div class="form-group title">
-            <button id="back" type="submit" class="btn btn-primary">Home</button>
-        </div>
-    </form>
+
 </body>
 </html>

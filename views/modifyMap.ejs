@@ -14,13 +14,13 @@
 
     </head>
     <body>
-        <div class="title">
+        <div class="indent">
             <h1>Tate Cartography Visualisation</h1>
         </div>
 
-        <div id="modifyMap" class="title">
+        <div id="modifyMap" class="indent">
             <h2>Modify Map</h2>
-            <p>Map Name : <span id="mapName"></span></p>
+            <h3>Map Name : <span id="mapName"></span></h3>
             <p>
                 Select from one of the options below to modify the map.
             </p>
@@ -75,15 +75,24 @@
                     </form>
                 </div>
             </div>
-
-            <br>
-            <form method="get" action="/showGraphs">
-                <div class="form-group">
-                    <button id="home" type="submit" class="btn btn-primary">Home</button>
-                </div>
-            </form>
-
         </div>
+
+        <div class="indent options">
+            <p>
+                You can delete the view completely by clicking the button below.<br>
+                Don't worry you'll be asked to confirm the action.
+            </p>
+            <form method="post" action="/deleteMap">
+                <button type="submit" class="btn btn-primary">Delete</button>
+            </form>
+        </div>
+
+
+        <form method="get" action="/showGraphs">
+            <div class="form-group indent">
+                <button id="home" type="submit" class="btn btn-primary">All Views</button>
+            </div>
+        </form>
 
     </body>
 </html>
