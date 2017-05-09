@@ -6,6 +6,7 @@
       <!-- build:js js/tateExpressViz.min.js -->
       <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
       <script type="text/javascript" src="js/bootstrap.min.js"></script>
+      <script type="text/javascript" src="js/MapManager.js"></script>
       <script type="text/javascript" src="js/mergeViews.js"></script>
       <!-- endbuild -->
 
@@ -21,21 +22,109 @@
         <h1>Tate Cartography Visualisation</h1>
     </div>
 
-    <div class="indent merge">
+    <div class="indent">
         <h2>Merge Views</h2>
-        <p>
-            Select the map that you would like these views to be merged into.<br>
-            You can merge them into a new map or into an existing one of your own.
-        </p>
-        <p>
-            If you want to create a new map then fill in the details below.<br>
-            If you want to merge into a view of your own then select the map from the list of
-            your views.<br>
-            Then click the Next button.
-        </p>
     </div>
 
+    <div id="intro">
+        <div class="indent">
+            <p>
+                You can merge a number of maps into a new or existing one.<br><br>
+                If you'd like to create a new map then simply fill in the details below. The description is optional.<br>
+            </p>
+        </div>
 
+        <div class="indent">
+            <form class="form-horizontal" ref='uploadForm' id="uploadForm" method="post" action="/processCreateGraph" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="mapName" class="col-md-1 control-label">Map Name</label>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="mapName" id="mapName">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="mapDescription" class="col-md-1 control-label">Description</label>
+                    <div class="col-md-5">
+                        <input type="text" class="form-control" name="mapDescription" id="mapDescription">
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="indent">
+            <p>
+                If you'd like to merge maps into an existing one of your own then select it from the list.<br>
+            </p>
+        </div>
+
+        <div class="indent">
+            <h3>Your Current Perspectives</h3>
+
+            <div id="mapList" class="container-fluid options">
+                <div class="row columnTitle">
+                    <div class="col-md-3">
+                        <p>Map</p>
+                    </div>
+                    <div class="col-md-3">
+                        <p>Select</p>
+                    </div>
+                </div>
+            </div>
+            <p>
+                Once you have made your selection, click Next.
+            </p>
+            <button id="nextMerge" type="button" class="btn btn-primary">Next</button>
+        </div>
+
+        <form method="get" action="/showGraphs">
+            <div class="form-group indent">
+                <button type="submit" class="btn btn-primary">All Views</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="introNext" class="indent noDisplay">
+        <p>
+            You can merge up to five maps at a time into your new map. If you want to merge more then simply repeat the process and
+            combine maps into previously merged ones.
+        </p>
+        <p>
+            Select the number of maps that you would like to merge.
+        </p>
+        <form class="form-horizontal" ref='uploadForm' id="uploadForm" method="post" action="/processCreateGraph" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="mapName1" class="col-md-1 control-label">Map 1</label>
+                <div class="col-md-5">
+                    <input type="text" class="form-control" name="mapName1" id="mapName1">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="mapName2" class="col-md-1 control-label">Map 2</label>
+                <div class="col-md-5">
+                    <input type="text" class="form-control" name="mapName2" id="mapName2">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="mapName3" class="col-md-1 control-label">Map 3</label>
+                <div class="col-md-5">
+                    <input type="text" class="form-control" name="mapName3" id="mapName3">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="mapName4" class="col-md-1 control-label">Map 4</label>
+                <div class="col-md-5">
+                    <input type="text" class="form-control" name="mapName4" id="mapName4">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="mapName5" class="col-md-1 control-label">Map 5</label>
+                <div class="col-md-5">
+                    <input type="text" class="form-control" name="mapName5" id="mapName5">
+                </div>
+            </div>
+            <button type="submit" class="col-md-offset-1 btn btn-primary">Merge</button>
+        </form>
+    </div>
 
   </body>
 </html>

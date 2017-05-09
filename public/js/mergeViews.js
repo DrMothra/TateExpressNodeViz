@@ -2,53 +2,29 @@
  * Created by DrTone on 30/03/2017.
  */
 
-function sendData(data, callback) {
-    $.ajax({
-        type: data.method,
-        data: data.data,
-        url: data.url,
-        dataType: data.dataType
-    }).done((response)=> {
-        //DEBUG
-        console.log("Data sent");
-        if(callback !== undefined) {
-            callback(response);
+function onMapsFound(response) {
+    let numMaps = response.msg.length;
+    let thisAuthor = localStorage.getItem("TateUsername");
+    let i, mapElem = $('#mapList'), mapInfo;
+    for(i=0; i<numMaps; ++i) {
+        mapInfo = response.msg[i];
+        if(thisAuthor === mapInfo.author) {
+            mapElem.append("<div class='row graphInfo'>" +
+                "<div class='col-md-3'>" + mapInfo.name + "</a></div>" +
+                "<div class='col-md-2'><input type='checkbox'></div>" +
+                "</div>");
         }
-    })
-}
-
-function onGraphsFound(response) {
-    //Show all graphs to select from
-    let elem = $('#graphList');
-
-    let numGraphs = response.msg.length;
-    let graphData = response.msg, graphInfo;
-    let i;
-    for(i=0; i<numGraphs; ++i) {
-        graphInfo = graphData[i];
-        elem.append("<div class='row'>" +
-            "<div class='col-md-3'>" + graphInfo.name + "</div>" +
-            "<div class='col-md-1 checkbox'><input type='checkbox'></div>" +
-            "</div>");
     }
 }
 
-function getGraphs() {
-    //Get all graphs in account
-    let searchInfo = {
-        query: "TateCartographyProject"
-    };
-    let graphData = {method: "POST",
-        data: searchInfo,
-        url: '/processSearchCommons',
-        dataType: 'JSON'};
-
-    sendData(graphData, onGraphsFound);
-}
-
-
-
 $(document).ready( ()=> {
+    //Show own maps
+    let mapManager = new MapManager();
+    mapManager.getMaps(onMapsFound);
 
+    $('#nextMerge').on("click", () => {
+        $('#intro').hide();
+        $('#introNext').show();
+    })
 });
 

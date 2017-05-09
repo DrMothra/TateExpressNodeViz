@@ -20,11 +20,11 @@
 
   </head>
   <body>
-    <div class="title">
+    <div class="indent">
         <h1>Tate Cartography Visualisation</h1>
     </div>
 
-    <div class="title">
+    <div class="indent">
         <h2>Create New View</h2>
         <p>
             You can create a new view from a csv (comma separated values) file.<br>
@@ -32,7 +32,7 @@
         </p>
     </div>
 
-    <div class="title viewOptions">
+    <div class="indent viewOptions">
         <form class="form-horizontal" ref='uploadForm' id="uploadForm" method="post" action="/processCreateGraph" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="mapName" class="col-md-1 control-label">Map Name</label>
@@ -52,7 +52,7 @@
         <button type="button" class="btn btn-primary" id="createView">Create view</button>
     </div>
 
-    <div class="title">
+    <div class="indent">
         <h3>View Status : <span id="mapStatus" class="label label-success"></span></h3>
         <div class="container-fluid viewProperties">
             <div class="row">
@@ -80,7 +80,7 @@
         </div>
     </div>
 
-    <div id="mapCompleted" class="title noDisplay">
+    <div id="mapCompleted" class="indent noDisplay">
         <p>
             Your new view has been created!<br>
             You can see this in your list of views if you click the button below.<br>
