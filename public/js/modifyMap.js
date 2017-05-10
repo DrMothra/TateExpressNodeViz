@@ -12,9 +12,10 @@ $(document).ready(function() {
     }
 
     //Fill in url query params
-    var params = new URLSearchParams(window.location.search);
-    var mapID = params.get('mapID');
-    var mapName = params.get('name');
+    let params = new URLSearchParams(window.location.search);
+    let mapID = params.get('mapID');
+    let mapName = params.get('name');
+    let author = params.get('author');
 
     //Ensure we have graph
     if(!mapID || !mapName) {
@@ -27,5 +28,9 @@ $(document).ready(function() {
 
     $('.getMapID').val(mapID);
     $('.getMapName').val(mapName);
+
+    $('#backToViews').on("click", () => {
+        window.location.href = "/showViews?authorName="+author;
+    })
 });
 

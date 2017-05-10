@@ -15,7 +15,7 @@ function onModifyViews(id) {
 
     let mapInfo = mapManager.getMapInfo(mapID);
 
-    window.location.href = "/modifyMap?mapID="+mapInfo.graphID+"&name="+mapInfo.name;
+    window.location.href = "/modifyMap?mapID="+mapInfo.graphID+"&name="+mapInfo.name+"&author="+author;
 }
 
 function onShowTimeLine(id) {
@@ -28,7 +28,7 @@ function onShowTimeLine(id) {
 
     let mapInfo = mapManager.getMapInfo(mapID);
 
-    window.location.href = "/showTimeLine?mapID=" + mapInfo.graphID + "&name=" + mapInfo.name;
+    window.location.href = "/showTimeLine?mapID=" + mapInfo.graphID + "&name=" + mapInfo.name+"&author="+author;
 }
 
 function onMapsFound(response) {

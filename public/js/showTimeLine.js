@@ -49,19 +49,20 @@ $(document).ready(()=> {
     let params = new URLSearchParams(window.location.search);
     mapID = params.get('mapID');
     let mapName = params.get('name');
+    let author = params.get("author");
 
     //Ensure we have graph
     if(!mapName) {
         alert("Select a graph timeline from the Home page!");
-        window.location.href = "/showMyView?authorName=" + localStorage.getItem("TateUsername");
+        window.location.href = "/showMyView?authorName=" + author;
         return;
     }
 
     let mapManager = new MapManager();
     mapManager.getEdits(mapID, onEditData);
 
-    $('#myViews').on("click", () => {
-        window.location.href = "/showViews?authorName=" + localStorage.getItem("TateUsername");
+    $('#backToViews').on("click", () => {
+        window.location.href = "/showViews?authorName=" + author;
     });
 
     $('#mapName').html(mapName);
