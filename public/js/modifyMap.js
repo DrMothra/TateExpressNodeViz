@@ -15,7 +15,10 @@ $(document).ready(function() {
     let params = new URLSearchParams(window.location.search);
     let mapID = params.get('mapID');
     let mapName = params.get('name');
-    let author = params.get('author');
+    let author = localStorage.getItem("CurrentAuthor");
+    if(!author) {
+        console.log("No current author!");
+    }
 
     //Ensure we have graph
     if(!mapID || !mapName) {

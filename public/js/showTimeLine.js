@@ -49,7 +49,6 @@ $(document).ready(()=> {
     let params = new URLSearchParams(window.location.search);
     mapID = params.get('mapID');
     let mapName = params.get('name');
-    let author = params.get("author");
 
     //Ensure we have graph
     if(!mapName) {
@@ -61,7 +60,9 @@ $(document).ready(()=> {
     let mapManager = new MapManager();
     mapManager.getEdits(mapID, onEditData);
 
+    let author;
     $('#backToViews').on("click", () => {
+        author = localStorage.getItem("CurrentAuthor");
         window.location.href = "/showViews?authorName=" + author;
     });
 

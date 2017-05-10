@@ -15,7 +15,7 @@ function onModifyViews(id) {
 
     let mapInfo = mapManager.getMapInfo(mapID);
 
-    window.location.href = "/modifyMap?mapID="+mapInfo.graphID+"&name="+mapInfo.name+"&author="+author;
+    window.location.href = "/modifyMap?mapID="+mapInfo.graphID+"&name="+mapInfo.name;
 }
 
 function onShowTimeLine(id) {
@@ -28,7 +28,7 @@ function onShowTimeLine(id) {
 
     let mapInfo = mapManager.getMapInfo(mapID);
 
-    window.location.href = "/showTimeLine?mapID=" + mapInfo.graphID + "&name=" + mapInfo.name+"&author="+author;
+    window.location.href = "/showTimeLine?mapID=" + mapInfo.graphID + "&name=" + mapInfo.name;
 }
 
 function onMapsFound(response) {
@@ -81,6 +81,9 @@ $(document).ready(()=> {
         alert("No author name in URL!");
         return;
     }
+
+    //Set current author
+    localStorage.setItem("CurrentAuthor", author);
 
     $('#authorName').html(author);
 

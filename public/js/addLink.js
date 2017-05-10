@@ -120,8 +120,14 @@ $(document).ready(function() {
         addNewLink();
     });
 
-    $("#backToModify").on("click", function () {
+    $("#backToModify").on("click",  () => {
         onBack();
+    });
+
+    let author;
+    $('#backToViews').on("click", () => {
+        author = localStorage.getItem("CurrentAuthor");
+        window.location.href = "/showViews?authorName="+author;
     });
 });
 

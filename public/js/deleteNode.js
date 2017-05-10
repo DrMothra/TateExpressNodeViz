@@ -134,5 +134,11 @@ $(document).ready(function() {
     $("#backToModify").on("click", function () {
         onBack();
     });
+
+    let author;
+    $('#backToViews').on("click", () => {
+        author = localStorage.getItem("CurrentAuthor");
+        window.location.href = "/showViews?authorName="+author;
+    });
 });
 
