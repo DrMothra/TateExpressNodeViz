@@ -29,10 +29,15 @@ function onDeleteNode(id) {
 }
 
 function onNodeDeleted() {
+    $('#addStatus').show();
     $('#addStatus').html("Node deleted");
 }
 
 function deleteNode() {
+    if(!currentNode) {
+        alert("No node selected!");
+        return;
+    }
     let mapID = $('#mapID').val();
     if(!mapID) {
         alert("No map ID specified!");
@@ -47,6 +52,7 @@ function onFindNodes() {
         //Clear any previous search
         var elem = $('#nodeList');
         elem.empty();
+        $('#addStatus').hide();
         $('#findNodesForm').ajaxSubmit({
 
             error: function() {
@@ -60,6 +66,7 @@ function onFindNodes() {
                     $('#numNodes').html("No nodes found");
                     return;
                 }
+                $('#nodes').show();
                 nodeData = response.msg;
                 var i, nodeInfo;
                 for(i=0; i<numNodes; ++i) {
@@ -124,6 +131,7 @@ $(document).ready(function() {
     mapManager.getGraphNodeNames(mapID, onGetNodeNames);
 
     $('#find').on("click", function() {
+        $('#nodes').hide();
         onFindNodes();
     });
 

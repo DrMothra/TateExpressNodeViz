@@ -25,7 +25,7 @@
         <a href="tateInstructionsDeleteNode.html" target="_blank"><img src="images/info.png"></a>
     </div>
 
-    <div id="deleteNode" class="indent">
+    <div id="deleteNode" class="indent options">
         <h2>Delete Node</h2>
         <h3>Map Name - <span id="mapName"><%= mapName %></span></h3>
         <form id="findNodesForm" class="form-horizontal" action="/processFindNodes" method = "post" autocomplete="off">
@@ -44,7 +44,7 @@
         </form>
     </div>
 
-    <div id="nodes" class="indent options">
+    <div id="nodes" class="indent noDisplay">
         <h3>Nodes</h3>
         <p id="numNodes">
 
@@ -52,11 +52,10 @@
         <div id="nodeList" class="container-fluid">
 
         </div>
-        <button id="nodeDelete" type="button" class="btn btn-primary">Delete</button>
-    </div>
-
-    <div class="feedback">
-        <span id="addStatus" class="label label-success"></span>
+        <div class="feedback">
+            <button id="nodeDelete" type="button" class="btn btn-primary">Delete</button>
+            <span id="addStatus" class="label label-success"></span>
+        </div>
     </div>
 
     <div class="indent options">

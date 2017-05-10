@@ -67,8 +67,8 @@ function deleteALink() {
         },
 
         success: function(response) {
-            console.log("Received ", response);
-            $('#addStatus').html("Link deleted");
+            $('#addStatus').show();
+            $('#addStatus').html(response.msg);
         }
     });
 }
@@ -92,6 +92,7 @@ $(document).ready(function() {
 
     $('#linkDelete').on("click", function() {
         if(!validateForm()) return;
+        $('#addStatus').hide();
         deleteALink();
     });
 

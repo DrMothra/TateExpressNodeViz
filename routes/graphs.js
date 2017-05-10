@@ -463,13 +463,15 @@ exports.deleteLink = (req, res, next) => {
                     ]};
                     graphCommons.update_graph(currentGraphID, signals, response => {
                         console.log("Deleted link");
-                        res.send( {msg: 'OK'} );
+                        res.send( {msg: "Link Deleted"} );
                         let signal = response.graph.signals[0];
                         req.body.fromNodeID = signal.from;
                         req.body.toNodeID = signal.to;
                         req.body.linkNodeID = signal.id;
                         dbase.deleteLink(req.body);
                     });
+                } else {
+                    res.send( {msg: "No Link Found"} );
                 }
             });
         });
