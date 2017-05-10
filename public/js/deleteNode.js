@@ -44,6 +44,8 @@ function deleteNode() {
         return;
     }
     mapManager.deleteNode(mapID, currentNode.id, currentNode.name, onNodeDeleted);
+    currentNode = undefined;
+
 }
 
 function onFindNodes() {
