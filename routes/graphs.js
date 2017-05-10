@@ -49,6 +49,10 @@ exports.createGraph = (req, res, next) => {
 
     graphCommons.new_graph(graphData, result => {
         console.log("New map id created");
+        //May just be creating empty map
+        if(!req.files) {
+            return;
+        }
         currentGraphID = result.properties.id;
         let fileName = req.files.vizFile.name;
         let fileData = req.files.vizFile.data;
@@ -86,7 +90,8 @@ exports.createGraph = (req, res, next) => {
         });
     });
 
-    res.send( {msg: "Generating graph..."} );
+    let msg = req.files ? "Generating map..." : "Map created";
+    res.send( {msg: msg} );
 };
 
 let currentGraph;
@@ -138,6 +143,42 @@ function copyMap(mapInfo, graph) {
             })
         });
     });
+}
+
+function appendMap(mapID, mapContents) {
+    graphCommons.graphs(mapID, map => {
+        //Append contents to existing map
+        let numNodes = mapContents.nodes.length;
+        dataManager.init(graphCommons);
+        dataManager.setStatus(dataManager.status.COPY);
+        dataManager.setGraphID(mapID);
+        dataManager.setCurrentGraph(mapContents);
+        dataManager.copyTypes();
+        dataManager.setNumberNodesToCreate(numNodes);
+        dataManager.setVerbose(false);
+        dataManager.copyGraphNodes(mapContents.nodes, 'json', () => {
+            console.log("All nodes created");
+            dataManager.setNumberEdgesToCreate(mapContents.edges.length);
+            dataManager.copyGraphEdges(mapContents.nodes, () => {
+                console.log("All edges created");
+                //Update database
+                //mapInfo.fromNodeID = result.properties.id;
+                //dbase.copyGraph(mapInfo);
+            })
+        });
+    })
+}
+
+function getMaps(srcIDs, callback) {
+    let i, numMaps = srcIDs.length, maps = [];
+    for(i=0; i<numMaps; ++i) {
+        graphCommons.graphs(srcIDs[i], result => {
+            maps.push(result);
+            if(maps.length === numMaps) {
+                callback(maps);
+            }
+        });
+    }
 }
 
 exports.getNodeNames = (req, res, next) => {
@@ -501,6 +542,53 @@ exports.modifyGraph = (req, res, next) => {
     graphCommons.graphs(currentGraphID, graph => {
         graphName = graph.properties.name;
         res.render('modify', { graphID: currentGraphID, graphName: graphName} );
+    });
+};
+
+exports.mergeMaps = (req, res, next) => {
+    //Get destination map ids
+    //DEBUG
+    //console.log("MapSource =", req.body.mapName1);
+    //console.log("MapDest =", req.body.mapNameDest);
+    //console.log("MapID =", req.body.mapID1);
+    //Get json for each map
+    let destMapName = req.body.mapNameDest;
+    let destMapID = req.body.mapIDDest;
+    let srcIDs = [];
+    let i, NUM_MERGE_MAPS = 5, baseMapID = "mapID", currentID;
+    for(i=1; i<=NUM_MERGE_MAPS; ++i) {
+        currentID = baseMapID + i;
+        if(req.body[currentID]) {
+            srcIDs.push(req.body[currentID]);
+        }
+    }
+
+    getMaps(srcIDs, maps => {
+        let i, srcMap = maps[0], numMaps = maps.length, currentMap;
+        let node, numNodes, link, numLinks, newNode, newLink;
+        for(i=1; i<numMaps; ++i) {
+            currentMap = maps[i];
+            numNodes = currentMap.nodes.length;
+            for(node=0; node<numNodes; ++node) {
+                newNode = JSON.parse(JSON.stringify(currentMap.nodes[node]));
+                srcMap.nodes.splice(-1, 0, newNode);
+            }
+            numLinks = currentMap.edges.length;
+            for(link=0; link<numLinks; ++link) {
+                newLink = JSON.parse(JSON.stringify(currentMap.edges[link]));
+                srcMap.edges.splice(-1, 0, newLink);
+            }
+        }
+        if(destMapName) {
+            //Create new map
+            let mapInfo = {};
+            mapInfo.name = destMapName;
+            mapInfo.author = "TonyG";
+            mapInfo.verbose = false;
+            copyMap(mapInfo, srcMap);
+        } else if(destMapID) {
+            appendMap(destMapID, srcMap);
+        }
     });
 };
 

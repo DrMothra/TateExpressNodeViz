@@ -6,6 +6,7 @@
       <!-- build:js js/tateExpressViz.min.js -->
       <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
       <script type="text/javascript" src="js/bootstrap.min.js"></script>
+      <script type="text/javascript" src="js/bootstrap3-typeahead.min.js"></script>
       <script type="text/javascript" src="js/MapManager.js"></script>
       <script type="text/javascript" src="js/mergeViews.js"></script>
       <!-- endbuild -->
@@ -57,7 +58,7 @@
             </p>
         </div>
 
-        <div class="indent">
+        <div class="indent options">
             <h3>Your Current Perspectives</h3>
 
             <div id="mapList" class="container-fluid options">
@@ -89,41 +90,57 @@
             combine maps into previously merged ones.
         </p>
         <p>
-            Select the number of maps that you would like to merge.
+            Enter the names of the maps that you would like to merge, as soon as you start typing you will see a list of maps that match your criteria.
         </p>
-        <form class="form-horizontal" ref='uploadForm' id="uploadForm" method="post" action="/processCreateGraph" enctype="multipart/form-data">
+        <form class="form-horizontal" ref='mergeForm' id="mergeForm" method="post" action="/processMergeMaps" enctype="multipart/form-data" autocomplete="off">
             <div class="form-group">
                 <label for="mapName1" class="col-md-1 control-label">Map 1</label>
                 <div class="col-md-5">
-                    <input type="text" class="form-control" name="mapName1" id="mapName1">
+                    <input type="text" class="form-control maps" name="mapName1" id="mapName1">
+                    <input type="text" class="noDisplay" name="mapID1" id="mapID1">
                 </div>
             </div>
             <div class="form-group">
                 <label for="mapName2" class="col-md-1 control-label">Map 2</label>
                 <div class="col-md-5">
-                    <input type="text" class="form-control" name="mapName2" id="mapName2">
+                    <input type="text" class="form-control maps" name="mapName2" id="mapName2">
+                    <input type="text" class="noDisplay" name="mapID2" id="mapID2">
                 </div>
             </div>
             <div class="form-group">
                 <label for="mapName3" class="col-md-1 control-label">Map 3</label>
                 <div class="col-md-5">
-                    <input type="text" class="form-control" name="mapName3" id="mapName3">
+                    <input type="text" class="form-control maps" name="mapName3" id="mapName3">
+                    <input type="text" class="noDisplay" name="mapID3" id="mapID3">
                 </div>
             </div>
             <div class="form-group">
                 <label for="mapName4" class="col-md-1 control-label">Map 4</label>
                 <div class="col-md-5">
-                    <input type="text" class="form-control" name="mapName4" id="mapName4">
+                    <input type="text" class="form-control maps" name="mapName4" id="mapName4">
+                    <input type="text" class="noDisplay" name="mapID4" id="mapID4">
                 </div>
             </div>
             <div class="form-group">
                 <label for="mapName5" class="col-md-1 control-label">Map 5</label>
                 <div class="col-md-5">
-                    <input type="text" class="form-control" name="mapName5" id="mapName5">
+                    <input type="text" class="form-control maps" name="mapName5" id="mapName5">
+                    <input type="text" class="noDisplay" name="mapID5" id="mapID5">
                 </div>
             </div>
+            <input type="text" class="noDisplay" name="mapNameDest" id="mapNameDest">
+            <input type="text" class="noDisplay" name="mapIDDest" id="mapIDDest">
             <button type="submit" class="col-md-offset-1 btn btn-primary">Merge</button>
         </form>
+
+        <div class="indent options">
+            <button id="mergeBack" type="button" class="btn btn-primary">Back</button>
+            <form method="get" action="/showGraphs">
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">All Views</button>
+                </div>
+            </form>
+        </div>
     </div>
 
   </body>

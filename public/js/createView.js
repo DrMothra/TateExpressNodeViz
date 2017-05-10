@@ -15,7 +15,7 @@ function validateForm() {
     }
 
     let author = localStorage.getItem("TateUsername");
-    mapDescription = 'Author"' + author + '"' + mapDescription;
+    mapDescription = 'Author="' + author + '"' + mapDescription;
     $('#mapDescription').val(mapDescription);
 
     $('#uploadForm').ajaxSubmit({
