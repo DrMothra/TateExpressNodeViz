@@ -523,10 +523,10 @@ exports.searchCommons = (req, res, next) => {
     graphCommons.search(search_query, searchresults);
 };
 
-exports.deleteGraph = (req, res, next) => {
+exports.deleteMap = (req, res, next) => {
     //Delete graph
-    graphCommons.delete_graph(req.body.graphID, response => {
-        res.send( {msg: "Graph deleted"});
+    graphCommons.delete_graph(req.body.mapID, response => {
+        res.send( {msg: "Map deleted"});
         //Update database
         dbase.deleteGraph(req.body);
     });

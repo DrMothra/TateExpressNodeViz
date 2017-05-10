@@ -91,6 +91,7 @@ function addNewLink() {
 
         success: function(response) {
             console.log("Received ", response);
+            $('#addStatus').show();
             $('#addStatus').html("Link added");
         }
     });
@@ -117,6 +118,7 @@ $(document).ready(function() {
 
     $('#addNewLink').on("click", function() {
         if(!validateForm()) return;
+        $('#addStatus').hide();
         addNewLink();
     });
 

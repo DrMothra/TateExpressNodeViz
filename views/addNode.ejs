@@ -24,7 +24,7 @@
         <a href="tateInstructionsAdd.html" target="_blank"><img src="images/info.png"></a>
     </div>
 
-    <div id="addNode" class="indent options">
+    <div id="addNode" class="indent">
         <h2>Add Node</h2>
         <h3>Map Name - <span id="mapName"><%= mapName %></span></h3>
         <form id="addNodeForm" class="form-horizontal" action="/processAddNewNode" method="post" autocomplete="off">
@@ -50,12 +50,11 @@
         <p>
             Enter a node name and a type (it can be a completely new type) and click the Add button.
         </p>
-        <button id="addNewNode" type="button" class="btn btn-primary">Add</button>
+        <div class="feedback">
+            <button id="addNewNode" type="button" class="btn btn-primary">Add</button>
+            <span id="addStatus" class="label label-success"></span>
+        </div>
     </div>
-    <div class="indent feedback">
-        <span id="addStatus" class="label label-success"></span>
-    </div>
-
 
     <div class="indent options">
         <button id="backToModify" type="submit" class="btn btn-primary">Modify Map</button>

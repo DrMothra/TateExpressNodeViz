@@ -125,7 +125,7 @@ app.post("/processDeleteNode", graphRoutes.deleteNode);
 //Get all graph info
 app.post("/processSearchCommons", graphRoutes.searchCommons);
 
-app.post("/processDeleteGraph", graphRoutes.deleteGraph);
+app.post("/processDeleteMap", graphRoutes.deleteMap);
 app.post("/processMergeMaps", graphRoutes.mergeMaps);
 
 //Auto-complete functionality

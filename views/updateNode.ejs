@@ -52,14 +52,14 @@
     </div>
 
     <div id="links" class="indent">
-        <h2>Links</h2>
-        <div class="container-fluid infoContent">
+        <h3>Links</h3>
+        <div class="container-fluid options">
         <% for(var j=0; j<nodes.length; ++j) { %>
-        <h3><%= nodes[j] %></h3>
+        <h4><%= nodes[j] %></h4>
 
             <% var links = linkData.length === 0 ? [] : linkData[j]; %>
             <% for(var i=0; i<links.length; ++i) { %>
-            <div class="row">
+            <div class="row listings">
                 <div class="col-md-3">
                     <ul>
                         <li><%= links[i].linkType %> <%= links[i].linkTo %></li>
@@ -69,7 +69,7 @@
                     <button class="btn btn-primary" id='<%="yesLink" + i %>' type="button">Agree</button><button class="btn btn-primary" id='<%="noLink" + i %>' type="button">Disagree</button>
                 </div>
                 <div class="col-md-2">
-                    <button type="button" id='<%="updated" + i %>' class="btn btn-success noDisplay">Updated</button>
+                    <span id='<%="updated" + i %>' class="label label-success noDisplay">Updated</span>
                 </div>
                 <div class="col-md-5">
                     &nbsp

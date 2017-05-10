@@ -34,8 +34,12 @@
     font-size: 1.1vw;
     font-weight: bold;
 }
+.feedback {
+    margin-bottom: 1%;
+}
 .feedback span {
     font-size: 0.9vw;
+    margin-left: 1%;
 }
 .viewOptions button {
     margin: 1% 1% 1% 0;
@@ -52,4 +56,11 @@
 .options button {
     margin-bottom: 1%;
     margin-right: 1%;
+}
+.listings li {
+    font-size: 0.95vw;
+}
+.listings span {
+    font-size: 1.0vw;
+    vertical-align: middle;
 }

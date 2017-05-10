@@ -5,6 +5,7 @@
 
         <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="js/jquery.form.js"></script>
         <script type="text/javascript" src="js/loginManager.js"></script>
         <script type="text/javascript" src="js/modifyMap.js"></script>
 
@@ -82,8 +83,9 @@
                 You can delete the view completely by clicking the button below.<br>
                 Don't worry you'll be asked to confirm the action.
             </p>
-            <form method="post" action="/deleteMap">
-                <button type="submit" class="btn btn-primary">Delete</button>
+            <form id="deleteForm" method="post" action="/processDeleteMap">
+                <button type="button" class="btn btn-primary">Delete</button>
+                <input type="text" name="mapID" id="mapID" class="noDisplay">
             </form>
         </div>
 

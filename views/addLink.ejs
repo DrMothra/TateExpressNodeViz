@@ -24,7 +24,7 @@
         <a href="tateInstructionsAddLink.html" target="_blank"><img src="images/info.png"></a>
     </div>
 
-    <div id="addLink" class="indent options">
+    <div id="addLink" class="indent">
         <h2>Add Link</h2>
         <h3>Map Name - <span id="mapName"><%= mapName %></span></h3>
         <form id="addLinkForm" class="form-horizontal" action="/processAddNewLink" method="post" autocomplete="off">
@@ -61,11 +61,12 @@
                 </div>
             </div>
         </form>
-        <button id="addNewLink" type="button" class="btn btn-primary">Add Link</button>
+        <div class="feedback">
+            <button id="addNewLink" type="button" class="btn btn-primary">Add Link</button>
+            <span id="addStatus" class="label label-success"></span>
+        </div>
     </div>
-    <div class="feedback">
-        <span id="addStatus" class="label label-success"></span>
-    </div>
+
 
     <div class="indent options">
         <button id="backToModify" type="button" class="btn btn-primary">Modify Map</button>

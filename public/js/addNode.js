@@ -44,6 +44,7 @@ function addNewNode() {
 
         success: function(response) {
             console.log("Received ", response);
+            $('#addStatus').show();
             $('#addStatus').html("Node added");
         }
     });
@@ -62,6 +63,7 @@ $(document).ready(function() {
 
     $('#addNewNode').on("click", function() {
         if(!validateForm()) return;
+        $('#addStatus').hide();
         addNewNode();
     });
 

@@ -2,6 +2,33 @@
  * Created by DrTone on 10/02/2017.
  */
 
+function validateForm(mapID) {
+    //See if we can delete this map
+    let currentAuthor = localStorage.getItem("CurrentAuthor");
+    let userName = localStorage.getItem("TateUsername");
+    if(currentAuthor !== userName) {
+        alert("You can only delete your own maps!");
+        return false;
+    }
+    return true;
+}
+
+function deleteMap(mapID) {
+    $('#mapID').val(mapID);
+
+    $('#deleteForm').ajaxSubmit({
+
+        error: function() {
+            console.log("Error deleting map");
+        },
+
+        success: function(response) {
+            //Go back to views
+            let author = localStorage.getItem("CurrentAuthor");
+            window.location.href = "/showViews?authorName="+author;
+        }
+    });
+}
 
 $(document).ready(function() {
     //Check that logged in
@@ -34,6 +61,15 @@ $(document).ready(function() {
 
     $('#backToViews').on("click", () => {
         window.location.href = "/showViews?authorName="+author;
-    })
+    });
+
+    $('#deleteForm').on("click", () => {
+        if(validateForm()) {
+            if(confirm("Are you sure you want to delete this map?")) {
+                deleteMap(mapID);
+            }
+        }
+    });
+
 });
 
