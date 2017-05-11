@@ -17,6 +17,7 @@ let graphCommons = new gc(accesskey, result => {
 //Database
 let dbase = require('../model/databaseManager');
 let currentGraphID;
+const GRAPH_SUBTITLE = "T8te";
 
 //Routes for all graph-related pages
 exports.generateNewGraphID = (req, res, next) => {
@@ -43,7 +44,7 @@ exports.createGraph = (req, res, next) => {
     let graphData = {
         "name": req.body.mapName,
         "description": req.body.mapDescription,
-        "subtitle": "TateCartographyProject",
+        "subtitle": GRAPH_SUBTITLE,
         "status": 0
     };
 
@@ -117,7 +118,7 @@ function copyMap(mapInfo, graph) {
     let graphData = {
         "name": mapInfo.name,
         "description": 'Author="' + mapInfo.author + '"',
-        "subtitle": "TateCartographyProject",
+        "subtitle": GRAPH_SUBTITLE,
         "status": 0
     };
     graphCommons.new_graph(graphData, result => {
@@ -480,14 +481,14 @@ exports.deleteLink = (req, res, next) => {
 };
 
 function validateSearchResults(results) {
-    let i, graph, strIndex, description, numResults = results.length;
+    let i, graph, strIndex, description, numResults = results ? results.length : 0;
     let tateGraphs = [], tateGraph;
     for(i=0; i<numResults; ++i) {
         graph = results[i];
         if(!graph) continue;
         if(graph.obj === 'Graph' && graph.owner.username === 'tate') {
             //Check graph subtitle
-            if(graph.subtitle !== "" && graph.subtitle.indexOf('TateCartographyProject') >= 0) {
+            if(graph.subtitle !== "" && graph.subtitle.indexOf(GRAPH_SUBTITLE) >= 0) {
                 tateGraph = {};
                 tateGraph.graphID = graph.id;
                 tateGraph.name = graph.name;
@@ -514,16 +515,15 @@ function validateSearchResults(results) {
 }
 
 exports.searchCommons = (req, res, next) => {
-    let searchLimit = 20;
     let search_query = {
-        'query' : req.body.query,
-    };
-    let searchresults = function(results) {
-        let graphs = validateSearchResults(results);
-        res.send( {msg: graphs} );
+        'query' : GRAPH_SUBTITLE,
+        'limit' : 50
     };
 
-    graphCommons.search(search_query, searchresults);
+    graphCommons.search(search_query, results => {
+        let graphs = validateSearchResults(results);
+        res.send( {msg: graphs} );
+    });
 };
 
 exports.deleteMap = (req, res, next) => {

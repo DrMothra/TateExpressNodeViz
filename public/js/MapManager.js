@@ -11,12 +11,13 @@ class MapManager {
         this.currentAuthor = localStorage.getItem("TateUsername");
         this.socketConnected = false;
         this.updateMessages = [];
+        this.subTitle = "T8te";
     }
 
     getMaps(onFound) {
         //Get all maps in account
         let searchInfo = {
-            query: "TateCartographyProject"
+            query: this.subTitle
         };
         let graphData = {method: "POST",
             data: searchInfo,
