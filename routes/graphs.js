@@ -514,8 +514,9 @@ function validateSearchResults(results) {
 }
 
 exports.searchCommons = (req, res, next) => {
+    let searchLimit = 20;
     let search_query = {
-        'query' : req.body.query
+        'query' : req.body.query,
     };
     let searchresults = function(results) {
         let graphs = validateSearchResults(results);

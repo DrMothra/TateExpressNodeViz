@@ -60,7 +60,6 @@ exports.dataManager = function(graphID, vizData, res) {
     this.edgeQueue = [];
     this.edgeRequestTime = 10;
     this.canCreateEdge = true;
-    this.verbose = false;
 
     //Init
     this.init = function(gc) {
@@ -73,6 +72,7 @@ exports.dataManager = function(graphID, vizData, res) {
         this.edgeTypes = [];
         this.graphComplete = false;
         this.status = this.GRAPH_STATUS.CREATE;
+        this.verbose = true;
     };
 
     this.setFileData = function(file) {
