@@ -62,12 +62,26 @@ exports.createGraph = (req, res, next) => {
 
         switch(ext) {
             case ".csv":
-                fileData = parser.convertToJSON(fileData);
-                fileData = JSON.parse(fileData);
+                try {
+                    fileData = parser.convertToJSON(fileData);
+                    fileData = JSON.parse(fileData);
+                }
+                catch(err) {
+                    //DEBUG
+                    console.log("File error", err);
+                    dataManager.sendFileError();
+                }
                 break;
 
             case "json":
-                fileData = JSON.parse(fileData);
+                try {
+                    fileData = JSON.parse(fileData);
+                }
+                catch(err) {
+                    //DEBUG
+                    console.log("File error", err);
+                    dataManager.sendFileError();
+                }
                 break;
 
             default:

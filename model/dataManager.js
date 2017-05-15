@@ -459,5 +459,9 @@ exports.dataManager = function(graphID, vizData, res) {
 
     this.mapsMerged = function() {
         exports.emitter.emit("MapsMerged", "Maps merged");
+    };
+
+    this.sendFileError = function() {
+        exports.emitter.emit("FileError", "Corrupt data file!");
     }
 };

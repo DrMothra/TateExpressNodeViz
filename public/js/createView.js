@@ -52,6 +52,10 @@ function onGraphCompleted() {
     $('#mapCompleted').show();
 }
 
+function onFileError() {
+    $('#mapStatus').html("Corrupt datafile!");
+}
+
 $(document).ready( ()=> {
     let mapManager = new MapManager();
 
@@ -62,7 +66,8 @@ $(document).ready( ()=> {
                 {msg: "NewNodeCreated", callback: newNodeCreated},
                 {msg: "LinksToCreate", callback: linksToCreate},
                 {msg: "NewLinkCreated", callback: newLinkCreated},
-                {msg: "GraphCompleted", callback: onGraphCompleted}
+                {msg: "GraphCompleted", callback: onGraphCompleted},
+                {msg: "FileError", callback: onFileError}
             ];
             let i, numMessages = updates.length;
             for(i=0; i<numMessages; ++i) {
