@@ -127,17 +127,18 @@ function copyMap(mapInfo, graph) {
         //Create all nodes from original
         let numNodes = graph.nodes.length;
         dataManager.init(graphCommons);
+        dataManager.setVerbose(mapInfo.verbose);
         dataManager.setStatus(dataManager.status.COPY);
         dataManager.setGraphID(result.properties.id);
         dataManager.setCurrentGraph(graph);
         dataManager.copyTypes();
         dataManager.setNumberNodesToCreate(numNodes);
-        dataManager.setVerbose(mapInfo.verbose);
         dataManager.copyGraphNodes(graph.nodes, 'json', () => {
             console.log("All nodes created");
             dataManager.setNumberEdgesToCreate(graph.edges.length);
             dataManager.copyGraphEdges(graph.nodes, () => {
                 console.log("All edges created");
+                dataManager.mapsMerged();
                 //Update database
                 mapInfo.fromNodeID = result.properties.id;
                 dbase.copyGraph(mapInfo);
@@ -151,17 +152,18 @@ function appendMap(mapID, mapContents) {
         //Append contents to existing map
         let numNodes = mapContents.nodes.length;
         dataManager.init(graphCommons);
+        dataManager.setVerbose(false);
         dataManager.setStatus(dataManager.status.COPY);
         dataManager.setGraphID(mapID);
         dataManager.setCurrentGraph(mapContents);
         dataManager.copyTypes();
         dataManager.setNumberNodesToCreate(numNodes);
-        dataManager.setVerbose(false);
         dataManager.copyGraphNodes(mapContents.nodes, 'json', () => {
             console.log("All nodes created");
             dataManager.setNumberEdgesToCreate(mapContents.edges.length);
             dataManager.copyGraphEdges(mapContents.nodes, () => {
                 console.log("All edges created");
+                dataManager.mapsMerged();
                 //Update database
                 //mapInfo.fromNodeID = result.properties.id;
                 //dbase.copyGraph(mapInfo);
@@ -586,13 +588,15 @@ exports.mergeMaps = (req, res, next) => {
             //Create new map
             let mapInfo = {};
             mapInfo.name = destMapName;
-            mapInfo.author = "TonyG";
+            mapInfo.author = req.body.author;
             mapInfo.verbose = false;
             copyMap(mapInfo, srcMap);
         } else if(destMapID) {
             appendMap(destMapID, srcMap);
         }
     });
+
+    res.send( {msg: "Merging maps- please wait..."});
 };
 
 exports.rollBack = (req, res, next) => {

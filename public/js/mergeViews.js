@@ -50,24 +50,30 @@ function validateForm() {
     //Check all map names
     let mapBaseName = "mapName";
     let mapName, i, empty = true;
-    for(i=0; i<NUM_MERGE_MAPS; ++i) {
+    for (i = 0; i < NUM_MERGE_MAPS; ++i) {
         mapName = mapBaseName + i;
-        if($('#'+mapName).val()) {
+        if ($('#' + mapName).val()) {
             empty = false;
         }
     }
-    if(empty) {
+    if (empty) {
         alert("Enter a map name!");
         return false;
     }
 
+    return true;
+}
+
+function mergeMaps() {
     //Add source info
+    $('#author').val(localStorage.getItem("TateUsername"));
     $('#mapNameDest').val($('#mapName').val());
     $('#mapIDDest').val(mapSelected !== undefined ? mapSelected.graphID : "");
 
     //Get id's of source maps
+    let mapBaseName = "mapName", mapName;
     let mapBaseID = "mapID", mapID;
-    let j, numMaps = allMaps.length;
+    let i, j, numMaps = allMaps.length;
     for(j=1; j<=NUM_MERGE_MAPS; ++j) {
         mapName = mapBaseName + j;
         mapName = $('#'+mapName).val();
@@ -80,7 +86,21 @@ function validateForm() {
         }
     }
 
-    return true;
+    $('#mergeForm').ajaxSubmit({
+
+        error: function() {
+            console.log("Error merging maps");
+        },
+
+        success: function(response) {
+            console.log("Received ", response);
+            $('#mergeStatus').html(response.msg);
+        }
+    });
+}
+
+function onMapsMerged() {
+    $('#mergeStatus').html("Maps merged");
 }
 
 $(document).ready( ()=> {
@@ -104,8 +124,17 @@ $(document).ready( ()=> {
         $('#introNext').hide();
     });
 
-    $('#mergeForm').on("submit", () => {
-        return validateForm();
+    $('#mergeMaps').on("click", () => {
+        if(validateForm()) {
+            let updates = [
+                {msg: "MapsMerged", callback: onMapsMerged}
+            ];
+            let i, numMessages = updates.length;
+            for(i=0; i<numMessages; ++i) {
+                mapManager.sendUpdates(updates[i].msg, updates[i].callback);
+            }
+            mergeMaps();
+        }
     });
 });
 

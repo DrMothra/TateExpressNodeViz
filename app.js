@@ -76,6 +76,10 @@ graphRoutes.manager.emitter.on("GraphCompleted", data => {
     socket.emit("GraphCompleted", {msg: data});
 });
 
+graphRoutes.manager.emitter.on("MapsMerged", data => {
+    socket.emit("MapsMerged", {msg: data});
+});
+
 //Routing
 //Main page
 app.get('/', accountRoutes.home);

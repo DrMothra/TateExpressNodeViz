@@ -455,5 +455,9 @@ exports.dataManager = function(graphID, vizData, res) {
 
     this.graphCompleted = function() {
         return this.graphComplete;
+    };
+
+    this.mapsMerged = function() {
+        exports.emitter.emit("MapsMerged", "Maps merged");
     }
 };
