@@ -48,9 +48,13 @@ function deleteNode() {
         alert("No map ID specified!");
         return;
     }
-    mapManager.deleteNode(mapID, currentNode.id, currentNode.name, onNodeDeleted);
-    currentNode = undefined;
 
+    let nodeInfo = {};
+    nodeInfo.mapID = mapID;
+    nodeInfo.id = currentNode.id;
+    nodeInfo.name = currentNode.name;
+    mapManager.deleteNode(nodeInfo, onNodeDeleted);
+    currentNode = undefined;
 }
 
 function onFindNodes() {

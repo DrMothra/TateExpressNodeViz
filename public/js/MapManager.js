@@ -64,11 +64,11 @@ class MapManager {
         this.getMapData(mapData, callback);
     }
 
-    deleteNode(mapID, nodeID, nodeName, callback) {
+    deleteNode(nodeInfo, callback) {
         let nodeData = {
-            mapID: mapID,
-            nodeID: nodeID,
-            name: nodeName,
+            mapID: nodeInfo.mapID,
+            nodeID: nodeInfo.id,
+            name: nodeInfo.name,
             author: localStorage.getItem("TateUsername")
         };
 
