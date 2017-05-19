@@ -64,3 +64,10 @@
     font-size: 1.0vw;
     vertical-align: middle;
 }
+.modifyOptions {
+
+}
+.modifyOptions button {
+    width: 90%;
+    font-size: 1.25vw;
+}

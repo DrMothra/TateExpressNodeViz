@@ -50,7 +50,7 @@ function onMapsFound(response) {
             mapManager.addMap(mapInfo);
             mapElem.append("<div class='row graphInfo'>" +
                 "<div class='col-md-3'>" + mapLink + mapInfo.name + "</a></div>" +
-                "<div class='col-md-2'> <button type='button' class='btn btn-primary modifyView' data-toggle='tooltip' data-placement='top' title='Modify this map'>Modify View</button>" +
+                "<div class='col-md-4'> <button type='button' class='btn btn-primary modifyView' data-toggle='tooltip' data-placement='top' title='Modify this map'>Modify View</button>" +
                 "<button type='button' class='btn btn-primary timeLine' data-toggle='tooltip' data-placement='top' title='Show map timeline'>Timeline</button></div>" +
                 "</div>");
         }
