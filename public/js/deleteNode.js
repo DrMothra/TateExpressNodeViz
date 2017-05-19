@@ -21,7 +21,12 @@ function sendData(data, callback) {
 }
 
 function onDeleteNode(id) {
-    var index = id.slice(-1);
+    let index = id.match(/\d/g);
+    index = index.join("");
+    if(isNaN(index)) {
+        alert("Invalid map selected!");
+        return;
+    }
     currentNode = nodeData[index];
 
     //DEBUG

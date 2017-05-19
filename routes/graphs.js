@@ -347,16 +347,16 @@ exports.processLinks = (req, res, next) => {
         weight = signals.signals[0].weight;
         console.log("New weight = ", weight);
         if(weight <=0) {
-            res.send( {msg: 'OK'} );
+            res.send( {msg: 'Minimum weighting reached', index: index} );
             return;
         }
         if(weight > 10) {
-            res.send( {msg: 'OK'} );
+            res.send( {msg: 'Maximum weighting reached', index: index} );
             return;
         }
         graphCommons.update_graph(currentGraphID, signals, response => {
             console.log("Updated choice ", index);
-            res.send( {msg: index} );
+            res.send( {msg: "Updated", index: index} );
             //Update database
             let responseData = response.graph.signals[0];
             req.body.mapID = currentGraphID;
@@ -434,6 +434,14 @@ exports.deleteNode = (req, res, next) => {
     ]};
 
     graphCommons.graphs(currentGraphID, graph => {
+        //Get all links connected to this node
+        /*
+        let nodeID = req.body.nodeID;
+        let nodeData = graph.get_node(nodeID);
+        let edgeFromData = graph.edges_from(nodeData);
+        let edgeToData = graph.edges_to(nodeData);
+        */
+
         graphCommons.update_graph(currentGraphID, signals, response => {
             console.log("Deleted node");
             res.send( {msg: 'OK'} );

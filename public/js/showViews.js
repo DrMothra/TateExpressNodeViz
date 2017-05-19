@@ -7,7 +7,8 @@ let mapManager;
 
 function onModifyViews(id) {
     //Get map id
-    let mapID = id.slice(-1);
+    let mapID = id.match(/\d/g);
+    mapID = mapID.join("");
     if(isNaN(mapID)) {
         alert("Invalid map selected!");
         return;
@@ -20,7 +21,8 @@ function onModifyViews(id) {
 
 function onShowTimeLine(id) {
     //Get map id
-    let mapID = id.slice(-1);
+    let mapID = id.match(/\d/g);
+    mapID = mapID.join("");
     if(isNaN(mapID)) {
         alert("Invalid map selected!");
         return;

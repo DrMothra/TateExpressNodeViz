@@ -5,14 +5,11 @@
 let graphNodeNames;
 
 function onLinkUpdated(response) {
-    let link = parseInt(response.msg, 10);
-    if(isNaN(link)) {
-        console.log("Index invalid");
-        return;
-    }
+    let link = response.index;
 
     let elem = $('#updated'+link);
     elem.show();
+    elem.html(response.msg);
     setTimeout(function() {
         elem.hide();
     }, 3000);

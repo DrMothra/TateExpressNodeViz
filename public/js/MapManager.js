@@ -39,10 +39,11 @@ class MapManager {
         return this.mapList[index];
     }
 
-    updateLinkInfo(index, name, choice, callback) {
-        index = index.slice(-1);
+    updateLinkInfo(id, name, choice, callback) {
+        let index = id.match(/\d/g);
+        index = index.join("");
         if(isNaN(index)) {
-            console.log("Invalid link index!");
+            alert("Invalid map selected!");
             return;
         }
 
