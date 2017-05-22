@@ -33,9 +33,9 @@ function onDeleteNode(id) {
     console.log("Node = ", currentNode.name);
 }
 
-function onNodeDeleted() {
+function onNodeDeleted(response) {
     $('#addStatus').show();
-    $('#addStatus').html("Node deleted");
+    $('#addStatus').html(response.msg);
 }
 
 function deleteNode() {

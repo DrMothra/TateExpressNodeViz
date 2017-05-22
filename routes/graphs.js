@@ -471,6 +471,21 @@ exports.addNewLink = (req, res, next) => {
     })
 };
 
+function getLinkInfo(linkData, map) {
+    let toNode = map.get_node(linkData.to);
+    let fromNode = map.get_node(linkData.from);
+    let linkInfo = {};
+    linkInfo.mapID = map.properties.id;
+    linkInfo.fromNodeID = linkData.from;
+    linkInfo.toNodeID = linkData.to;
+    linkInfo.linkNodeID = linkData.id;
+    linkInfo.linkName = linkData.name;
+    linkInfo.node_FromName = fromNode.name;
+    linkInfo.node_ToName = toNode.name;
+
+    return linkInfo;
+}
+
 exports.deleteNode = (req, res, next) => {
     currentGraphID = req.body.mapID;
 
@@ -490,40 +505,25 @@ exports.deleteNode = (req, res, next) => {
 
         graphCommons.update_graph(currentGraphID, signals, response => {
             console.log("Deleted node");
-            res.send( {msg: 'OK'} );
-            req.body.nodeID = response.graph.signals[0].id;
-            dbase.deleteNode(req.body);
             //Update any deleted links
             let i, numFrom = edgeFromData.length, numTo = edgeToData.length;
-            let linkInfo, currentEdgeData, toNode, fromNode;
+            let linkInfo, currentEdgeData;
             for(i=0; i<numFrom; ++i) {
                 currentEdgeData = edgeFromData[i];
-                toNode = graph.get_node(currentEdgeData.to);
-                linkInfo = {};
-                linkInfo.mapID = currentGraphID;
-                linkInfo.fromNodeID = currentEdgeData.from;
-                linkInfo.toNodeID = currentEdgeData.to;
-                linkInfo.linkNodeID = currentEdgeData.id;
+                linkInfo = getLinkInfo(currentEdgeData, graph);
                 linkInfo.author = req.body.author;
-                linkInfo.linkName = currentEdgeData.name;
-                linkInfo.node_FromName = req.body.name;
-                linkInfo.node_ToName = toNode.name;
                 dbase.deleteLink(linkInfo);
             }
             for(i=0; i<numTo; ++i) {
                 currentEdgeData = edgeToData[i];
-                fromNode = graph.get_node(currentEdgeData.from);
-                linkInfo = {};
-                linkInfo.mapID = currentGraphID;
-                linkInfo.fromNodeID = currentEdgeData.from;
-                linkInfo.toNodeID = currentEdgeData.to;
-                linkInfo.linkNodeID = currentEdgeData.id;
+                linkInfo = getLinkInfo(currentEdgeData, graph);
                 linkInfo.author = req.body.author;
-                linkInfo.linkName = currentEdgeData.name;
-                linkInfo.node_FromName = fromNode.name;
-                linkInfo.node_ToName = req.body.name;
                 dbase.deleteLink(linkInfo);
             }
+
+            res.send( {msg: "Node deleted"} );
+            req.body.nodeID = response.graph.signals[0].id;
+            dbase.deleteNode(req.body);
         })
     })
 };

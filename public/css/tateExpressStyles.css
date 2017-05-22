@@ -12,7 +12,7 @@
 /* Place floating panels */
 #instructions {
     top: 2%;
-    left: 45%;
+    left: 67.5%;
 }
 #instructions img {
     width: 40%;
@@ -64,10 +64,9 @@
     font-size: 1.0vw;
     vertical-align: middle;
 }
-.modifyOptions {
+.selections {
 
 }
-.modifyOptions button {
-    width: 90%;
-    font-size: 1.25vw;
+.selections button {
+    width: 100%;
 }
