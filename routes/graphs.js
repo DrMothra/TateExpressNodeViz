@@ -373,35 +373,58 @@ exports.processLinks = (req, res, next) => {
 
 exports.addNewNode = (req, res, next) => {
     currentGraphID = req.body.mapID;
+    let nodeName = req.body.addNodeName;
+    let nodeType = req.body.addNodeType;
 
     let signals = { "signals" : [
         {
             "action": "node_create",
-            "type": req.body.addNodeType,
-            "name": req.body.addNodeName
+            "type": nodeType,
+            "name": nodeName
         }
     ]};
 
     graphCommons.graphs(currentGraphID, graph => {
-        graphCommons.update_graph(currentGraphID, signals, response => {
-            console.log("Added new node");
-            let temp = graph;
-            res.send( {msg: 'OK'});
-            //Update database
-            req.body.nodeID = response.graph.signals[0].id;
-            dbase.addNode(req.body);
-        })
+        //Don't add same node again
+        let search_query = {
+            "query": nodeName,
+            "graph": currentGraphID
+        };
+        graphCommons.nodes_search(search_query, results => {
+            let i, currentNode, numNodes = results.nodes.length;
+            for(i=0; i<numNodes; ++i) {
+                currentNode = results.nodes[i];
+                if(currentNode.name === nodeName && currentNode.nodetype.name === nodeType) {
+                    res.send( {msg: "Node already exists"});
+                    return;
+                }
+            }
+            graphCommons.update_graph(currentGraphID, signals, response => {
+                console.log("Added new node");
+                res.send( {msg: "Node added"});
+                //Update database
+                req.body.nodeID = response.graph.signals[0].id;
+                dbase.addNode(req.body);
+            })
+        });
     });
 };
 
 exports.addNewLink = (req, res, next) => {
     currentGraphID = req.body.mapID;
+    let nodeFromName = req.body.fromName;
+    let nodeFromType = req.body.fromType;
+    let nodeToName = req.body.toName;
+    let nodeToType = req.body.toType;
+    let linkName = req.body.linkType;
+
+    let edgeData, numEdges;
 
     let signals = { "signals" : [
         {
             "action": "edge_create",
-            "from_name": req.body.fromName,
-            "from_type": req.body.fromType,
+            "from_name": nodeFromName,
+            "from_type": nodeFromType,
             "name": req.body.linkType,
             "to_name": req.body.toName,
             "to_type": req.body.toType
@@ -409,17 +432,42 @@ exports.addNewLink = (req, res, next) => {
     ]};
 
     graphCommons.graphs(currentGraphID, graph => {
-        graphCommons.update_graph(currentGraphID, signals, response => {
-            console.log("Added new link");
-            res.send( {msg: 'OK'} );
-            //Update database
-            let numSignals = response.graph.signals.length;
-            let signal = numSignals > 1 ? response.graph.signals[1] : response.graph.signals[0];
-            req.body.fromNodeID = signal.from;
-            req.body.toNodeID = signal.to;
-            req.body.linkNodeID = signal.id;
-            dbase.addLink(req.body);
-        })
+        //Don't add same link again
+        let search_query = {
+            "query": nodeFromName,
+            "graph": currentGraphID
+        };
+        graphCommons.nodes_search(search_query, results => {
+            let i, j, currentNode, toNode, currentEdge, numNodes = results.nodes.length;
+            for(i=0; i<numNodes; ++i) {
+                currentNode = results.nodes[i];
+                if(currentNode.name === nodeFromName && currentNode.nodetype.name === nodeFromType) {
+                    edgeData = graph.edges_from(currentNode);
+                    numEdges = edgeData.length;
+                    for(j=0; j<numEdges; ++j) {
+                        currentEdge = edgeData[j];
+                        if(currentEdge.from === currentNode.id && currentEdge.name === linkName) {
+                            toNode = graph.get_node(currentEdge.to);
+                            if(toNode.name === nodeToName && toNode.type === nodeToType) {
+                                res.send( {msg: "Link already exists"});
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+            graphCommons.update_graph(currentGraphID, signals, response => {
+                console.log("Added new link");
+                res.send( {msg: "Link added"} );
+                //Update database
+                let numSignals = response.graph.signals.length;
+                let signal = numSignals > 1 ? response.graph.signals[1] : response.graph.signals[0];
+                req.body.fromNodeID = signal.from;
+                req.body.toNodeID = signal.to;
+                req.body.linkNodeID = signal.id;
+                dbase.addLink(req.body);
+            })
+        });
     })
 };
 

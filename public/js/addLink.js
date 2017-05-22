@@ -92,7 +92,7 @@ function addNewLink() {
         success: function(response) {
             console.log("Received ", response);
             $('#addStatus').show();
-            $('#addStatus').html("Link added");
+            $('#addStatus').html(response.msg);
         }
     });
 }

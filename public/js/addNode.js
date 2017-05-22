@@ -2,12 +2,12 @@
  * Created by atg on 01/02/2017.
  */
 
-let graphNodeTypes;
+let mapNodeTypes, mapNodeNames;
 
 function onGetNodeTypes(response) {
     //Populate list of types
-    graphNodeTypes = response.msg;
-    $('#addNodeType').typeahead( {source: graphNodeTypes} );
+    mapNodeTypes = response.msg;
+    $('#addNodeType').typeahead( {source: mapNodeTypes} );
 }
 
 function validateForm() {
@@ -45,7 +45,7 @@ function addNewNode() {
         success: function(response) {
             console.log("Received ", response);
             $('#addStatus').show();
-            $('#addStatus').html("Node added");
+            $('#addStatus').html(response.msg);
         }
     });
 }
@@ -60,6 +60,9 @@ $(document).ready(function() {
     let mapManager = new MapManager();
     let mapID = $('#mapID').val();
     mapManager.getGraphNodeTypes(mapID, onGetNodeTypes);
+    mapManager.getGraphNodeNames(mapID, response => {
+        mapNodeNames = response.msg;
+    });
 
     $('#addNewNode').on("click", function() {
         if(!validateForm()) return;
