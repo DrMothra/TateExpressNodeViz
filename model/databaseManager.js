@@ -76,6 +76,7 @@ exports.checkForUser = function(fullName, userName, callback) {
 };
 
 exports.addUser = function(fullName, userName) {
+    let time = new Date().toUTCString();
     c.query('insert into users (Username, Password, Fullname) values (:userName,"xxx", :fullName)',
         { userName: userName, fullName: fullName},
         function(err, rows) {
@@ -90,7 +91,7 @@ exports.addUser = function(fullName, userName) {
 };
 
 exports.copyGraph = editInfo => {
-    let time = Date.now();
+    let time = new Date().toUTCString();
     c.query('insert into edits (author, time, graphID, type, fromNodeID) values (:author, :time, :graphID, "CopyGraph", :nodeID)',
         { author: editInfo.userName, time: time, graphID: editInfo.graphID, nodeID: editInfo.fromNodeID },
         function(err, rows) {
@@ -101,7 +102,7 @@ exports.copyGraph = editInfo => {
 };
 
 exports.deleteGraph = editInfo => {
-    let time = Date.now();
+    let time = new Date().toUTCString();
     c.query('insert into edits (author, time, graphID, type) values (:author, :time, :graphID, "DeleteGraph")',
         { author: editInfo.userName, time: time, graphID: editInfo.graphID },
         function(err, rows) {
