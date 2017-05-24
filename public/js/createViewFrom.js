@@ -20,7 +20,7 @@ function createViewFrom(mapID) {
 }
 
 function onViewCreated(response) {
-    $('#mapStatus').html(" View created");
+    $('#mapStatus').html(" " + response);
 }
 
 $(document).ready( ()=> {

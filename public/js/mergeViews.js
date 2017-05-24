@@ -99,8 +99,8 @@ function mergeMaps() {
     });
 }
 
-function onMapsMerged() {
-    $('#mergeStatus').html("Maps merged");
+function onMapsMerged(response) {
+    $('#mergeStatus').html(response);
 }
 
 $(document).ready( ()=> {
