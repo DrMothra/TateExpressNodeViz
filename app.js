@@ -80,6 +80,10 @@ graphRoutes.manager.emitter.on("MapsMerged", data => {
     socket.emit("MapsMerged", {msg: data});
 });
 
+graphRoutes.manager.emitter.on("ViewCreated", data => {
+    socket.emit("ViewCreated", {msg: data});
+});
+
 graphRoutes.manager.emitter.on("FileError", data => {
     socket.emit("FileError", {msg: data} );
 });

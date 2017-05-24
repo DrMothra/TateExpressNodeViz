@@ -152,7 +152,6 @@ function copyMap(mapInfo, graph) {
             dataManager.setNumberEdgesToCreate(graph.edges.length);
             dataManager.copyGraphEdges(graph.nodes, () => {
                 console.log("All edges created");
-                dataManager.mapsMerged();
                 //Update database
                 mapInfo.fromNodeID = result.properties.id;
                 dbase.copyGraph(mapInfo);
@@ -693,6 +692,7 @@ exports.mergeMaps = (req, res, next) => {
         } else if(destMapID) {
             appendMap(destMapID, srcMap);
         }
+        dataManager.mapsMerged();
     });
 
     res.send( {msg: "Merging maps- please wait..."});
@@ -715,10 +715,11 @@ exports.rollBack = (req, res, next) => {
             mapInfo.author = req.body.author;
             mapInfo.verbose = false;
             copyMap(mapInfo, graph);
+            dataManager.rolledBack();
         });
     });
 
-    res.send( {msg: "Creating view"} );
+    res.send( {msg: "Creating view - please wait..."} );
 };
 
 exports.getMapEdits = (req, res, next) => {

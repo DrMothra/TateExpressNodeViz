@@ -461,6 +461,10 @@ exports.dataManager = function(graphID, vizData, res) {
         exports.emitter.emit("MapsMerged", "Maps merged");
     };
 
+    this.rolledBack = function() {
+        exports.emitter.emit("ViewCreated", "View created");
+    };
+
     this.sendFileError = function() {
         exports.emitter.emit("FileError", "Corrupt data file!");
     }

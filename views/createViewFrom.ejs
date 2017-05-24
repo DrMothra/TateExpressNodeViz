@@ -6,6 +6,7 @@
       <!-- build:js js/tateExpressViz.min.js -->
       <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
       <script type="text/javascript" src="js/jquery.form.js"></script>
+      <script type="text/javascript" src="js/socket.io.js"></script>
       <script type="text/javascript" src="js/MapManager.js"></script>
       <script type="text/javascript" src="js/bootstrap.min.js"></script>
       <script type="text/javascript" src="js/createViewFrom.js"></script>
@@ -19,11 +20,11 @@
 
   </head>
   <body>
-    <div class="title">
+    <div class="indent">
         <h1>Tate Cartography Visualisation</h1>
     </div>
 
-    <div class="title">
+    <div class="indent">
         <h2>Create View From Existing Map</h2>
         <h3>Current Map - <span id="mapName"></span></h3>
         <p>
@@ -32,7 +33,7 @@
         </p>
     </div>
 
-    <div class="title viewOptions">
+    <div class="indent viewOptions">
         <form class="form-horizontal" ref='newViewForm' id="newViewForm" method="post" action="/processRollBack" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="mapName" class="col-md-1 control-label">Map Name</label>
@@ -50,16 +51,18 @@
             </div>
             <input type="text" class="noDisplay" name="author" id="author">
         </form>
-        <button type="button" class="btn btn-primary" id="createViewFrom">Create View</button>
     </div>
 
-    <div class="indent">
-        <h3 id="mapStatus"></h3>
+    <div class="feedback">
+        <button type="button" class="col-md-offset-1 btn btn-primary" id="createViewFrom">Create View</button>
+        <span id="mapStatus" class="label label-success"></span>
     </div>
 
-    <div class="indent">
-        <button id="myViews" type="button" class="btn btn-primary">My Views</button>
-    </div>
+    <form method="get" action="/showGraphs">
+        <div class="form-group indent">
+            <button id="backToViews" type="button" class="btn btn-primary">Back To Views</button>
+        </div>
+    </form>
 
     <div id="instructions" class="infoPanel">
         <a href="tateVideoInstructions.html" target="_blank"><img src="images/info.png"></a>

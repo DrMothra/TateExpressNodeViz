@@ -3,7 +3,7 @@
  */
 
 
-function validateForm(mapID) {
+function createViewFrom(mapID) {
     let author = localStorage.getItem("TateUsername");
     $('#author').val(author);
     $('#mapID').val(mapID);
@@ -17,6 +17,10 @@ function validateForm(mapID) {
             $('#mapStatus').html(" " + response.msg);
         }
     });
+}
+
+function onViewCreated(response) {
+    $('#mapStatus').html(" View created");
 }
 
 $(document).ready( ()=> {
@@ -45,10 +49,19 @@ $(document).ready( ()=> {
     let mapManager = new MapManager();
 
     $('#createViewFrom').on("click", () => {
-        validateForm(mapID);
+        let updates = [
+            {msg: "ViewCreated", callback: onViewCreated}
+        ];
+        let i, numMessages = updates.length;
+        for(i=0; i<numMessages; ++i) {
+            mapManager.sendUpdates(updates[i].msg, updates[i].callback);
+        }
+        createViewFrom(mapID);
     });
 
-    $('#myViews').on("click", ()=> {
-        window.location.href = "/showMyViews?authorName=" + localStorage.getItem("TateUsername");
+    let author = localStorage.getItem("TateUsername");
+
+    $('#backToViews').on("click", () => {
+        window.location.href = "/showViews?authorName="+author;
     });
 });
