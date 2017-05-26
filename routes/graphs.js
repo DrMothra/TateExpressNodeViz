@@ -648,6 +648,18 @@ exports.modifyGraph = (req, res, next) => {
     });
 };
 
+function nodeInMap(map, node) {
+    let i, currentNode, numNodes = map.nodes.length;
+    for(i=0; i<numNodes; ++i) {
+        currentNode = map.nodes[i];
+        if(currentNode.name === node.name && currentNode.type === node.type) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 exports.mergeMaps = (req, res, next) => {
     //Get destination map ids
     //DEBUG
@@ -673,6 +685,8 @@ exports.mergeMaps = (req, res, next) => {
             currentMap = maps[i];
             numNodes = currentMap.nodes.length;
             for(node=0; node<numNodes; ++node) {
+                //See if node already exists
+                if(nodeInMap(srcMap, currentMap.nodes[node])) continue;
                 newNode = JSON.parse(JSON.stringify(currentMap.nodes[node]));
                 srcMap.nodes.splice(-1, 0, newNode);
             }
