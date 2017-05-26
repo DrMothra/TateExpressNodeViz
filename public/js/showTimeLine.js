@@ -31,7 +31,7 @@ function onEditData(editData) {
         for(j=0; j<numAttributes; ++j) {
             row.insertCell(-1).innerHTML = currentEdit[attributes[j]];
         }
-        row.insertCell(-1).innerHTML = "<button type='button' class='btn btn-primary createView'>Create View</button>";
+        row.insertCell(-1).innerHTML = "<button type='button' class='btn btn-primary createView'>Create Map</button>";
     }
 
     //Add id's to buttons

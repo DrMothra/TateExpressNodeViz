@@ -35,7 +35,7 @@ function onMapsFound(response) {
         if(currentAuthor !== currentUserName) {
             graphElem.append("<div class='row graphInfo'>" +
                 "<div class='col-md-3'>" + currentAuthor + "</div>" +
-                "<div class='col-md-2'> <button type='button' class='btn btn-primary showViews' data-toggle='tooltip' data-placement='top' title='Show authors maps'>Show Views</button></div>" +
+                "<div class='col-md-2'> <button type='button' class='btn btn-primary showViews' data-toggle='tooltip' data-placement='top' title='Show authors maps'>Show Maps</button></div>" +
                 "</div>");
         }
     }
