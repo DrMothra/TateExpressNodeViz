@@ -31,7 +31,7 @@ function validateForm() {
 
     var fromName = $('#fromNodeName').val();
     if(fromName === "") {
-        alert("Enter a from node name");
+        alert('"From Node Name" box is empty!');
         return false;
     }
     if(graphNodeNames.indexOf(fromName) < 0) {
@@ -41,7 +41,7 @@ function validateForm() {
 
     var fromType = $('#fromNodeType').val();
     if(fromType === "") {
-        alert("Enter a valid from type");
+        alert('"From Node Type" box is empty!');
         return false;
     }
     if(graphNodeTypes.indexOf(fromType) < 0) {
@@ -51,7 +51,7 @@ function validateForm() {
 
     var toName = $('#toNodeName').val();
     if(toName === "") {
-        alert("Enter a to node name");
+        alert('"To Node Name" box is empty!');
         return false;
     }
     if(graphNodeNames.indexOf(toName) < 0) {
@@ -61,7 +61,7 @@ function validateForm() {
 
     var toType = $('#toNodeType').val();
     if(toType === "") {
-        alert("Enter a node to type");
+        alert('"To Node Type" box is empty!');
         return false;
     }
     if(graphNodeTypes.indexOf(toType) < 0) {
@@ -71,7 +71,7 @@ function validateForm() {
 
     var newType = $('#linkType').val();
     if(newType === "") {
-        alert("Enter a link type");
+        alert("Enter a link type!");
         return false;
     }
 

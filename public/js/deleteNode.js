@@ -30,7 +30,7 @@ function onDeleteNode(id) {
     currentNode = nodeData[index];
 
     //DEBUG
-    console.log("Node = ", currentNode.name);
+    console.log("Node = ", index);
 }
 
 function onNodeDeleted(response) {
@@ -93,6 +93,8 @@ function onFindNodes() {
                 });
 
                 $("[id^='deleteNode']").on("click", function() {
+                    $('.deleteList').prop("checked", false);
+                    $(this).prop("checked", true);
                     onDeleteNode(this.id);
                 });
             }

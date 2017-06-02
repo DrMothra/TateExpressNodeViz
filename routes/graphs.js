@@ -686,7 +686,8 @@ exports.mergeMaps = (req, res, next) => {
             numNodes = currentMap.nodes.length;
             for(node=0; node<numNodes; ++node) {
                 //See if node already exists
-                if(nodeInMap(srcMap, currentMap.nodes[node])) continue;
+                //DEBUG
+                //if(nodeInMap(srcMap, currentMap.nodes[node])) continue;
                 newNode = JSON.parse(JSON.stringify(currentMap.nodes[node]));
                 srcMap.nodes.splice(-1, 0, newNode);
             }

@@ -46,18 +46,25 @@ function onMapsFound(response) {
     });
 }
 
-function validateForm() {
+function validateForm(destMap) {
     //Check all map names
     let mapBaseName = "mapName";
     let mapName, i, empty = true;
+    let numMaps = 0;
     for (i = 0; i < NUM_MERGE_MAPS; ++i) {
         mapName = mapBaseName + i;
         if ($('#' + mapName).val()) {
+            ++numMaps;
             empty = false;
         }
     }
-    if (empty) {
+    if(empty) {
         alert("Enter a map name!");
+        return false;
+    }
+
+    if(destMap && numMaps < 2) {
+        alert("Need 2 maps to merge - enter another map!");
         return false;
     }
 
@@ -112,7 +119,7 @@ $(document).ready( ()=> {
     $('#nextMerge').on("click", () => {
         mapName = $('#mapName').val();
         if(!mapName && mapSelected === undefined) {
-            alert("No map selected!");
+            alert("Enter a map name or select one of your maps!");
             return;
         }
         $('#intro').hide();
@@ -125,7 +132,8 @@ $(document).ready( ()=> {
     });
 
     $('#mergeMaps').on("click", () => {
-        if(validateForm()) {
+        mapName = $('#mapName').val();
+        if(validateForm(mapName)) {
             let updates = [
                 {msg: "MapsMerged", callback: onMapsMerged}
             ];
