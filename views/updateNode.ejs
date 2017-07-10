@@ -42,7 +42,7 @@
             <p>
                 Enter the name of the item that you wish to update.<br>
                 If you would like to strengthen/weaken the links between items then click the Get Links button and update the information accordingly.<br>
-                You may also associate an image or some external information with this item, just enter the information in the appropriate box.
+                You may also associate an image or some external information with this item, just enter the information in the appropriate box, or just cut and paste the link.
             </p>
             <p>
                 You can update as many items as you like by typing a different name in the Content box and repeating the process as often as you like.
@@ -77,6 +77,32 @@
             <% } %>
         <% } %>
         </div>
+    </div>
+
+    <div class="indent">
+        <h3>Image</h3>
+        <form id="imageForm" class="form-horizontal" action="/processImageLink" method = "post" autocomplete="off">
+            <div class="form-group">
+                <label for="imageName" class="col-md-1 control-label">Image</label>
+                <div class="col-md-5">
+                    <input type="text" class="form-control" name="imageName" id="imageName" placeholder="http://">
+                </div>
+            </div>
+            <button id="uploadImage" type="submit" class="col-md-offset-1 btn btn-primary">Upload</button>
+        </form>
+    </div>
+
+    <div class="indent">
+        <h3>Reference</h3>
+        <form id="refForm" class="form-horizontal" action="/processRefLink" method = "post" autocomplete="off">
+            <div class="form-group">
+                <label for="refName" class="col-md-1 control-label">Reference</label>
+                <div class="col-md-5">
+                    <input type="text" class="form-control" name="refName" id="refName" placeholder="http://">
+                </div>
+            </div>
+            <button id="uploadRef" type="submit" class="col-md-offset-1 btn btn-primary">Upload</button>
+        </form>
     </div>
 
     <div class="indent viewOptions">
