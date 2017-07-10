@@ -30,7 +30,7 @@
         <form id="getLinksForm" class="form-horizontal" action="/processSearchGraph" method = "post" autocomplete="off">
             <div class="form-group">
                 <div class="col-md-5">
-                    <input type="text" class="form-control noDisplay" name="mapID" id="mapID" value="<%= mapID %>">
+                    <input type="text" class="form-control noDisplay getMapID" name="mapID">
                 </div>
             </div>
             <div class="form-group">
@@ -52,7 +52,6 @@
     </div>
 
     <div id="links" class="indent">
-        <h3>Links</h3>
         <div class="container-fluid options">
         <% for(var j=0; j<nodes.length; ++j) { %>
         <h4><%= nodes[j] %></h4>
@@ -81,7 +80,13 @@
 
     <div class="indent">
         <h3>Image</h3>
-        <form id="imageForm" class="form-horizontal" action="/processImageLink" method = "post" autocomplete="off">
+        <form id="imageForm" class="form-horizontal" action="/processAddImage" method = "post" autocomplete="off">
+            <div class="col-md-5">
+                <input type="text" class="form-control noDisplay getMapID" name="mapID">
+            </div>
+            <div class="col-md-5">
+                <input type="text" class="form-control noDisplay getNodeName" name="nodeValue">
+            </div>
             <div class="form-group">
                 <label for="imageName" class="col-md-1 control-label">Image</label>
                 <div class="col-md-5">
@@ -94,7 +99,7 @@
 
     <div class="indent">
         <h3>Reference</h3>
-        <form id="refForm" class="form-horizontal" action="/processRefLink" method = "post" autocomplete="off">
+        <form id="refForm" class="form-horizontal" action="/processAddRef" method = "post" autocomplete="off">
             <div class="form-group">
                 <label for="refName" class="col-md-1 control-label">Reference</label>
                 <div class="col-md-5">

@@ -45,6 +45,26 @@ function validateForm() {
     return true;
 }
 
+function validateImageForm() {
+    if($('#imageName').val() === "") {
+        alert("Enter an image link!");
+        return false;
+    }
+
+    $(".getNodeName").val($("#node_Name").val());
+
+    return true;
+}
+
+function validateRefForm() {
+    if($('#refName').val() === "") {
+        alert("Enter a reference link!");
+        return false;
+    }
+
+    return true;
+}
+
 $(document).ready(function() {
 
     //Check that logged in
@@ -63,6 +83,14 @@ $(document).ready(function() {
 
     $('#getLinksForm').on("submit", function() {
         return validateForm();
+    });
+
+    $('#imageForm').on("submit", function() {
+        return validateImageForm();
+    });
+
+    $('#refForm').on("submit", function() {
+        return validateRefForm();
     });
 
     let nodeName = $('#node_Name').val();

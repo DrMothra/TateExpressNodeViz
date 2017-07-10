@@ -580,6 +580,40 @@ exports.deleteLink = (req, res, next) => {
     })
 };
 
+exports.addImage = (req, res, next) => {
+    //Search graph for required node
+    currentGraphID = req.body.mapID;
+
+    graphCommons.graphs(currentGraphID, graph => {
+        currentGraph = graph;
+        //Search for node
+        let search_query = {
+            "query": req.body.nodeValue,
+            "graph": currentGraphID
+        };
+        graphCommons.nodes_search(search_query, results => {
+            let numNodes = results.nodes.length;
+            if(numNodes === 0) {
+                res.render("update", { mapID: currentGraphID, node_Name: req.body.nodeValue, nodes: ["No nodes found"], linkData: []} );
+                return;
+            }
+            currentNodeID = results.nodes[0].id;
+            let signals = { "signals" : [
+                {
+                    "action": "node_update",
+                    "id": currentNodeID,
+                    "image": req.body.imageName
+                }
+            ]};
+
+            graphCommons.update_graph(currentGraphID, signals, response => {
+                res.send( {msg: "Updated"} );
+            })
+        });
+    });
+
+};
+
 function validateSearchResults(results) {
     let i, graph, strIndex, description, numResults = results ? results.length : 0;
     let tateGraphs = [], tateGraph;
