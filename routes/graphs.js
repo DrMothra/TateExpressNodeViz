@@ -264,7 +264,7 @@ exports.searchGraph = (req, res, next) => {
 
                 numEdges = currentEdgeData.length;
                 if(numEdges === 0) {
-                    nodeNames.push(currentNode.name + " has no links");
+                    nodeNames.push("There are no links from " + currentNode.name);
                     nodeLinks.push([]);
                 } else {
                     nodeNames.push(currentNode.name);

@@ -26,7 +26,12 @@
 
     <div id="addLink" class="indent">
         <h2>Add Link</h2>
-        <h3>Map Name - <span id="mapName"><%= mapName %></span></h3>
+        <h3>Overview Name - <span id="mapName"><%= mapName %></span></h3>
+        <p>
+            Enter the name of the items that you would like to link together and the link type.<br>
+            As you start typing, names of existing content will appear in order to assist you.<br>
+            The From and To items must already exist but the link type does not have to.
+        </p>
         <form id="addLinkForm" class="form-horizontal" action="/processAddNewLink" method="post" autocomplete="off">
             <div class="form-group">
                 <div class="col-md-5">
@@ -35,23 +40,15 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="fromNodeName" class="col-md-1">From Node Name</label>
+                <label for="fromNodeName" class="col-md-1">From Content</label>
                 <div class="col-md-2">
                     <input type="text" class="form-control" name="fromName" id="fromNodeName">
                 </div>
-                <label for="fromNodeType" class="col-md-1">From Node Type</label>
-                <div class="col-md-2">
-                    <input type="text" class="form-control" name="fromType" id="fromNodeType">
-                </div>
             </div>
             <div class="form-group">
-                <label for="toNodeName" class="col-md-1">To Node Name</label>
+                <label for="toNodeName" class="col-md-1">To Content</label>
                 <div class="col-md-2">
                     <input type="text" class="form-control" name="toName" id="toNodeName">
-                </div>
-                <label for="toNodeType" class="col-md-1">To Node Type</label>
-                <div class="col-md-2">
-                    <input type="text" class="form-control" name="toType" id="toNodeType">
                 </div>
             </div>
             <div class="form-group">
@@ -69,10 +66,10 @@
 
 
     <div class="indent options">
-        <button id="backToModify" type="button" class="btn btn-primary">Modify Map</button>
+        <button id="backToModify" type="button" class="btn btn-primary">Modify Overview</button>
 
         <div>
-            <button id="backToViews" type="button" class="btn btn-primary">Back To Maps</button>
+            <button id="backToViews" type="button" class="btn btn-primary">Back To Overviews</button>
         </div>
     </div>
 

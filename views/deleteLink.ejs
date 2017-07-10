@@ -27,7 +27,11 @@
 
     <div id="deleteLink" class="indent">
         <h2>Delete Link</h2>
-        <h3>Map Name - <span id="mapName"><%= mapName %></span></h3>
+        <h3>Overview Name - <span id="mapName"><%= mapName %></span></h3>
+        <p>
+            Enter the names of the items that are currently linked and then click the Delete button.<br>
+            As you start typing a list of suggestions will appear.
+        </p>
         <form id="deleteLinkForm" class="form-horizontal" action="/processDeleteLink" method = "post" autocomplete="off">
             <div class="form-group">
                 <div class="col-md-5">
@@ -36,21 +40,15 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="node_FromName" class="col-md-1 control-label">From Node Name</label>
+                <label for="node_FromName" class="col-md-1 control-label">From</label>
                 <div class="col-md-5">
                     <input type="text" class="form-control" name="node_FromName" id="node_FromName">
                 </div>
             </div>
             <div class="form-group">
-                <label for="node_ToName" class="col-md-1 control-label">To Node Name</label>
+                <label for="node_ToName" class="col-md-1 control-label">To</label>
                 <div class="col-md-5">
                     <input type="text" class="form-control" name="node_ToName" id="node_ToName">
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="linkName" class="col-md-1 control-label">Link Name</label>
-                <div class="col-md-5">
-                    <input type="text" class="form-control" name="linkName" id="linkName">
                 </div>
             </div>
         </form>
@@ -62,10 +60,10 @@
     </div>
 
     <div class="indent options">
-        <button id="backToModify" type="button" class="btn btn-primary">Modify Map</button>
+        <button id="backToModify" type="button" class="btn btn-primary">Modify Overview</button>
 
         <div>
-            <button id="backToViews" type="button" class="btn btn-primary">Back To Maps</button>
+            <button id="backToViews" type="button" class="btn btn-primary">Back To Overviews</button>
         </div>
     </div>
 

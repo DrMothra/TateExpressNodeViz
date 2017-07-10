@@ -25,8 +25,8 @@
     </div>
 
     <div id="updateNode" class="indent">
-        <h2>Update Node</h2>
-        <h3>Map Name - <span id="mapName"><%= mapName %></span></h3>
+        <h2>Update Content</h2>
+        <h3>Overview Name - <span id="mapName"><%= mapName %></span></h3>
         <form id="getLinksForm" class="form-horizontal" action="/processSearchGraph" method = "post" autocomplete="off">
             <div class="form-group">
                 <div class="col-md-5">
@@ -34,18 +34,18 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="node_Name" class="col-md-1 control-label">Node Name</label>
+                <label for="node_Name" class="col-md-1 control-label">Content</label>
                 <div class="col-md-5">
                     <input type="text" class="form-control" name="nodeValue" id="node_Name" value="<%= node_Name %>">
                 </div>
             </div>
             <p>
-                Enter a node name in the box above, click the Get Links button and you'll see all the links that come from this node.<br>
-                You can then update the link information.
+                Enter the name of the item that you wish to update.<br>
+                If you would like to strengthen/weaken the links between items then click the Get Links button and update the information accordingly.<br>
+                You may also associate an image or some external information with this item, just enter the information in the appropriate box.
             </p>
             <p>
-                You can update as many nodes as you like by typing a different name in the Node Name box and hitting the
-                Get Links button again.
+                You can update as many items as you like by typing a different name in the Content box and repeating the process as often as you like.
             </p>
             <button id="search" type="submit" class="btn btn-primary">Get Links</button>
         </form>
@@ -56,7 +56,6 @@
         <div class="container-fluid options">
         <% for(var j=0; j<nodes.length; ++j) { %>
         <h4><%= nodes[j] %></h4>
-
             <% var links = linkData.length === 0 ? [] : linkData[j]; %>
             <% for(var i=0; i<links.length; ++i) { %>
             <div class="row listings">
@@ -80,10 +79,10 @@
         </div>
     </div>
 
-    <div class="indent options">
-        <button id="backToModify" type="button" class="btn btn-primary">Modify Map</button>
+    <div class="indent viewOptions">
+        <button id="backToModify" type="button" class="btn btn-primary">Modify Overview</button>
         <div>
-            <button id="backToViews" type="button" class="btn btn-primary">Back To Maps</button>
+            <button id="backToViews" type="button" class="btn btn-primary">Back To Overviews</button>
         </div>
     </div>
 </body>
