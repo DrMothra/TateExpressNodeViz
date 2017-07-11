@@ -582,13 +582,13 @@ exports.deleteLink = (req, res, next) => {
 
 exports.addImage = (req, res, next) => {
     //Search graph for required node
-    currentGraphID = req.body.mapID;
+    currentGraphID = req.body.imageMapID;
 
     graphCommons.graphs(currentGraphID, graph => {
         currentGraph = graph;
         //Search for node
         let search_query = {
-            "query": req.body.nodeValue,
+            "query": req.body.imageNodeValue,
             "graph": currentGraphID
         };
         graphCommons.nodes_search(search_query, results => {
@@ -607,7 +607,41 @@ exports.addImage = (req, res, next) => {
             ]};
 
             graphCommons.update_graph(currentGraphID, signals, response => {
-                res.send( {msg: "Updated"} );
+                res.send( {msg: "Uploaded image"} );
+            })
+        });
+    });
+
+};
+
+exports.addRef = (req, res, next) => {
+    //Search graph for required node
+    currentGraphID = req.body.refMapID;
+
+    graphCommons.graphs(currentGraphID, graph => {
+        currentGraph = graph;
+        //Search for node
+        let search_query = {
+            "query": req.body.refNodeValue,
+            "graph": currentGraphID
+        };
+        graphCommons.nodes_search(search_query, results => {
+            let numNodes = results.nodes.length;
+            if(numNodes === 0) {
+                res.render("update", { mapID: currentGraphID, node_Name: req.body.nodeValue, nodes: ["No nodes found"], linkData: []} );
+                return;
+            }
+            currentNodeID = results.nodes[0].id;
+            let signals = { "signals" : [
+                {
+                    "action": "node_update",
+                    "id": currentNodeID,
+                    "reference": req.body.refName
+                }
+            ]};
+
+            graphCommons.update_graph(currentGraphID, signals, response => {
+                res.send( {msg: "Uploaded reference"} );
             })
         });
     });

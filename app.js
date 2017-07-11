@@ -134,6 +134,7 @@ app.post("/processAddNewLink", graphRoutes.addNewLink);
 app.post("/processDeleteLink", graphRoutes.deleteLink);
 app.post("/processDeleteNode", graphRoutes.deleteNode);
 app.post("/processAddImage", graphRoutes.addImage);
+app.post("/processAddRef", graphRoutes.addRef);
 
 //Get all graph info
 app.post("/processSearchCommons", graphRoutes.searchCommons);

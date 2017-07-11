@@ -4,6 +4,7 @@
     <title>Tate Node Visualiser</title>
 
     <script type="text/javascript" src="js/jquery-1.11.2.min.js"></script>
+    <script type="text/javascript" src="js/jquery.form.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
     <script type="text/javascript" src="js/bootstrap3-typeahead.min.js"></script>
     <script type="text/javascript" src="js/loginManager.js"></script>
@@ -30,7 +31,7 @@
         <form id="getLinksForm" class="form-horizontal" action="/processSearchGraph" method = "post" autocomplete="off">
             <div class="form-group">
                 <div class="col-md-5">
-                    <input type="text" class="form-control noDisplay getMapID" name="mapID">
+                    <input type="text" class="form-control noDisplay" name="mapID" id="mapID" value="<%= mapID %>">
                 </div>
             </div>
             <div class="form-group">
@@ -81,33 +82,37 @@
     <div class="indent">
         <h3>Image</h3>
         <form id="imageForm" class="form-horizontal" action="/processAddImage" method = "post" autocomplete="off">
-            <div class="col-md-5">
-                <input type="text" class="form-control noDisplay getMapID" name="mapID">
-            </div>
-            <div class="col-md-5">
-                <input type="text" class="form-control noDisplay getNodeName" name="nodeValue">
-            </div>
+            <input type="text" class="form-control noDisplay getMapID" name="imageMapID" id="imageMapID">
+            <input type="text" class="form-control noDisplay" name="imageNodeValue" id="imageNodeValue">
             <div class="form-group">
                 <label for="imageName" class="col-md-1 control-label">Image</label>
                 <div class="col-md-5">
                     <input type="text" class="form-control" name="imageName" id="imageName" placeholder="http://">
                 </div>
             </div>
-            <button id="uploadImage" type="submit" class="col-md-offset-1 btn btn-primary">Upload</button>
         </form>
+        <div class="feedback">
+            <button id="uploadImage" type="button" class="col-md-offset-1 btn btn-primary">Upload</button>
+            <span id="uploadImageStatus" class="label label-success"></span>
+        </div>
     </div>
 
     <div class="indent">
         <h3>Reference</h3>
         <form id="refForm" class="form-horizontal" action="/processAddRef" method = "post" autocomplete="off">
+            <input type="text" class="form-control noDisplay getMapID" name="refMapID" id="refMapID">
+            <input type="text" class="form-control noDisplay" name="refNodeValue" id="refNodeValue">
             <div class="form-group">
                 <label for="refName" class="col-md-1 control-label">Reference</label>
                 <div class="col-md-5">
                     <input type="text" class="form-control" name="refName" id="refName" placeholder="http://">
                 </div>
             </div>
-            <button id="uploadRef" type="submit" class="col-md-offset-1 btn btn-primary">Upload</button>
         </form>
+        <div class="feedback">
+            <button id="uploadRef" type="button" class="col-md-offset-1 btn btn-primary">Upload</button>
+            <span id="uploadRefStatus" class="label label-success"></span>
+        </div>
     </div>
 
     <div class="indent viewOptions">

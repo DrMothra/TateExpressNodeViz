@@ -51,7 +51,13 @@ function validateImageForm() {
         return false;
     }
 
-    $(".getNodeName").val($("#node_Name").val());
+    let nodeName = $('#node_Name');
+    if(nodeName.val() === "") {
+        alert("Enter an item in the Content box!");
+        return false;
+    }
+
+    $('#imageNodeValue').val(nodeName.val());
 
     return true;
 }
@@ -62,7 +68,43 @@ function validateRefForm() {
         return false;
     }
 
+    let nodeName = $('#node_Name');
+    if(nodeName.val() === "") {
+        alert("Enter an item in the Content box!");
+        return false;
+    }
+
+    $('#refNodeValue').val(nodeName.val());
+
     return true;
+}
+
+function uploadImage() {
+    $('#imageForm').ajaxSubmit({
+
+        error: function() {
+            console.log("Error uploading image");
+        },
+
+        success: function(response) {
+            $('#uploadImageStatus').show();
+            $('#uploadImageStatus').html(response.msg);
+        }
+    });
+}
+
+function uploadRef() {
+    $('#refForm').ajaxSubmit({
+
+        error: function() {
+            console.log("Error uploading ref");
+        },
+
+        success: function(response) {
+            $('#uploadRefStatus').show();
+            $('#uploadRefStatus').html(response.msg);
+        }
+    })
 }
 
 $(document).ready(function() {
@@ -75,6 +117,7 @@ $(document).ready(function() {
     }
 
     let mapID = $('#mapID').val();
+    let nodeName = $('#node_Name').val();
     let mapManager = new MapManager();
     mapManager.getGraphNodeNames(mapID, onGetNodeNames);
 
@@ -85,15 +128,19 @@ $(document).ready(function() {
         return validateForm();
     });
 
-    $('#imageForm').on("submit", function() {
-        return validateImageForm();
+    $('#uploadImage').on("click", () => {
+        if(!validateImageForm()) return;
+        $('#uploadImageStatus').hide();
+        uploadImage();
     });
 
-    $('#refForm').on("submit", function() {
-        return validateRefForm();
+    $('#uploadRef').on("click", () => {
+        if(!validateRefForm()) return;
+        $('#uploadRefStatus').hide();
+        uploadRef();
     });
 
-    let nodeName = $('#node_Name').val();
+
     $("[id*='yesLink']").on("click", function() {
         mapManager.updateLinkInfo(this.id, nodeName, 1, onLinkUpdated);
     });
