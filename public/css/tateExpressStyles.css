@@ -64,6 +64,12 @@
     font-size: 1.0vw;
     vertical-align: middle;
 }
+.increase button {
+    width: 50%;
+}
+.increase img {
+    width: 60%;
+}
 .selections {
 
 }

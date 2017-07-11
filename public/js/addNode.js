@@ -3,6 +3,8 @@
  */
 
 let mapNodeTypes, mapNodeNames;
+let contentAdded = 0;
+const MAX_ADDED = 5;
 
 function onGetNodeTypes(response) {
     //Populate list of types
@@ -50,6 +52,46 @@ function addNewNode() {
     });
 }
 
+function addContent() {
+    //Add more input fields
+    if(++contentAdded >= MAX_ADDED) return;
+
+    $('#addNodeForm').append("<div class='form-group'>" +
+            "<label class='col-md-1 control-label'>Content</label>" +
+            "<div class='col-md-5'>" +
+                "<input type='text' class='form-control modifyContent'>" +
+            "</div>" +
+        "</div>" +
+        "<div class='form-group'>" +
+        "<label for='addNodeType' class='col-md-1 control-label'>Content Type</label>" +
+        "<div class='col-md-5'>" +
+            "<input type='text' class='form-control modifyType'>" +
+        "</div>" +
+        "</div>");
+
+    //Assign id's and names
+    $('.modifyContent').attr("id", index => {
+        ++index;
+        return "addNodeName" + index;
+    });
+
+    $('.modifyContent').attr("name", index => {
+        ++index;
+        return "addNodeName" + index;
+    });
+
+    $('.modifyType').attr("id", function(index) {
+        ++index;
+        $(this).typeahead( {source: mapNodeTypes} );
+        return "addNodeType" + index;
+    });
+
+    $('.modifyType').attr("name", index => {
+        ++index;
+        return "addNodeType" + index;
+    });
+}
+
 function onBack() {
     let mapID = $('#mapID').val();
     let name = $('#mapName').html();
@@ -68,6 +110,10 @@ $(document).ready(function() {
         if(!validateForm()) return;
         $('#addStatus').hide();
         addNewNode();
+    });
+
+    $('#addContent').on("click", () => {
+        addContent();
     });
 
     $("#backToModify").on("click", () => {
