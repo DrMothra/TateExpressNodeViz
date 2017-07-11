@@ -129,7 +129,7 @@ app.post("/processFindNodes", graphRoutes.findNodes);
 //Agree/disagree with links
 app.post("/processLinks", graphRoutes.processLinks);
 
-app.post("/processAddNewNode", graphRoutes.addNewNode);
+app.post("/processAddNewNode", graphRoutes.addNewNodes);
 app.post("/processAddNewLink", graphRoutes.addNewLink);
 app.post("/processDeleteLink", graphRoutes.deleteLink);
 app.post("/processDeleteNode", graphRoutes.deleteNode);

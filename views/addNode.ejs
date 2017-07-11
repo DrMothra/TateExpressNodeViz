@@ -26,27 +26,35 @@
 
     <div id="addNode" class="indent">
         <h2>Add Content</h2>
-        <h3>Overview Name - <span id="mapName"><%= mapName %></span></h3>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3 subTitle">
+                    <p>Overview Name - <span id="mapName"><%= mapName %></span></p>
+                </div>
+                <div class="col-md-offset-1 col-md-2 plusOption">
+                    <span>Add more input boxes </span><button id="addContent" type="button" class="btn btn-primary"><img src="images/add.png"></button>
+                </div>
+            </div>
+        </div>
+
         <form id="addNodeForm" class="form-horizontal" action="/processAddNewNode" method="post" autocomplete="off">
             <div class="form-group">
-                <div class="col-md-5">
-                    <input type="text" class="form-control noDisplay" name="mapID" id="mapID" value="<%= mapID %>">
-                    <input type="text" class="noDisplay" name="author" id="author">
-                </div>
+                <input type="text" class="form-control noDisplay" name="mapID" id="mapID" value="<%= mapID %>">
+                <input type="text" class="noDisplay" name="author" id="author">
             </div>
             <div class="form-group">
                 <label class="col-md-1 control-label">Content</label>
                     <div class="col-md-5">
-                        <input type="text" class="form-control" name="addNodeName" id="addNodeName">
+                        <input type="text" class="form-control" name="addNodeName0" id="addNodeName0">
                     </div>
-                    <div class="col-md-1 increase">
-                        <button id="addContent" type="button" class="btn btn-primary"><img src="images/add.png"></button>
+                    <div class="col-md-1">
+                        <span id="addStatus0" class="label label-success"></span>
                     </div>
             </div>
             <div class="form-group">
                     <label class="col-md-1 control-label">Content Type</label>
                     <div class="col-md-5">
-                        <input type="text" class="form-control" name="addNodeType" id="addNodeType">
+                        <input type="text" class="form-control" name="addNodeType0" id="addNodeType0">
                     </div>
             </div>
         </form>
@@ -56,7 +64,6 @@
         </p>
         <div class="feedback">
             <button id="addNewNode" type="button" class="btn btn-primary">Add</button>
-            <span id="addStatus" class="label label-success"></span>
         </div>
     </div>
 

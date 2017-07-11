@@ -370,40 +370,66 @@ exports.processLinks = (req, res, next) => {
     });
 };
 
-exports.addNewNode = (req, res, next) => {
+exports.addNewNodes = (req, res, next) => {
     currentGraphID = req.body.mapID;
-    let nodeName = req.body.addNodeName;
-    let nodeType = req.body.addNodeType;
+    let nodeNames = [];
+    let nodeTypes = [];
+    let node, baseNode = "addNodeName", currentNode;
+    let baseType = "addNodeType", currentType;
+    let MAX_NODES = 5;
+    for(node=0; node<MAX_NODES; ++node) {
+        currentNode = baseNode + node;
+        currentType = baseType + node;
+        if(req.body[currentNode]) {
+            nodeNames.push(req.body[currentNode]);
+            nodeTypes.push(req.body[currentType]);
+        }
+    }
+
+    let numNodes = nodeNames.length;
+    let received = 0, responses = [];
+    let nodeInfo;
+    for(node=0; node<numNodes; ++node) {
+        nodeInfo = {};
+        nodeInfo.name = nodeNames[node];
+        nodeInfo.type = nodeTypes[node];
+        nodeInfo.id = node;
+        addNewNode(nodeInfo, currentGraphID, result => {
+            responses.push(result);
+            if(++received === numNodes) {
+                res.send( {msg: responses});
+            }
+        })
+    }
+};
+
+function addNewNode(nodeInfo, graphID, callback) {
 
     let signals = { "signals" : [
         {
             "action": "node_create",
-            "type": nodeType,
-            "name": nodeName
+            "type": nodeInfo.type,
+            "name": nodeInfo.name
         }
     ]};
 
-    graphCommons.graphs(currentGraphID, graph => {
+    graphCommons.graphs(graphID, graph => {
         //Don't add same node again
         let search_query = {
-            "query": nodeName,
-            "graph": currentGraphID
+            "query": nodeInfo.name,
+            "graph": graphID
         };
         graphCommons.nodes_search(search_query, results => {
             let i, currentNode, numNodes = results.nodes.length;
             for(i=0; i<numNodes; ++i) {
                 currentNode = results.nodes[i];
-                if(currentNode.name === nodeName && currentNode.nodetype.name === nodeType) {
-                    res.send( {msg: "Node already exists"});
-                    return;
+                if(currentNode.name === nodeInfo.name && currentNode.nodetype.name === nodeInfo.type) {
+                    callback({id: nodeInfo.id, msg: "Node already exists"});
                 }
             }
             graphCommons.update_graph(currentGraphID, signals, response => {
                 console.log("Added new node");
-                res.send( {msg: "Node added"});
-                //Update database
-                req.body.nodeID = response.graph.signals[0].id;
-                dbase.addNode(req.body);
+                callback({id: nodeInfo.id, msg: "Node added"});
             })
         });
     });

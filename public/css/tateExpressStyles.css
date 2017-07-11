@@ -64,11 +64,14 @@
     font-size: 1.0vw;
     vertical-align: middle;
 }
-.increase button {
-    width: 50%;
+.plusOption button {
+    width: 20%;
 }
-.increase img {
-    width: 60%;
+.plusOption img {
+    width: 70%;
+}
+.subTitle {
+    font-size: 24px;
 }
 .selections {
 

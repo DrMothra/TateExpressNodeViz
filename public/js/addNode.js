@@ -9,7 +9,7 @@ const MAX_ADDED = 5;
 function onGetNodeTypes(response) {
     //Populate list of types
     mapNodeTypes = response.msg;
-    $('#addNodeType').typeahead( {source: mapNodeTypes} );
+    $('#addNodeType0').typeahead( {source: mapNodeTypes} );
 }
 
 function validateForm() {
@@ -46,8 +46,12 @@ function addNewNode() {
 
         success: function(response) {
             console.log("Received ", response);
-            $('#addStatus').show();
-            $('#addStatus').html(response.msg);
+            let i, status, numResponses = response.length;
+            for(i=0; i<numResponses; ++i) {
+                status = $('#addStatus' + i);
+                status.show();
+                status.html(response[i].msg);
+            }
         }
     });
 }
@@ -108,7 +112,7 @@ $(document).ready(function() {
 
     $('#addNewNode').on("click", function() {
         if(!validateForm()) return;
-        $('#addStatus').hide();
+        $('#addStatus0').hide();
         addNewNode();
     });
 
