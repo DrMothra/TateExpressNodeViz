@@ -433,7 +433,7 @@ function addNewNode(nodeInfo, graphID, callback) {
             })
         });
     });
-};
+}
 
 exports.addNewLink = (req, res, next) => {
     currentGraphID = req.body.mapID;
@@ -443,58 +443,69 @@ exports.addNewLink = (req, res, next) => {
     let nodeToType = req.body.toType;
     let linkName = req.body.linkType;
 
-    let edgeData, numEdges;
+    graphCommons.graphs(currentGraphID, graph => {
+        let nodesUnique = false;
+        getNodeInfo(nodeFromName, currentGraphID, nodeFromInfo => {
+            if(!nodeFromType) {
+                if(nodeFromInfo.nodes.length === 1) {
+                    nodeFromType = nodeFromInfo.nodes[0].nodeType;
+                    getNodeInfo(nodeToName, currentGraphID, nodeToInfo => {
+                        if(nodeToInfo.nodes.length === 1) {
+                            //Unique nodes
+                            nodesUnique = true;
+                            if(linkExists()) {
+                                res.send( {msg: "Link already exists"});
+                                return;
+                            } else {
+                                createLink();
+                                res.send( {msg: "Link added"});
+                                return;
+                            }
+                        }
+                    })
+                }
+                if(!nodesUnique) {
+                    res.send( {msg: "Enter types for content"} );
+                    return;
+                }
+            }
+            if(linkExists()) {
+                res.send( {msg: "Link already exists"});
+            } else {
+                createLink();
+                res.send( {msg: "Link added"});
+            }
+        });
+    })
+};
 
+function getNodeInfo(nodeName, graphID, callback) {
+
+}
+
+function createLink(linkInfo) {
     let signals = { "signals" : [
         {
             "action": "edge_create",
             "from_name": nodeFromName,
             "from_type": nodeFromType,
-            "name": req.body.linkType,
-            "to_name": req.body.toName,
-            "to_type": req.body.toType
+            "name": linkName,
+            "to_name": rnodeToName,
+            "to_type": nodeToType
         }
     ]};
-
-    graphCommons.graphs(currentGraphID, graph => {
-        //Don't add same link again
-        let search_query = {
-            "query": nodeFromName,
-            "graph": currentGraphID
-        };
-        graphCommons.nodes_search(search_query, results => {
-            let i, j, currentNode, toNode, currentEdge, numNodes = results.nodes.length;
-            for(i=0; i<numNodes; ++i) {
-                currentNode = results.nodes[i];
-                if(currentNode.name === nodeFromName && currentNode.nodetype.name === nodeFromType) {
-                    edgeData = graph.edges_from(currentNode);
-                    numEdges = edgeData.length;
-                    for(j=0; j<numEdges; ++j) {
-                        currentEdge = edgeData[j];
-                        if(currentEdge.from === currentNode.id && currentEdge.name === linkName) {
-                            toNode = graph.get_node(currentEdge.to);
-                            if(toNode.name === nodeToName && toNode.type === nodeToType) {
-                                res.send( {msg: "Link already exists"});
-                                return;
-                            }
-                        }
-                    }
-                }
-            }
-            graphCommons.update_graph(currentGraphID, signals, response => {
-                console.log("Added new link");
-                res.send( {msg: "Link added"} );
-                //Update database
-                let numSignals = response.graph.signals.length;
-                let signal = numSignals > 1 ? response.graph.signals[1] : response.graph.signals[0];
-                req.body.fromNodeID = signal.from;
-                req.body.toNodeID = signal.to;
-                req.body.linkNodeID = signal.id;
-                dbase.addLink(req.body);
-            })
-        });
+    graphCommons.update_graph(currentGraphID, signals, response => {
+        console.log("Added new link");
+        res.send( {msg: "Link added"} );
+        //Update database
+        let numSignals = response.graph.signals.length;
+        let signal = numSignals > 1 ? response.graph.signals[1] : response.graph.signals[0];
+        req.body.fromNodeID = signal.from;
+        req.body.toNodeID = signal.to;
+        req.body.linkNodeID = signal.id;
+        dbase.addLink(req.body);
     })
-};
+}
 
 function getLinkInfo(linkData, map) {
     let toNode = map.get_node(linkData.to);
