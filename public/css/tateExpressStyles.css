@@ -41,6 +41,13 @@
     font-size: 0.9vw;
     margin-left: 1%;
 }
+.contentFeedback {
+    padding-top: 5px;
+}
+.contentFeedback span {
+    font-size: 0.9vw;
+    margin-left: 1%;
+}
 .viewOptions button {
     margin: 1% 1% 1% 0;
 }

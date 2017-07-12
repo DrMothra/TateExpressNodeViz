@@ -46,11 +46,11 @@ function addNewNode() {
 
         success: function(response) {
             console.log("Received ", response);
-            let i, status, numResponses = response.length;
+            let i, status, numResponses = response.msg.length;
             for(i=0; i<numResponses; ++i) {
                 status = $('#addStatus' + i);
                 status.show();
-                status.html(response[i].msg);
+                status.html(response.msg[i].msg);
             }
         }
     });
@@ -64,6 +64,9 @@ function addContent() {
             "<label class='col-md-1 control-label'>Content</label>" +
             "<div class='col-md-5'>" +
                 "<input type='text' class='form-control modifyContent'>" +
+            "</div>" +
+            "<div class='col-md-1 contentFeedback'>" +
+                "<span class='label label-success modifyFeedback'></span>" +
             "</div>" +
         "</div>" +
         "<div class='form-group'>" +
@@ -93,6 +96,11 @@ function addContent() {
     $('.modifyType').attr("name", index => {
         ++index;
         return "addNodeType" + index;
+    });
+
+    $('.modifyFeedback').attr("id", index => {
+        ++index;
+        return "addStatus" + index;
     });
 }
 
