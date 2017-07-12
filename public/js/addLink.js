@@ -39,6 +39,7 @@ function validateForm() {
         return false;
     }
 
+    /*
     var fromType = $('#fromNodeType').val();
     if(fromType === "") {
         alert('"From Node Type" box is empty!');
@@ -48,6 +49,7 @@ function validateForm() {
         alert("Enter a valid from type");
         return false;
     }
+    */
 
     var toName = $('#toNodeName').val();
     if(toName === "") {
@@ -59,6 +61,7 @@ function validateForm() {
         return false;
     }
 
+    /*
     var toType = $('#toNodeType').val();
     if(toType === "") {
         alert('"To Node Type" box is empty!');
@@ -68,6 +71,7 @@ function validateForm() {
         alert("Enter a valid to type");
         return false;
     }
+    */
 
     var newType = $('#linkType').val();
     if(newType === "") {

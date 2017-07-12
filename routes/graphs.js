@@ -444,66 +444,87 @@ exports.addNewLink = (req, res, next) => {
     let linkName = req.body.linkType;
 
     graphCommons.graphs(currentGraphID, graph => {
-        let nodesUnique = false;
         getNodeInfo(nodeFromName, currentGraphID, nodeFromInfo => {
-            if(!nodeFromType) {
-                if(nodeFromInfo.nodes.length === 1) {
-                    nodeFromType = nodeFromInfo.nodes[0].nodeType;
-                    getNodeInfo(nodeToName, currentGraphID, nodeToInfo => {
-                        if(nodeToInfo.nodes.length === 1) {
-                            //Unique nodes
-                            nodesUnique = true;
-                            if(linkExists()) {
-                                res.send( {msg: "Link already exists"});
-                                return;
-                            } else {
-                                createLink();
-                                res.send( {msg: "Link added"});
-                                return;
-                            }
+            nodeFromInfo.linkName = linkName;
+            getNodeInfo(nodeToName, currentGraphID, nodeToInfo => {
+                if (!nodeFromType) {
+                    if (nodeFromInfo.nodes.length === 1 && nodeToInfo.nodes.length === 1) {
+                        //Unique nodes
+                        req.body.fromType = nodeFromInfo.nodes[0].nodetype.name;
+                        req.body.toType = nodeToInfo.nodes[0].nodetype.name;
+                        if (linkExists(nodeFromInfo, req.body, graph)) {
+                            res.send({msg: "Link already exists"});
+                        } else {
+                            createLink(req.body);
+                            res.send({msg: "Link added"});
                         }
-                    })
+                    } else {
+                        res.send({msg: "Enter types for content"});
+                    }
+                } else {
+                    if (linkExists(nodeFromInfo, nodeToInfo, graph)) {
+                        res.send({msg: "Link already exists"});
+                    } else {
+                        createLink(req.body);
+                        res.send({msg: "Link added"});
+                    }
                 }
-                if(!nodesUnique) {
-                    res.send( {msg: "Enter types for content"} );
-                    return;
-                }
-            }
-            if(linkExists()) {
-                res.send( {msg: "Link already exists"});
-            } else {
-                createLink();
-                res.send( {msg: "Link added"});
-            }
+            });
         });
-    })
+    });
 };
 
 function getNodeInfo(nodeName, graphID, callback) {
+    let search_query = {
+        "query": nodeName,
+        "graph": graphID
+    };
+    graphCommons.nodes_search(search_query, callback);
+}
 
+function linkExists(nodesInfo, nodeFromInfo, graph) {
+    let currentNode, toNode, edgeData, currentEdge;
+    for(let i=0, numNodes = nodesInfo.nodes.length; i<numNodes; ++i) {
+        currentNode = nodesInfo.nodes[i];
+        if(currentNode.name === nodeFromInfo.fromName && currentNode.nodetype.name === nodeFromInfo.fromType) {
+            edgeData = graph.edges_from(currentNode);
+            for(let j=0, numEdges = edgeData.length; j<numEdges; ++j) {
+                currentEdge = edgeData[j];
+                if(currentEdge.from === currentNode.id && currentEdge.name === nodeFromInfo.linkType) {
+                    toNode = graph.get_node(currentEdge.to);
+                    if(toNode.name === nodeFromInfo.toName && toNode.type === nodeFromInfo.toType) {
+                        //Link already exists
+                        return true;
+                    }
+                }
+            }
+        }
+    }
+
+    //No link
+    return false;
 }
 
 function createLink(linkInfo) {
     let signals = { "signals" : [
         {
             "action": "edge_create",
-            "from_name": nodeFromName,
-            "from_type": nodeFromType,
-            "name": linkName,
-            "to_name": rnodeToName,
-            "to_type": nodeToType
+            "from_name": linkInfo.fromName,
+            "from_type": linkInfo.fromType,
+            "name": linkInfo.linkType,
+            "to_name": linkInfo.toName,
+            "to_type": linkInfo.toType
         }
     ]};
     graphCommons.update_graph(currentGraphID, signals, response => {
         console.log("Added new link");
-        res.send( {msg: "Link added"} );
         //Update database
         let numSignals = response.graph.signals.length;
         let signal = numSignals > 1 ? response.graph.signals[1] : response.graph.signals[0];
-        req.body.fromNodeID = signal.from;
-        req.body.toNodeID = signal.to;
-        req.body.linkNodeID = signal.id;
-        dbase.addLink(req.body);
+        linkInfo.fromNodeID = signal.from;
+        linkInfo.toNodeID = signal.to;
+        linkInfo.linkNodeID = signal.id;
+        dbase.addLink(linkInfo);
     })
 }
 
