@@ -14,8 +14,8 @@ function onGetNodeNames(response) {
 function onGetNodeTypes(response) {
     //Populate list of types
     graphNodeTypes = response.msg;
-    $('#fromNodeType').typeahead( {source: graphNodeTypes} );
-    $('#toNodeType').typeahead( {source: graphNodeTypes} );
+    $('#fromType').typeahead( {source: graphNodeTypes} );
+    $('#toType').typeahead( {source: graphNodeTypes} );
 }
 
 function onGetLinkTypes(response) {
@@ -39,17 +39,19 @@ function validateForm() {
         return false;
     }
 
-    /*
-    var fromType = $('#fromNodeType').val();
-    if(fromType === "") {
-        alert('"From Node Type" box is empty!');
-        return false;
+    //Only validate if being displayed
+    let elem = $('#fromType');
+    if(elem.is(":visible")) {
+        var fromType = elem.val();
+        if(fromType === "") {
+            alert('"From Type" is empty!');
+            return false;
+        }
+        if(graphNodeTypes.indexOf(fromType) < 0) {
+            alert("Enter a valid from type");
+            return false;
+        }
     }
-    if(graphNodeTypes.indexOf(fromType) < 0) {
-        alert("Enter a valid from type");
-        return false;
-    }
-    */
 
     var toName = $('#toNodeName').val();
     if(toName === "") {
@@ -61,17 +63,18 @@ function validateForm() {
         return false;
     }
 
-    /*
-    var toType = $('#toNodeType').val();
-    if(toType === "") {
-        alert('"To Node Type" box is empty!');
-        return false;
+    elem = $('#toType');
+    if(elem.is(":visible")) {
+        var toType = elem.val();
+        if(toType === "") {
+            alert('"To Node Type" box is empty!');
+            return false;
+        }
+        if(graphNodeTypes.indexOf(toType) < 0) {
+            alert("Enter a valid to type");
+            return false;
+        }
     }
-    if(graphNodeTypes.indexOf(toType) < 0) {
-        alert("Enter a valid to type");
-        return false;
-    }
-    */
 
     var newType = $('#linkType').val();
     if(newType === "") {
@@ -95,8 +98,13 @@ function addNewLink() {
 
         success: function(response) {
             console.log("Received ", response);
-            $('#addStatus').show();
-            $('#addStatus').html(response.msg);
+            let status = $('#addStatus');
+            status.show();
+            status.html(response.msg);
+            if(response.errorStatus) {
+                $('#fromTypeContainer').show();
+                $('#toTypeContainer').show();
+            }
         }
     });
 }

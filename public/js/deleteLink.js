@@ -30,14 +30,17 @@ function validateForm() {
         return false;
     }
 
-    var linkName = $('#linkName').val();
-    if(linkName === "") {
-        alert("Enter a link name");
-        return false;
-    }
-    if(graphLinkTypes.indexOf(linkName) < 0) {
-        alert("Link not in graph!");
-        return false;
+    let elem = $('#linkName');
+    if(elem.is(":visible")) {
+        var linkName = elem.val();
+        if(linkName === "") {
+            alert("Enter a link name");
+            return false;
+        }
+        if(graphLinkTypes.indexOf(linkName) < 0) {
+            alert("Link not in graph!");
+            return false;
+        }
     }
 
     return true;
@@ -67,8 +70,12 @@ function deleteALink() {
         },
 
         success: function(response) {
-            $('#addStatus').show();
-            $('#addStatus').html(response.msg);
+            let status = $('#addStatus');
+            status.show();
+            status.html(response.msg);
+            if(response.errorStatus) {
+                $('#linkNameContainer').show();
+            }
         }
     });
 }
