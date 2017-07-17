@@ -447,12 +447,13 @@ exports.addNewLink = (req, res, next) => {
         getNodeInfo(nodeFromName, currentGraphID, nodeFromInfo => {
             nodeFromInfo.linkName = linkName;
             getNodeInfo(nodeToName, currentGraphID, nodeToInfo => {
-                nodeToInfo.name = nodeToName;
-                nodeToInfo.type = nodeToType;
                 if (!nodeFromType) {
                     if (nodeFromInfo.nodes.length === 1 && nodeToInfo.nodes.length === 1) {
                         //Unique nodes
-                        if (linkExists(nodeFromInfo, nodeToInfo, graph)) {
+                        //Fill in info
+                        req.body.toType = nodeToInfo.nodes[0].nodetype.name;
+                        req.body.fromType = nodeFromInfo.nodes[0].nodetype.name;
+                        if (linkExists(nodeFromInfo, req.body, graph)) {
                             res.send({msg: "Link already exists"});
                         } else {
                             createLink(req.body);
@@ -462,7 +463,7 @@ exports.addNewLink = (req, res, next) => {
                         res.send({msg: "Enter types for content", errorStatus: true});
                     }
                 } else {
-                    if (linkExists(nodeFromInfo, nodeToInfo, graph)) {
+                    if (linkExists(nodeFromInfo, req.body, graph)) {
                         res.send({msg: "Link already exists"});
                     } else {
                         createLink(req.body);
@@ -482,21 +483,23 @@ function getNodeInfo(nodeName, graphID, callback) {
     graphCommons.nodes_search(search_query, callback);
 }
 
-function linkExists(nodesFromInfo, nodeToInfo, graph) {
-    //See if list of nodes in nodesFrom matches nodeTo
-    let currentNode, toNode, edgeData, currentEdge;
+function linkExists(nodesFromInfo, newLinkInfo, graph) {
+    //See if edges from desired node go to desired destination
+    let currentNode, fromNode, toNode, edgeData, currentEdge;
     for(let i=0, numNodes = nodesFromInfo.nodes.length; i<numNodes; ++i) {
         currentNode = nodesFromInfo.nodes[i];
-        if(currentNode.name === nodeToInfo.name && currentNode.nodetype.name === nodeToInfo.type) {
-            edgeData = graph.edges_from(currentNode);
-            for(let j=0, numEdges = edgeData.length; j<numEdges; ++j) {
-                currentEdge = edgeData[j];
-                if(currentEdge.from === currentNode.id && currentEdge.name === nodeToInfo.linkType) {
-                    toNode = graph.get_node(currentEdge.to);
-                    if(toNode.name === nodeToInfo.toName && toNode.type === nodeToInfo.toType) {
-                        //Link already exists
-                        return true;
-                    }
+        edgeData = graph.edges_from(currentNode);
+        for(let j=0, numEdges = edgeData.length; j<numEdges; ++j) {
+            currentEdge = edgeData[j];
+            fromNode = graph.get_node(currentEdge.from);
+            if(fromNode.name === newLinkInfo.fromName && currentEdge.name === newLinkInfo.linkType) {
+                toNode = graph.get_node(currentEdge.to);
+                if(toNode.name === newLinkInfo.toName && toNode.type === newLinkInfo.toType) {
+                    //Link already exists
+                    newLinkInfo.edgeID = currentEdge.id;
+                    newLinkInfo.fromID = currentEdge.from;
+                    newLinkInfo.toID = currentEdge.to;
+                    return true;
                 }
             }
         }
@@ -589,53 +592,21 @@ exports.deleteNode = (req, res, next) => {
 exports.deleteLink = (req, res, next) => {
     currentGraphID = req.body.mapID;
 
-    let i, fromID, toID, nodeData, edgeData, edgeID, linkName = req.body.linkName;
+    let i, fromID, toID, nodeFromData, nodeToData, edgeFromData, edgeToData, edgeID, linkName = req.body.linkType;
     graphCommons.graphs(currentGraphID, graph => {
         let search_query = {
-            "query": req.body.node_FromName,
+            "query": req.body.fromName,
             "graph": currentGraphID
         };
         graphCommons.nodes_search(search_query, nodeFromInfo => {
-            fromID = nodeFromInfo.nodes[0].id;
-            search_query = {
-                "query": req.body.node_ToName,
-                "graph": currentGraphID
-            };
-            graphCommons.nodes_search(search_query, nodeToInfo => {
-                toID = nodeToInfo.nodes[0].id;
-                nodeData = graph.get_node(fromID);
-                edgeData = graph.edges_from(nodeData);
-                let numEdges = edgeData.length;
-                if(!numEdges) {
-                    res.send( {msg: "No Link Found"} );
-                    return;
-                }
-                if(numEdges === 1 && !linkName) {
-                    linkName = edgeData[0].name;
-                    deleteLink(currentGraphID, req.body);
-                    res.send( {msg: "Link Deleted"} );
-                    return;
-                }
-                if(!linkName) {
-                    res.send({msg: "Enter types for content", errorStatus: true});
-                    return;
-                }
-                //Find link
-                nodeToInfo.name = nodeToInfo.nodes[0].name;
-                nodeToInfo.type = linkName;
-                if(linkExists(nodeFromInfo, nodeToInfo, currentGraphID)) {
-                    req.body.edgeID = edgeID;
-                    req.body.fromID = fromID;
-                    req.body.toID = toID;
-                    deleteLink(currentGraphID, req.body);
-                    res.send( {msg: "Link Deleted"} );
-                } else {
-                    res.send( {msg: "No Link Found"} );
-                }
-            });
+            if(linkExists(nodeFromInfo, req.body, graph)) {
+                deleteLink(currentGraphID, req.body);
+                res.send( {msg: "Link Deleted"} );
+            } else {
+                res.send( {msg: "No Link Found"} );
+            }
         });
-
-    })
+    });
 };
 
 function deleteLink(graphID, linkInfo) {

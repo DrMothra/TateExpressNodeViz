@@ -10,7 +10,7 @@ function validateForm() {
         return false;
     }
 
-    var fromName = $('#node_FromName').val();
+    let fromName = $('#fromName').val();
     if(fromName === "") {
         alert("Enter from node name");
         return false;
@@ -20,7 +20,7 @@ function validateForm() {
         return false;
     }
 
-    var toName = $('#node_ToName').val();
+    let toName = $('#toName').val();
     if(toName === "") {
         alert("Enter to node name");
         return false;
@@ -30,18 +30,16 @@ function validateForm() {
         return false;
     }
 
-    let elem = $('#linkName');
-    if(elem.is(":visible")) {
-        var linkName = elem.val();
-        if(linkName === "") {
-            alert("Enter a link name");
-            return false;
-        }
-        if(graphLinkTypes.indexOf(linkName) < 0) {
-            alert("Link not in graph!");
-            return false;
-        }
+    let linkName = $('#linkType').val();
+    if(linkName === "") {
+        alert("Enter a link name");
+        return false;
     }
+    if(graphLinkTypes.indexOf(linkName) < 0) {
+        alert("Link not in graph!");
+        return false;
+    }
+
 
     return true;
 }
@@ -49,14 +47,14 @@ function validateForm() {
 function onGetLinkTypes(response) {
     //Populate list of types
     graphLinkTypes = response.msg;
-    $('#linkName').typeahead( {source: graphLinkTypes} );
+    $('#linkType').typeahead( {source: graphLinkTypes} );
 }
 
 function onGetNodeNames(response) {
     //Populate list of nodes
     graphNodeNames = response.msg;
-    $('#node_FromName').typeahead( {source: graphNodeNames} );
-    $('#node_ToName').typeahead( {source: graphNodeNames} );
+    $('#fromName').typeahead( {source: graphNodeNames} );
+    $('#toName').typeahead( {source: graphNodeNames} );
 }
 
 function deleteALink() {
