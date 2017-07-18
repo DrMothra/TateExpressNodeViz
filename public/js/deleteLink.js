@@ -57,6 +57,13 @@ function onGetNodeNames(response) {
     $('#toName').typeahead( {source: graphNodeNames} );
 }
 
+function onGetNodeTypes(response) {
+    //Populate list of types
+    graphNodeTypes = response.msg;
+    $('#fromType').typeahead( {source: graphNodeTypes} );
+    $('#toType').typeahead( {source: graphNodeTypes} );
+}
+
 function deleteALink() {
     //Add author info
     $('#author').val(localStorage.getItem("TateUsername"));
@@ -72,15 +79,16 @@ function deleteALink() {
             status.show();
             status.html(response.msg);
             if(response.errorStatus) {
-                $('#linkNameContainer').show();
+                $('#fromTypeContainer').show();
+                $('#toTypeContainer').show();
             }
         }
     });
 }
 
 function onBack() {
-    var mapID = $('#mapID').val();
-    var name = $('#mapName').html();
+    let mapID = $('#mapID').val();
+    let name = $('#mapName').html();
     window.location.href = "/modifyMap?mapID="+mapID+"&name="+name;
 }
 
@@ -93,6 +101,7 @@ $(document).ready(function() {
     }
     let mapManager = new MapManager();
     mapManager.getGraphNodeNames(mapID, onGetNodeNames);
+    mapManager.getGraphNodeTypes(mapID, onGetNodeTypes);
     mapManager.getGraphLinkTypes(mapID, onGetLinkTypes);
 
     $('#linkDelete').on("click", function() {

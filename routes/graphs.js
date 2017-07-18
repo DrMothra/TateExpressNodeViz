@@ -591,20 +591,40 @@ exports.deleteNode = (req, res, next) => {
 
 exports.deleteLink = (req, res, next) => {
     currentGraphID = req.body.mapID;
+    let linkName = req.body.linkType;
+    let nodeFromName = req.body.fromName;
+    let nodeToName = req.body.toName;
+    let nodeFromType = req.body.fromType;
 
-    let i, fromID, toID, nodeFromData, nodeToData, edgeFromData, edgeToData, edgeID, linkName = req.body.linkType;
+    let i, fromID, toID, nodeFromData, nodeToData, edgeFromData, edgeToData, edgeID;
     graphCommons.graphs(currentGraphID, graph => {
-        let search_query = {
-            "query": req.body.fromName,
-            "graph": currentGraphID
-        };
-        graphCommons.nodes_search(search_query, nodeFromInfo => {
-            if(linkExists(nodeFromInfo, req.body, graph)) {
-                deleteLink(currentGraphID, req.body);
-                res.send( {msg: "Link Deleted"} );
-            } else {
-                res.send( {msg: "No Link Found"} );
-            }
+        getNodeInfo(nodeFromName, currentGraphID, nodeFromInfo => {
+            nodeFromInfo.linkName = linkName;
+            getNodeInfo(nodeToName, currentGraphID, nodeToInfo => {
+                if (!nodeFromType) {
+                    if (nodeFromInfo.nodes.length === 1 && nodeToInfo.nodes.length === 1) {
+                        //Unique nodes
+                        //Fill in info
+                        req.body.toType = nodeToInfo.nodes[0].nodetype.name;
+                        req.body.fromType = nodeFromInfo.nodes[0].nodetype.name;
+                        if (linkExists(nodeFromInfo, req.body, graph)) {
+                            deleteLink(currentGraphID, req.body);
+                            res.send( {msg: "Link deleted"} );
+                        } else {
+                            res.send( {msg: "No Link Found"} );
+                        }
+                    } else {
+                        res.send({msg: "Enter types for content", errorStatus: true});
+                    }
+                } else {
+                    if (linkExists(nodeFromInfo, req.body, graph)) {
+                        deleteLink(currentGraphID, req.body);
+                        res.send( {msg: "Link deleted"} );
+                    } else {
+                        res.send( {msg: "No Link Found"} );
+                    }
+                }
+            });
         });
     });
 };
@@ -616,7 +636,7 @@ function deleteLink(graphID, linkInfo) {
             "id": linkInfo.edgeID,
             "from": linkInfo.fromID,
             "to": linkInfo.toID,
-            "name": linkInfo.linkName
+            "name": linkInfo.linkType
         }
     ]};
     graphCommons.update_graph(graphID, signals, response => {

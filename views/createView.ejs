@@ -25,19 +25,19 @@
     </div>
 
     <div class="indent">
-        <h2>Create New Map</h2>
+        <h2>Create New Overview</h2>
         <p>
-            You can create a new empty map that you may modify via the interface later or
-            you can create a new map from a csv (comma separated values) file.<br>
-            Give your map a name and an optional description. If you want to use a file then you can choose this below.<br>
-            If you just want to create an empty map then just click Create.
+            You can create a new empty overview that you may modify via the interface later or
+            you can create a new overview from a csv (comma separated values) file.<br>
+            Give your overview a name and an optional description. If you want to use a file then you can choose this below.<br>
+            If you just want to create an empty overview then just click Create.
         </p>
     </div>
 
     <div class="indent viewOptions">
         <form class="form-horizontal" ref='uploadForm' id="uploadForm" method="post" action="/processCreateGraph" enctype="multipart/form-data">
             <div class="form-group">
-                <label for="mapName" class="col-md-1 control-label">Map Name</label>
+                <label for="mapName" class="col-md-1 control-label">Overview Name</label>
                 <div class="col-md-5">
                     <input type="text" class="form-control" name="mapName" id="mapName">
                 </div>
@@ -51,7 +51,7 @@
             <input type="file" name="vizFile">
             <input type="text" class="noDisplay" name="author" id="author">
         </form>
-        <button type="button" class="btn btn-primary" id="createView">Create Map</button>
+        <button type="button" class="btn btn-primary" id="createView">Create Overview</button>
     </div>
 
     <div class="indent">
@@ -91,7 +91,7 @@
     </div>
 
     <div class="indent">
-        <button id="myViews" type="button" class="btn btn-primary">My Maps</button>
+        <button id="myViews" type="button" class="btn btn-primary">My Overviews</button>
     </div>
 
     <div id="instructions" class="infoPanel">
