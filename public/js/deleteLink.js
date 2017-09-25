@@ -2,7 +2,8 @@
  * Created by DrTone on 01/03/2017.
  */
 
-var graphNodeNames, graphLinkTypes;
+let graphNodeNames, graphLinkTypes;
+let submitted = false;
 
 function validateForm() {
     if($("#mapID").val() === "") {
@@ -68,21 +69,32 @@ function deleteALink() {
     //Add author info
     $('#author').val(localStorage.getItem("TateUsername"));
 
+    if(submitted) {
+        console.log("Already submitted data!");
+        return;
+    }
+    submitted = true;
     let waitStatus = $('#waitStatus');
     waitStatus.show();
+    let errorStatus = $('#errorStatus');
+    errorStatus.hide();
+
     $('#deleteLinkForm').ajaxSubmit({
 
         error: function() {
+            submitted = false;
             console.log("Error deleting link");
             waitStatus.hide();
-            $('#errorStatus').show();
+            errorStatus.show();
         },
 
         success: function(response) {
+            submitted = false;
             let status = $('#addStatus');
             status.show();
             status.html(response.msg);
             waitStatus.hide();
+            errorStatus.hide();
             if(response.errorStatus) {
                 $('#fromTypeContainer').show();
                 $('#toTypeContainer').show();
