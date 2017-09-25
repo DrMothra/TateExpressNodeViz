@@ -34,8 +34,15 @@ function onDeleteNode(id) {
 }
 
 function onNodeDeleted(response) {
-    $('#addStatus').show();
-    $('#addStatus').html(response.msg);
+    let status = $('#addStatus');
+    status.show();
+    status.html(response.msg);
+    $('#waitStatus').hide();
+}
+
+function onError() {
+    $('#waitStatus').hide();
+    $('#errorStatus').show();
 }
 
 function deleteNode() {
@@ -53,7 +60,8 @@ function deleteNode() {
     nodeInfo.mapID = mapID;
     nodeInfo.id = currentNode.id;
     nodeInfo.name = currentNode.name;
-    mapManager.deleteNode(nodeInfo, onNodeDeleted);
+    $('#waitStatus').show();
+    mapManager.deleteNode(nodeInfo, onNodeDeleted, onError);
     currentNode = undefined;
 }
 

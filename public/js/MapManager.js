@@ -64,7 +64,7 @@ class MapManager {
         this.getMapData(mapData, callback);
     }
 
-    deleteNode(nodeInfo, callback) {
+    deleteNode(nodeInfo, callback, errorCallback) {
         let nodeData = {
             mapID: nodeInfo.mapID,
             nodeID: nodeInfo.id,
@@ -79,7 +79,7 @@ class MapManager {
             dataType: 'JSON'
         };
 
-        this.getMapData(mapData, callback);
+        this.getMapData(mapData, callback, errorCallback);
     }
 
     getGraphNodeNames(mapID, callback) {
@@ -177,7 +177,7 @@ class MapManager {
         });
     }
 
-    getMapData(data, callback) {
+    getMapData(data, callback, errorCallback) {
         $.ajax({
             type: data.method,
             data: data.data,
@@ -188,6 +188,11 @@ class MapManager {
             console.log("Data sent");
             if(callback !== undefined) {
                 callback(response);
+            }
+        }).error(function() {
+            console.log("Error sending data!");
+            if(errorCallback) {
+                errorCallback();
             }
         })
     }
