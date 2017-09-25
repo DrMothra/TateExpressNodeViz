@@ -4,6 +4,7 @@
 
 let graphNodeNames, nodeData, currentNode;
 let mapManager;
+let submitted = false;
 
 function sendData(data, callback) {
     $.ajax({
@@ -34,6 +35,7 @@ function onDeleteNode(id) {
 }
 
 function onNodeDeleted(response) {
+    submitted = false;
     let status = $('#addStatus');
     status.show();
     status.html(response.msg);
@@ -41,6 +43,7 @@ function onNodeDeleted(response) {
 }
 
 function onError() {
+    submitted = false;
     $('#waitStatus').hide();
     $('#errorStatus').show();
 }
@@ -61,6 +64,11 @@ function deleteNode() {
     nodeInfo.id = currentNode.id;
     nodeInfo.name = currentNode.name;
     $('#waitStatus').show();
+    if(submitted) {
+        console.log("Already submitted data!");
+        return;
+    }
+    submitted = true;
     mapManager.deleteNode(nodeInfo, onNodeDeleted, onError);
     currentNode = undefined;
 }

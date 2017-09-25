@@ -68,16 +68,21 @@ function deleteALink() {
     //Add author info
     $('#author').val(localStorage.getItem("TateUsername"));
 
+    let waitStatus = $('#waitStatus');
+    waitStatus.show();
     $('#deleteLinkForm').ajaxSubmit({
 
         error: function() {
             console.log("Error deleting link");
+            waitStatus.hide();
+            $('#errorStatus').show();
         },
 
         success: function(response) {
             let status = $('#addStatus');
             status.show();
             status.html(response.msg);
+            waitStatus.hide();
             if(response.errorStatus) {
                 $('#fromTypeContainer').show();
                 $('#toTypeContainer').show();
