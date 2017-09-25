@@ -46,9 +46,9 @@ function addNewNode() {
     }
     submitted = true;
     $('#addNodeForm').ajaxSubmit({
-        error: function() {
+        error: function(response) {
             submitted = false;
-            console.log("Error adding new node");
+            showErrors();
         },
 
         success: function(response) {
@@ -76,6 +76,18 @@ function waitForResponses() {
     }
 }
 
+function showErrors() {
+    let content = "addNodeName";
+    let status = "waitStatus";
+    let error = "errorStatus";
+    for(let i=0; i<MAX_ADDED; ++i) {
+        if($('#' + content + i).val()) {
+            $('#'+ status + i).hide();
+            $('#'+ error + i).show();
+        }
+    }
+}
+
 function addContent() {
     //Add more input fields
     if(++contentAdded >= MAX_ADDED) return;
@@ -88,6 +100,7 @@ function addContent() {
             "<div class='col-md-1 contentFeedback'>" +
                 "<span class='label label-success modifyFeedback'></span>" +
                 "<span class='label label-warning modifyWaiting noDisplay'>Waiting...</span> " +
+                "<span class='label label-danger modifyError noDisplay'>Node not added</span> " +
             "</div>" +
         "</div>" +
         "<div class='form-group'>" +
@@ -127,6 +140,11 @@ function addContent() {
     $('.modifyWaiting').attr("id", index => {
         ++index;
         return "waitStatus" + index;
+    });
+
+    $('.modifyError').attr("id", index => {
+        ++index;
+        return "errorStatus" + index;
     });
 }
 
