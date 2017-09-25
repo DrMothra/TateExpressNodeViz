@@ -104,15 +104,26 @@ function uploadImage() {
 }
 
 function uploadRef() {
+    let uploadStatus = $('#uploadRefStatus');
+    uploadStatus.hide();
+    let waitRefStatus = $('#uploadRefWaitStatus');
+    waitRefStatus.show();
+    let errorRefStatus = $('#uploadRefErrorStatus');
+    errorRefStatus.hide();
     $('#refForm').ajaxSubmit({
 
         error: function() {
             console.log("Error uploading ref");
+            uploadStatus.hide();
+            waitRefStatus.hide();
+            errorRefStatus.show();
         },
 
         success: function(response) {
-            $('#uploadRefStatus').show();
-            $('#uploadRefStatus').html(response.msg);
+            waitRefStatus.hide();
+            errorRefStatus.hide();
+            uploadStatus.show();
+            uploadStatus.html(response.msg);
         }
     })
 }
