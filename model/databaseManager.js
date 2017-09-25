@@ -90,6 +90,17 @@ exports.addUser = function(fullName, userName) {
     c.end();
 };
 
+exports.loginUser = function(userName) {
+    let time = new Date().toUTCString();
+    c.query('insert into edits (author, time, type) values (:author, :time, "LoggedIn")',
+        { author: userName, time: time },
+        function(err, rows) {
+            if(err) {
+                throw err;
+            }
+        });
+};
+
 exports.copyGraph = editInfo => {
     let time = new Date().toUTCString();
     c.query('insert into edits (author, time, graphID, type, fromNodeID) values (:author, :time, :graphID, "CopyGraph", :nodeID)',

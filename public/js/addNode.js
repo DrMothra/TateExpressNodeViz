@@ -38,6 +38,7 @@ function addNewNode() {
     //Add author info
     $('#author').val(localStorage.getItem("TateUsername"));
 
+    waitForResponses();
     $('#addNodeForm').ajaxSubmit({
 
         error: function() {
@@ -46,14 +47,26 @@ function addNewNode() {
 
         success: function(response) {
             console.log("Received ", response);
-            let i, status, numResponses = response.msg.length;
+            let i, status, waiting, numResponses = response.msg.length;
             for(i=0; i<numResponses; ++i) {
                 status = $('#addStatus' + i);
                 status.show();
+                waiting = $('#waitStatus' + i);
+                waiting.hide();
                 status.html(response.msg[i].msg);
             }
         }
     });
+}
+
+function waitForResponses() {
+    let content = "addNodeName";
+    let status = "waitStatus";
+    for(let i=0; i<MAX_ADDED; ++i) {
+        if($('#' + content + i).val()) {
+            $('#'+ status + i).show();
+        }
+    }
 }
 
 function addContent() {
@@ -67,6 +80,7 @@ function addContent() {
             "</div>" +
             "<div class='col-md-1 contentFeedback'>" +
                 "<span class='label label-success modifyFeedback'></span>" +
+                "<span class='label label-warning modifyWaiting noDisplay'>Waiting...</span> " +
             "</div>" +
         "</div>" +
         "<div class='form-group'>" +
@@ -102,6 +116,11 @@ function addContent() {
         ++index;
         return "addStatus" + index;
     });
+
+    $('.modifyWaiting').attr("id", index => {
+        ++index;
+        return "waitStatus" + index;
+    });
 }
 
 function onBack() {
@@ -121,6 +140,7 @@ $(document).ready(function() {
     $('#addNewNode').on("click", function() {
         if(!validateForm()) return;
         $('#addStatus0').hide();
+        $('#waitStatus0').hide();
         addNewNode();
     });
 

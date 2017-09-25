@@ -20,6 +20,7 @@ exports.validateLogin = function(req, res, next) {
             res.send( {msg: "No such user"} );
         } else {
             console.log("User found");
+            dbase.loginUser(req.body.userName);
             res.send( {msg: "User found"} );
         }
     });
