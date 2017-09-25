@@ -80,15 +80,25 @@ function validateRefForm() {
 }
 
 function uploadImage() {
+    let uploadStatus = $('#uploadImageStatus');
+    uploadStatus.hide();
+    let waitImageStatus = $('#uploadImageWaitStatus');
+    waitImageStatus.show();
+    let errorImageStatus = $('#uploadImageErrorStatus');
+    errorImageStatus.hide();
     $('#imageForm').ajaxSubmit({
 
         error: function() {
             console.log("Error uploading image");
+            waitImageStatus.hide();
+            errorImageStatus.show();
         },
 
         success: function(response) {
-            $('#uploadImageStatus').show();
-            $('#uploadImageStatus').html(response.msg);
+            waitImageStatus.hide();
+            errorImageStatus.hide();
+            uploadStatus.show();
+            uploadStatus.html(response.msg);
         }
     });
 }
