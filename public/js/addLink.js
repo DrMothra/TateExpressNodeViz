@@ -2,7 +2,8 @@
  * Created by DrTone on 02/02/2017.
  */
 
-var graphNodeNames, graphNodeTypes, graphLinkTypes;
+let graphNodeNames, graphNodeTypes, graphLinkTypes;
+let submitted = false;
 
 function onGetNodeNames(response) {
     //Populate list of nodes
@@ -29,7 +30,7 @@ function validateForm() {
         return false;
     }
 
-    var fromName = $('#fromNodeName').val();
+    let fromName = $('#fromNodeName').val();
     if(fromName === "") {
         alert('"From Node Name" box is empty!');
         return false;
@@ -42,7 +43,7 @@ function validateForm() {
     //Only validate if being displayed
     let elem = $('#fromType');
     if(elem.is(":visible")) {
-        var fromType = elem.val();
+        let fromType = elem.val();
         if(fromType === "") {
             alert('"From Type" is empty!');
             return false;
@@ -53,7 +54,7 @@ function validateForm() {
         }
     }
 
-    var toName = $('#toNodeName').val();
+    let toName = $('#toNodeName').val();
     if(toName === "") {
         alert('"To Node Name" box is empty!');
         return false;
@@ -65,7 +66,7 @@ function validateForm() {
 
     elem = $('#toType');
     if(elem.is(":visible")) {
-        var toType = elem.val();
+        let toType = elem.val();
         if(toType === "") {
             alert('"To Node Type" box is empty!');
             return false;
@@ -76,7 +77,7 @@ function validateForm() {
         }
     }
 
-    var newType = $('#linkType').val();
+    let newType = $('#linkType').val();
     if(newType === "") {
         alert("Enter a link type!");
         return false;
@@ -90,17 +91,31 @@ function addNewLink() {
     //Add author info
     $('#author').val(localStorage.getItem("TateUsername"));
 
+    let waitStatus = $('#waitStatus');
+    waitStatus.show();
+    let errorStatus = $('#errorStatus');
+
+    if(submitted) {
+        console.log("Already submitted");
+        return;
+    }
+    submitted = true;
     $('#addLinkForm').ajaxSubmit({
 
         error: function() {
+            submitted = false;
             console.log("Error adding new node");
+            waitStatus.hide();
+            errorStatus.show();
         },
 
         success: function(response) {
+            submitted = false;
             console.log("Received ", response);
             let status = $('#addStatus');
             status.show();
             status.html(response.msg);
+            waitStatus.hide();
             if(response.errorStatus) {
                 $('#fromTypeContainer').show();
                 $('#toTypeContainer').show();
@@ -110,8 +125,8 @@ function addNewLink() {
 }
 
 function onBack() {
-    var mapID = $('#mapID').val();
-    var name = $('#mapName').html();
+    let mapID = $('#mapID').val();
+    let name = $('#mapName').html();
     window.location.href = "/modifyMap?mapID="+mapID+"&name="+name;
 }
 
