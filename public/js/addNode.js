@@ -5,6 +5,7 @@
 let mapNodeTypes, mapNodeNames;
 let contentAdded = 0;
 const MAX_ADDED = 5;
+let submitted = false;
 
 function onGetNodeTypes(response) {
     //Populate list of types
@@ -39,13 +40,19 @@ function addNewNode() {
     $('#author').val(localStorage.getItem("TateUsername"));
 
     waitForResponses();
+    if(submitted) {
+        console.log("Already submitted!");
+        return;
+    }
+    submitted = true;
     $('#addNodeForm').ajaxSubmit({
-
         error: function() {
+            submitted = false;
             console.log("Error adding new node");
         },
 
         success: function(response) {
+            submitted = false;
             console.log("Received ", response);
             let i, status, waiting, numResponses = response.msg.length;
             for(i=0; i<numResponses; ++i) {
