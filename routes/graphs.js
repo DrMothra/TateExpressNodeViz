@@ -768,7 +768,7 @@ function validateSearchResults(results) {
 exports.searchCommons = (req, res, next) => {
     let search_query = {
         'query' : GRAPH_SUBTITLE,
-        'limit' : 50
+        'limit' : 30
     };
 
     graphCommons.search(search_query, results => {
