@@ -324,7 +324,17 @@ exports.processLinks = (req, res, next) => {
         console.log("Choice = ", choice);
 
         currentNodeData = currentGraph.get_node(currentNodeID);
+        if(!currentNodeData) {
+            console.log("No node data!");
+            res.send( {msg: "Error ", index} );
+            return;
+        }
         currentEdgeData = currentGraph.edges_for(currentNodeData, "from");
+        if(!currentEdgeData) {
+            console.log("No edge data!");
+            res.send( {msg: "Error ", index} );
+            return;
+        }
 
         //DEBUG
         console.log("Edge data = ", currentEdgeData[index]);

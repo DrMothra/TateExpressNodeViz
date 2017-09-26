@@ -2,17 +2,32 @@
  * Created by DrTone on 02/02/2017.
  */
 
-let graphNodeNames;
+let graphNodeNames, currentIndex = -1;
+let waitStatus = '#waiting';
+let status = '#updated';
+let errorStatus = '#error';
+let submitted = false;
 
 function onLinkUpdated(response) {
     let link = response.index;
 
-    let elem = $('#updated'+link);
+    $(waitStatus + link).hide();
+    let elem = $(status + link);
     elem.show();
     elem.html(response.msg);
     setTimeout(function() {
         elem.hide();
+        submitted = false;
     }, 3000);
+}
+
+function onLinkError() {
+    let link = currentIndex;
+
+    $(waitStatus + link).hide();
+    $(status + link).hide();
+    $(errorStatus + link).show();
+    submitted = false;
 }
 
 function onGetNodeNames(response) {
@@ -86,12 +101,14 @@ function uploadImage() {
     waitImageStatus.show();
     let errorImageStatus = $('#uploadImageErrorStatus');
     errorImageStatus.hide();
+    submitted = true;
     $('#imageForm').ajaxSubmit({
 
         error: function() {
             console.log("Error uploading image");
             waitImageStatus.hide();
             errorImageStatus.show();
+            submitted = false;
         },
 
         success: function(response) {
@@ -99,6 +116,7 @@ function uploadImage() {
             errorImageStatus.hide();
             uploadStatus.show();
             uploadStatus.html(response.msg);
+            submitted = false;
         }
     });
 }
@@ -110,6 +128,7 @@ function uploadRef() {
     waitRefStatus.show();
     let errorRefStatus = $('#uploadRefErrorStatus');
     errorRefStatus.hide();
+    submitted = true;
     $('#refForm').ajaxSubmit({
 
         error: function() {
@@ -117,6 +136,7 @@ function uploadRef() {
             uploadStatus.hide();
             waitRefStatus.hide();
             errorRefStatus.show();
+            submitted = false;
         },
 
         success: function(response) {
@@ -124,6 +144,7 @@ function uploadRef() {
             errorRefStatus.hide();
             uploadStatus.show();
             uploadStatus.html(response.msg);
+            submitted = false;
         }
     })
 }
@@ -142,7 +163,6 @@ $(document).ready(function() {
     let mapManager = new MapManager();
     mapManager.getGraphNodeNames(mapID, onGetNodeNames);
 
-
     $('.getMapID').val(mapID);
 
     $('#getLinksForm').on("submit", function() {
@@ -150,12 +170,20 @@ $(document).ready(function() {
     });
 
     $('#uploadImage').on("click", () => {
+        if(submitted) {
+            console.log("Already submitted");
+            return;
+        }
         if(!validateImageForm()) return;
         $('#uploadImageStatus').hide();
         uploadImage();
     });
 
     $('#uploadRef').on("click", () => {
+        if(submitted) {
+            console.log("Already submitted");
+            return;
+        }
         if(!validateRefForm()) return;
         $('#uploadRefStatus').hide();
         uploadRef();
@@ -163,11 +191,31 @@ $(document).ready(function() {
 
 
     $("[id*='yesLink']").on("click", function() {
-        mapManager.updateLinkInfo(this.id, nodeName, 1, onLinkUpdated);
+        if(submitted) {
+            console.log("Already submitted");
+            return;
+        }
+        let index = getLinkID(this.id);
+        if(index < 0) return;
+
+        currentIndex = index;
+        $('#waiting' + index).show();
+        submitted = true;
+        mapManager.updateLinkInfo(index, nodeName, 1, onLinkUpdated, onLinkError);
     });
 
     $("[id*='noLink']").on("click", function() {
-        mapManager.updateLinkInfo(this.id, nodeName, 0, onLinkUpdated);
+        if(submitted) {
+            console.log("Already submitted");
+            return;
+        }
+        let index = getLinkID(this.id);
+        if(index < 0) return;
+
+        currentIndex = index;
+        $('#waiting' + index).show();
+        submitted = true;
+        mapManager.updateLinkInfo(index, nodeName, 0, onLinkUpdated, onLinkError);
     });
 
     $("#backToModify").on("click", () => {
@@ -180,3 +228,14 @@ $(document).ready(function() {
         window.location.href = "/showViews?authorName="+author;
     });
 });
+
+function getLinkID(link) {
+    let index = link.match(/\d/g);
+    index = index.join("");
+    if(isNaN(index)) {
+        console.log("Invalid map selected!");
+        return -1;
+    }
+
+    return index;
+}

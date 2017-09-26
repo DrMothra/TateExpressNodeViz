@@ -67,9 +67,9 @@
 .listings li {
     font-size: 0.95vw;
 }
-.listings span {
-    font-size: 1.0vw;
-    vertical-align: middle;
+.listings .label {
+    font-size: 0.9vw;
+    vertical-align: -50%;
 }
 .plusOption button {
     width: 20%;

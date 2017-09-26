@@ -39,14 +39,7 @@ class MapManager {
         return this.mapList[index];
     }
 
-    updateLinkInfo(id, name, choice, callback) {
-        let index = id.match(/\d/g);
-        index = index.join("");
-        if(isNaN(index)) {
-            alert("Invalid map selected!");
-            return;
-        }
-
+    updateLinkInfo(index, name, choice, callback, errorCallback) {
         let linkData = {
             link: index,
             choice: choice,
@@ -61,7 +54,7 @@ class MapManager {
             dataType: 'JSON'
         };
 
-        this.getMapData(mapData, callback);
+        this.getMapData(mapData, callback, errorCallback);
     }
 
     deleteNode(nodeInfo, callback, errorCallback) {
