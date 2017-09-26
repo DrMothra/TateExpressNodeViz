@@ -91,9 +91,12 @@ function addNewLink() {
     //Add author info
     $('#author').val(localStorage.getItem("TateUsername"));
 
+    let status = $('#addStatus');
+    status.hide();
     let waitStatus = $('#waitStatus');
     waitStatus.show();
     let errorStatus = $('#errorStatus');
+    errorStatus.hide();
 
     if(submitted) {
         console.log("Already submitted");
@@ -106,6 +109,7 @@ function addNewLink() {
             submitted = false;
             console.log("Error adding new node");
             waitStatus.hide();
+            status.hide();
             errorStatus.show();
         },
 
@@ -116,6 +120,7 @@ function addNewLink() {
             status.show();
             status.html(response.msg);
             waitStatus.hide();
+            errorStatus.hide();
             if(response.errorStatus) {
                 $('#fromTypeContainer').show();
                 $('#toTypeContainer').show();
