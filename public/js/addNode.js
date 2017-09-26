@@ -61,6 +61,7 @@ function addNewNode() {
                 waiting = $('#waitStatus' + i);
                 waiting.hide();
                 status.html(response.msg[i].msg);
+                hideErrors();
             }
         }
     });
@@ -69,9 +70,11 @@ function addNewNode() {
 function waitForResponses() {
     let content = "addNodeName";
     let status = "waitStatus";
+    let error = "errorStatus";
     for(let i=0; i<MAX_ADDED; ++i) {
         if($('#' + content + i).val()) {
             $('#'+ status + i).show();
+            $('#'+ error + i).hide();
         }
     }
 }
@@ -84,6 +87,16 @@ function showErrors() {
         if($('#' + content + i).val()) {
             $('#'+ status + i).hide();
             $('#'+ error + i).show();
+        }
+    }
+}
+
+function hideErrors() {
+    let content = "addNodeName";
+    let error = "errorStatus";
+    for(let i=0; i<MAX_ADDED; ++i) {
+        if($('#' + content + i).val()) {
+            $('#'+ error + i).hide();
         }
     }
 }
