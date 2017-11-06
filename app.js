@@ -136,6 +136,7 @@ app.post("/processDeleteNode", graphRoutes.deleteNode);
 app.post("/processAddImage", graphRoutes.addImage);
 app.post("/processAddRef", graphRoutes.addRef);
 app.post("/processAddDesc", graphRoutes.addDescription);
+app.post('/processRenameNode', graphRoutes.renameNode);
 
 //Get all graph info
 app.post("/processSearchCommons", graphRoutes.searchCommons);

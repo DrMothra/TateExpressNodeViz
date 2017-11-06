@@ -762,6 +762,39 @@ exports.addDescription = (req, res, next) => {
     });
 };
 
+exports.renameNode = (req, res, next) => {
+    //Search graph for required node
+    currentGraphID = req.body.renameMapID;
+
+    graphCommons.graphs(currentGraphID, graph => {
+        currentGraph = graph;
+        //Search for node
+        let search_query = {
+            "query": req.body.renameNodeValue,
+            "graph": currentGraphID
+        };
+        graphCommons.nodes_search(search_query, results => {
+            let numNodes = results.nodes.length;
+            if(numNodes === 0) {
+                res.render("update", { mapID: currentGraphID, node_Name: req.body.nodeValue, nodes: ["No nodes found"], linkData: []} );
+                return;
+            }
+            currentNodeID = results.nodes[0].id;
+            let signals = { "signals" : [
+                {
+                    "action": "node_update",
+                    "id": currentNodeID,
+                    "name": req.body.renameName
+                }
+            ]};
+
+            graphCommons.update_graph(currentGraphID, signals, response => {
+                res.send( {msg: "Renamed node"} );
+            })
+        });
+    });
+};
+
 function validateSearchResults(results) {
     let i, graph, strIndex, description, numResults = results ? results.length : 0;
     let tateGraphs = [], tateGraph;

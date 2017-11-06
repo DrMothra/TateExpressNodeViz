@@ -111,6 +111,23 @@ function validateDescForm() {
     return true;
 }
 
+function validateRenameForm() {
+    if($('#renameName').val() === "") {
+        alert("Enter a name!");
+        return false;
+    }
+
+    let nodeName = $('#node_Name');
+    if(nodeName.val() === "") {
+        alert("Enter an item in the Content box!");
+        return false;
+    }
+
+    $('#renameNodeValue').val(nodeName.val());
+
+    return true;
+}
+
 function uploadImage() {
     let uploadStatus = $('#uploadImageStatus');
     uploadStatus.hide();
@@ -194,6 +211,34 @@ function uploadDesc() {
     })
 }
 
+function renameNode() {
+    let uploadStatus = $('#uploadRenameStatus');
+    uploadStatus.hide();
+    let waitRefStatus = $('#uploadRenameWaitStatus');
+    waitRefStatus.show();
+    let errorRefStatus = $('#uploadRenameErrorStatus');
+    errorRefStatus.hide();
+    submitted = true;
+    $('#renameForm').ajaxSubmit({
+
+        error: function() {
+            console.log("Error renaming node");
+            uploadStatus.hide();
+            waitRefStatus.hide();
+            errorRefStatus.show();
+            submitted = false;
+        },
+
+        success: function(response) {
+            waitRefStatus.hide();
+            errorRefStatus.hide();
+            uploadStatus.show();
+            uploadStatus.html(response.msg);
+            submitted = false;
+        }
+    })
+}
+
 $(document).ready(function() {
 
     //Check that logged in
@@ -242,6 +287,16 @@ $(document).ready(function() {
         if(!validateDescForm()) return;
         $('#uploadDescStatus').hide();
         uploadDesc();
+    });
+
+    $('#renameNode').on("click", () => {
+        if(submitted) {
+            console.log("Already submitted");
+            return;
+        }
+        if(!validateRenameForm()) return;
+        $('#uploadRenameStatus').hide();
+        renameNode();
     });
 
     $("[id*='yesLink']").on("click", function() {
