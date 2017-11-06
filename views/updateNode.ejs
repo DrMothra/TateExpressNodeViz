@@ -82,12 +82,32 @@
     </div>
 
     <div class="indent">
+        <h3>Rename</h3>
+        <form id="renameForm" class="form-horizontal" action="/processRenameNode" method="post" autocomplete="off">
+            <input type="text" class="form-control noDisplay getMapID" name="renameMapID" id="renameMapID">
+            <input type="text" class="form-control noDisplay" name="renameNodeValue" id="renameNodeValue">
+            <div class="form-group">
+                <label for="renameName" class="col-md-1 control-label">Rename</label>
+                <div class="col-md-5">
+                    <input type="text" class="form-control" name="renameName" id="renameName">
+                </div>
+            </div>
+        </form>
+        <div class="feedback">
+            <button id="renameNode" type="button" class="col-md-offset-1 btn btn-primary">Rename</button>
+            <span id="uploadRenameStatus" class="label label-success"></span>
+            <span id="uploadRenameWaitStatus" class="label label-warning noDisplay">Waiting...</span>
+            <span id="uploadRenameErrorStatus" class="label label-danger noDisplay">Node not renamed</span>
+        </div>
+    </div>
+
+    <div class="indent">
         <h3>Description</h3>
         <form id="descForm" class="form-horizontal" action="/processAddDesc" method="post" autocomplete="off">
             <input type="text" class="form-control noDisplay getMapID" name="descMapID" id="descMapID">
             <input type="text" class="form-control noDisplay" name="descNodeValue" id="descNodeValue">
             <div class="form-group">
-                <label for="descName" class="col-md-1 control-label">Description</label>
+                <label for="descText" class="col-md-1 control-label">Description</label>
                 <div class="col-md-5">
                     <textarea class="form-control" name="descText" id="descText">
 
