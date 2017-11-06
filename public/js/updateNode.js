@@ -94,6 +94,23 @@ function validateRefForm() {
     return true;
 }
 
+function validateDescForm() {
+    if($('#descName').val() === "") {
+        alert("Enter a description!");
+        return false;
+    }
+
+    let nodeName = $('#node_Name');
+    if(nodeName.val() === "") {
+        alert("Enter an item in the Content box!");
+        return false;
+    }
+
+    $('#descNodeValue').val(nodeName.val());
+
+    return true;
+}
+
 function uploadImage() {
     let uploadStatus = $('#uploadImageStatus');
     uploadStatus.hide();
@@ -133,6 +150,34 @@ function uploadRef() {
 
         error: function() {
             console.log("Error uploading ref");
+            uploadStatus.hide();
+            waitRefStatus.hide();
+            errorRefStatus.show();
+            submitted = false;
+        },
+
+        success: function(response) {
+            waitRefStatus.hide();
+            errorRefStatus.hide();
+            uploadStatus.show();
+            uploadStatus.html(response.msg);
+            submitted = false;
+        }
+    })
+}
+
+function uploadDesc() {
+    let uploadStatus = $('#uploadDescStatus');
+    uploadStatus.hide();
+    let waitRefStatus = $('#uploadDescWaitStatus');
+    waitRefStatus.show();
+    let errorRefStatus = $('#uploadDescErrorStatus');
+    errorRefStatus.hide();
+    submitted = true;
+    $('#descForm').ajaxSubmit({
+
+        error: function() {
+            console.log("Error uploading description");
             uploadStatus.hide();
             waitRefStatus.hide();
             errorRefStatus.show();
@@ -189,6 +234,15 @@ $(document).ready(function() {
         uploadRef();
     });
 
+    $('#uploadDesc').on("click", () => {
+        if(submitted) {
+            console.log("Already submitted");
+            return;
+        }
+        if(!validateDescForm()) return;
+        $('#uploadDescStatus').hide();
+        uploadDesc();
+    });
 
     $("[id*='yesLink']").on("click", function() {
         if(submitted) {
